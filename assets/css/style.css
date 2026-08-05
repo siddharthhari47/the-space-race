@@ -282,6 +282,82 @@ nav.site-nav a.active {
   margin: 0 auto;
 }
 
+/* ---------- Callouts ---------- */
+.callout {
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 1.1rem 1.4rem;
+  margin: 2rem 0;
+}
+
+.callout .callout-label {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.callout p {
+  margin: 0;
+  color: #d7dcec;
+  font-size: 0.98rem;
+}
+
+.callout.engineering-insight {
+  border-left-color: var(--accent-2);
+}
+
+.callout.engineering-insight .callout-label {
+  color: var(--accent-2);
+}
+
+/* ---------- Interactive widget placeholders ---------- */
+.widget-placeholder {
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 2.2rem 1.5rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Wrap-up grid ---------- */
+.matters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.matters-grid .item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem 1.3rem;
+}
+
+.matters-grid .item h4 {
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--accent);
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.matters-grid .item p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
+
 /* ---------- Article ---------- */
 article.post {
   padding: 2.5rem 0 4rem;
@@ -324,6 +400,19 @@ article.post {
 
 .post-body p {
   margin: 0 0 1.3rem;
+}
+
+.post-body h2 {
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--text);
+  font-size: 1.5rem;
+  margin: 2.5rem 0 1rem;
+}
+
+.post-body a {
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 2px;
 }
 
 .post-body figure {
