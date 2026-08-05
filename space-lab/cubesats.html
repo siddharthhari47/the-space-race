@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CubeSats — Space Lab — The Space Race</title>
+  <meta name="description" content="How a 10cm cube standard opened space to universities, startups, and small nations — with an exploded view, a builder, and live simulators." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="space-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Space Lab</a>
+    <h1 class="lab-title">CubeSats</h1>
+    <p class="lab-intro">
+      A CubeSat is defined entirely by its size, not its mission. That standardization, more than
+      any single invention, is what let the modern Space Race spread far beyond a handful of
+      national space agencies.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="10cm" label="Edge length of a single 1U"></stat-card>
+      <stat-card value="1999" label="Year the standard was created"></stat-card>
+      <stat-card value="2018" label="MarCO: first CubeSats to reach Mars"></stat-card>
+      <stat-card value="6U" label="Size of each MarCO spacecraft"></stat-card>
+    </div>
+
+    <callout-box type="did-you-know">
+      <p>The CubeSat standard was co-created by Bob Twiggs at Stanford and Jordi Puig-Suari at Cal
+      Poly, alongside Cal Poly's P-POD deployer, specifically so university students could build
+      and fly real spacecraft instead of only simulating them on paper.</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>One unit, 1U, is a 10cm cube weighing around 1.33kg; missions needing more room simply
+      add units — 2U, 3U, 6U, 12U, and beyond. The standard was created in 1999 by Jordi
+      Puig-Suari at California Polytechnic State University and Bob Twiggs at Stanford, alongside
+      Cal Poly's P-POD deployer, a spring-loaded tube that ejects CubeSats into orbit once their
+      rocket arrives.</p>
+
+      <p>That low cost is what opened the door. Universities, startups, and small national space
+      programmes — several flying their first ever satellite as a CubeSat with help from
+      international partnerships like Japan's BIRDS Project — have all used the same standard to
+      reach orbit for a fraction of what a traditional satellite costs.</p>
+
+      <h2>Exploded View</h2>
+      <p>Click through a 1U CubeSat's internal layers, from the outer solar panels down to the
+      structural frame.</p>
+      <expandable-diagram
+        src="/assets/images/cubesat-exploded.svg"
+        data-src="/assets/data/cubesat-pins.json"
+        alt="Exploded view of a 1U CubeSat's internal layers"
+      ></expandable-diagram>
+
+      <h2>Build a CubeSat</h2>
+      <p>Pick a size, add optional components, and see whether your mission fits inside the mass
+      and volume budget.</p>
+      <simulation-container type="cubesat-builder"></simulation-container>
+
+      <h2>Power Budget</h2>
+      <p>Every CubeSat has to generate at least as much power as it uses, averaged over an
+      orbit that includes time in Earth's shadow.</p>
+      <simulation-container type="power-budget-simulator"></simulation-container>
+
+      <h2>Orbit Simulator</h2>
+      <p>Adjust altitude and inclination and watch the orbit — and its orbital period — change in
+      real time.</p>
+      <simulation-container type="orbit-simulator"></simulation-container>
+
+      <h2>More Tools</h2>
+      <p>Two more CubeSat tools are still in progress:</p>
+      <feature-grid columns="2">
+        <simulation-container type="cubesat-mission-planner"></simulation-container>
+        <simulation-container type="communications-simulator"></simulation-container>
+      </feature-grid>
+
+      <h2>Going Further</h2>
+      <p>CubeSats have gone well past Earth orbit. In May 2018, two 6U CubeSats, MarCO-A and
+      MarCO-B, launched alongside NASA's InSight lander and rode along to Mars, relaying its
+      signal home during entry, descent, and landing — the first time a CubeSat had survived deep
+      space. Closer to home, companies like Planet Labs run entire fleets of small CubeSats that
+      photograph the whole of Earth's landmass daily, work that used to require a handful of far
+      larger, far more expensive satellites.</p>
+
+      <p><a href="../blog/cubesats.html">Read the full story: What about CubeSats? →</a></p>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="../flight-lab/interactive-aircraft.html">Flight Lab: Interactive Aircraft Explorer</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="index.html">Back to Space Lab</a></li>
+        <li><a href="../engineering-lab/index.html">Visit Engineering Lab</a></li>
+      </ul>
+
+      <h2>Further Reading</h2>
+      <ul>
+        <li><a href="../blog/the-space-race.html">The Space Race: What is it and who is leading?</a></li>
+        <li><a href="../blog/where-are-we-now.html">Where are we now?</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

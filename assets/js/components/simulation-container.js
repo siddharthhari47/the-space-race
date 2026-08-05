@@ -53,8 +53,15 @@ class SimulationContainer extends HTMLElement {
       const module = await import(meta.module);
       this._panel.innerHTML = "";
       module.mount(this._panel, meta);
+      this._mountedModule = module;
     } catch (error) {
       this._renderError(`"${meta.title}" failed to load.`);
+    }
+  }
+
+  disconnectedCallback() {
+    if (this._mountedModule && typeof this._mountedModule.unmount === "function") {
+      this._mountedModule.unmount(this._panel);
     }
   }
 

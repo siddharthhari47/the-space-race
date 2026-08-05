@@ -41,8 +41,11 @@
 
         <p>Universities were the first to take advantage, building CubeSats as student projects that actually fly. Startups followed, using CubeSats to test business ideas in orbit before committing to anything bigger. Small nations that could never have afforded a traditional satellite programme have used CubeSats to launch their first ever spacecraft, often with help from international university partnerships such as Japan's BIRDS Project, which has flown first satellites for countries including Ghana, Bhutan and Sri Lanka. For the first time, having a small budget is not enough to keep you out of the race.</p>
 
-        <!-- CubeSat Exploded View -->
-        <div id="cubesat-exploded-view" class="widget-placeholder">Interactive widget: CubeSat exploded view (coming soon)</div>
+        <expandable-diagram
+          src="/assets/images/cubesat-exploded.svg"
+          data-src="/assets/data/cubesat-pins.json"
+          alt="Exploded view of a 1U CubeSat's internal layers"
+        ></expandable-diagram>
 
         <p>Here is a comparison of the common CubeSat sizes.</p>
 
@@ -85,8 +88,7 @@
           <p>Every extra unit is a trade-off. More units means more room for batteries, instruments and propulsion, but also more mass, more drag in low orbit and a bigger, pricier slot to buy on a rocket. A lot of CubeSat engineering is really just deciding what to leave out.</p>
         </div>
 
-        <!-- CubeSat Builder -->
-        <div id="cubesat-builder" class="widget-placeholder">Interactive widget: build your own CubeSat mission (coming soon)</div>
+        <simulation-container type="cubesat-builder"></simulation-container>
 
         <p>If you were designing a mission today, what would you build? An Earth observation camera, a communications relay, or a small sensor meant to prove new technology works before it flies somewhere far riskier? That last option is exactly what took CubeSats furthest from home.</p>
 
@@ -94,8 +96,7 @@
 
         <p>Closer to home, companies like Planet Labs now run entire fleets of small CubeSats that photograph the whole of Earth's landmass every single day, tracking things like deforestation, crop health and disaster response, work that used to need a handful of much larger and more expensive satellites.</p>
 
-        <!-- Orbit Simulator -->
-        <div id="orbit-simulator" class="widget-placeholder">Interactive widget: CubeSat orbit simulator (coming soon)</div>
+        <simulation-container type="orbit-simulator"></simulation-container>
 
         <p>Most CubeSats in low Earth orbit only last a few years before burning up on re-entry. Some would say that is actually a good thing, since it means there is no expensive dead satellite left floating around as space junk once its mission is over.</p>
 
@@ -141,6 +142,30 @@
           What about the Aviation?
         </a>
       </nav>
+
+      <div class="continue-explore">
+        <h2>Related Technologies</h2>
+        <ul>
+          <li><a href="../flight-lab/interactive-aircraft.html">Flight Lab: Interactive Aircraft Explorer</a></li>
+        </ul>
+
+        <h2>Interactive Modules</h2>
+        <ul>
+          <li><a href="../space-lab/cubesats.html">Space Lab: CubeSats — exploded view, builder, power budget, and orbit simulator</a></li>
+        </ul>
+
+        <h2>Next Steps</h2>
+        <ul>
+          <li><a href="../space-lab/index.html">Visit Space Lab</a></li>
+          <li><a href="what-about-the-aviation.html">Read: What about the Aviation?</a></li>
+        </ul>
+
+        <h2>Further Reading</h2>
+        <ul>
+          <li><a href="the-space-race.html">The Space Race: What is it and who is leading?</a></li>
+          <li><a href="where-are-we-now.html">Where are we now?</a></li>
+        </ul>
+      </div>
     </article>
   </main>
 

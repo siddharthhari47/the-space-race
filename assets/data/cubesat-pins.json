@@ -1,0 +1,51 @@
+[
+  {
+    "id": "antenna",
+    "label": "Antenna / Communications",
+    "x": 50,
+    "y": 4.3,
+    "description": "Sends data down to ground stations and receives commands from mission control. On a CubeSat, this is often just a few thin metal tape measures that spring open once in orbit."
+  },
+  {
+    "id": "solar-panels",
+    "label": "Solar Panels",
+    "x": 50,
+    "y": 16.6,
+    "description": "Body-mounted solar cells cover the CubeSat's outer faces, converting sunlight into the only power the satellite will ever get. There's no way to refuel or recharge from the ground."
+  },
+  {
+    "id": "obc",
+    "label": "Onboard Computer",
+    "x": 50,
+    "y": 27.6,
+    "description": "A small computer, often barely more powerful than a smartphone chip, that runs the flight software, talks to every other subsystem, and decides what the satellite does next."
+  },
+  {
+    "id": "adcs",
+    "label": "ADCS",
+    "x": 50,
+    "y": 38.9,
+    "description": "Short for Attitude Determination and Control System — the sensors and small reaction wheels or magnetorquers that keep the satellite pointed the right way, whether that's at Earth, the Sun, or a ground station."
+  },
+  {
+    "id": "payload",
+    "label": "Payload / Sensor",
+    "x": 50,
+    "y": 49.7,
+    "description": "Whatever the mission actually needs: a camera, a radio experiment, a materials sample, or a purpose-built science instrument. Everything else on the satellite exists to support this one part."
+  },
+  {
+    "id": "battery",
+    "label": "Battery",
+    "x": 50,
+    "y": 61,
+    "description": "Stores power collected by the solar panels for use during eclipse, the part of every orbit spent in Earth's shadow with no sunlight at all."
+  },
+  {
+    "id": "structure",
+    "label": "Structure / Frame",
+    "x": 50,
+    "y": 74.9,
+    "description": "The frame holds every other subsystem in exact alignment and has to survive launch vibration, then fit precisely inside a P-POD deployer with almost no wasted space."
+  }
+]

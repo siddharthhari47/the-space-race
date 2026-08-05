@@ -14,7 +14,7 @@ export const SIMULATOR_REGISTRY = {
     title: "Build a CubeSat",
     description: "Choose a mission, pick components, and see what fits inside the unit budget.",
     module: "/assets/js/simulators/cubesat-builder.js",
-    status: "coming-soon",
+    status: "live",
     category: "space",
   },
   "cubesat-mission-planner": {
@@ -28,7 +28,7 @@ export const SIMULATOR_REGISTRY = {
     title: "Power Budget Simulator",
     description: "Balance solar panel area, battery capacity, and payload draw over an orbit.",
     module: "/assets/js/simulators/power-budget-simulator.js",
-    status: "coming-soon",
+    status: "live",
     category: "engineering",
   },
   "communications-simulator": {
@@ -42,7 +42,7 @@ export const SIMULATOR_REGISTRY = {
     title: "Satellite Orbit Simulator",
     description: "Adjust altitude and inclination and watch how the orbit and ground track change.",
     module: "/assets/js/simulators/orbit-simulator.js",
-    status: "coming-soon",
+    status: "live",
     category: "space",
   },
   "aircraft-explorer": {
