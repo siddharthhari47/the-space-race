@@ -1,0 +1,98 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a CubeSat with solar panels above Earth's limb">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#070a16"/>
+      <stop offset="100%" stop-color="#05070f"/>
+    </linearGradient>
+    <radialGradient id="earth" cx="50%" cy="0%" r="75%">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="55%" stop-color="#0c2454"/>
+      <stop offset="100%" stop-color="#050b1f"/>
+    </radialGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5eead4"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#bg)"/>
+
+  <!-- stars -->
+  <g fill="#ffffff">
+    <circle cx="60" cy="60" r="1.6" opacity="0.9"/>
+    <circle cx="130" cy="120" r="1.1" opacity="0.7"/>
+    <circle cx="220" cy="50" r="1.3" opacity="0.8"/>
+    <circle cx="300" cy="90" r="1" opacity="0.6"/>
+    <circle cx="90" cy="200" r="1.2" opacity="0.7"/>
+    <circle cx="40" cy="150" r="1" opacity="0.5"/>
+    <circle cx="500" cy="55" r="1.4" opacity="0.85"/>
+    <circle cx="600" cy="100" r="1" opacity="0.6"/>
+    <circle cx="670" cy="60" r="1.3" opacity="0.8"/>
+    <circle cx="730" cy="140" r="1.1" opacity="0.7"/>
+    <circle cx="760" cy="70" r="1" opacity="0.55"/>
+    <circle cx="420" cy="40" r="1" opacity="0.6"/>
+    <circle cx="350" cy="150" r="1.1" opacity="0.7"/>
+    <circle cx="150" cy="30" r="1" opacity="0.5"/>
+    <circle cx="700" cy="220" r="1" opacity="0.5"/>
+  </g>
+
+  <!-- earth limb -->
+  <circle cx="400" cy="760" r="430" fill="url(#earth)"/>
+  <path d="M -20 358 A 430 430 0 0 1 820 358" fill="none" stroke="#7dd3fc" stroke-width="2" opacity="0.55"/>
+
+  <!-- orbit path -->
+  <ellipse cx="400" cy="270" rx="330" ry="70" fill="none" stroke="#5eead4" stroke-width="1" stroke-dasharray="4 8" opacity="0.35"/>
+
+  <!-- struts -->
+  <rect x="292" y="248" width="60" height="8" fill="#475569"/>
+  <rect x="448" y="248" width="60" height="8" fill="#475569"/>
+
+  <!-- left solar panel -->
+  <g>
+    <rect x="150" y="222" width="145" height="62" rx="4" fill="url(#panel)" stroke="#0f766e" stroke-width="2"/>
+    <g stroke="#0f766e" stroke-width="1.5" opacity="0.8">
+      <line x1="168" y1="222" x2="168" y2="284"/>
+      <line x1="186" y1="222" x2="186" y2="284"/>
+      <line x1="204" y1="222" x2="204" y2="284"/>
+      <line x1="222" y1="222" x2="222" y2="284"/>
+      <line x1="240" y1="222" x2="240" y2="284"/>
+      <line x1="258" y1="222" x2="258" y2="284"/>
+      <line x1="276" y1="222" x2="276" y2="284"/>
+      <line x1="150" y1="253" x2="295" y2="253"/>
+    </g>
+  </g>
+
+  <!-- right solar panel -->
+  <g>
+    <rect x="505" y="222" width="145" height="62" rx="4" fill="url(#panel)" stroke="#0f766e" stroke-width="2"/>
+    <g stroke="#0f766e" stroke-width="1.5" opacity="0.8">
+      <line x1="523" y1="222" x2="523" y2="284"/>
+      <line x1="541" y1="222" x2="541" y2="284"/>
+      <line x1="559" y1="222" x2="559" y2="284"/>
+      <line x1="577" y1="222" x2="577" y2="284"/>
+      <line x1="595" y1="222" x2="595" y2="284"/>
+      <line x1="613" y1="222" x2="613" y2="284"/>
+      <line x1="631" y1="222" x2="631" y2="284"/>
+      <line x1="505" y1="253" x2="650" y2="253"/>
+    </g>
+  </g>
+
+  <!-- antenna -->
+  <line x1="452" y1="196" x2="500" y2="140" stroke="#cbd5e1" stroke-width="2.5"/>
+  <circle cx="500" cy="140" r="4.5" fill="#fb923c"/>
+
+  <!-- cube body -->
+  <rect x="345" y="196" width="110" height="110" rx="10" fill="url(#body)" stroke="#64748b" stroke-width="2"/>
+  <g stroke="#64748b" stroke-width="1.3" opacity="0.7">
+    <line x1="345" y1="233" x2="455" y2="233"/>
+    <line x1="345" y1="270" x2="455" y2="270"/>
+    <line x1="382" y1="196" x2="382" y2="306"/>
+    <line x1="418" y1="196" x2="418" y2="306"/>
+  </g>
+  <circle cx="400" cy="251" r="16" fill="#0f172a" stroke="#fb923c" stroke-width="2.5"/>
+  <circle cx="400" cy="251" r="6" fill="#fb923c" opacity="0.85"/>
+</svg>
