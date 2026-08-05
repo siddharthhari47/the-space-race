@@ -1,0 +1,448 @@
+/* ---------- Base & theme ---------- */
+:root {
+  --bg: #05070f;
+  --bg-alt: #0a0e1c;
+  --surface: #10162b;
+  --surface-hover: #161e3a;
+  --border: #202a4a;
+  --text: #e8ecf5;
+  --text-dim: #9aa4c0;
+  --accent: #5eead4;
+  --accent-2: #fb923c;
+  --max-width: 960px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 75% 12%, #ffffff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 50% 60%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 88% 78%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 10% 85%, #ffffff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 35% 15%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 65% 92%, #ffffff 100%, transparent),
+    radial-gradient(2px 2px at 92% 40%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 5% 55%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 45% 40%, #ffffff 100%, transparent),
+    linear-gradient(180deg, #070a16 0%, #05070f 40%, #05070f 100%);
+  background-repeat: repeat;
+  background-size: 600px 600px, 600px 600px, 600px 600px, 600px 600px,
+    600px 600px, 600px 600px, 600px 600px, 600px 600px, 600px 600px,
+    600px 600px, 100% 100%;
+  background-attachment: fixed;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ---------- Header ---------- */
+header.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(5, 7, 15, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.brand img {
+  height: 32px;
+  width: auto;
+  border-radius: 4px;
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+nav.site-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav.site-nav a {
+  color: var(--text-dim);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+nav.site-nav a:hover,
+nav.site-nav a.active {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: 5rem 1.5rem 3.5rem;
+  text-align: center;
+}
+
+.hero .eyebrow {
+  display: inline-block;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  border: 1px solid rgba(251, 146, 60, 0.4);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.15;
+  margin: 0 0 1.1rem;
+  max-width: 780px;
+  margin-inline: auto;
+  background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero p {
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ---------- Section headings ---------- */
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 3rem 0 1.5rem;
+}
+
+.section-heading h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.section-heading a {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+/* ---------- Post cards ---------- */
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.post-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  background: var(--surface-hover);
+}
+
+.post-card a.card-link {
+  display: block;
+  color: inherit;
+}
+
+.post-card a.card-link:hover {
+  text-decoration: none;
+}
+
+.post-card .thumb {
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+
+.post-card .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-card .card-body {
+  padding: 1.2rem 1.3rem 1.4rem;
+}
+
+.post-card .meta {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.post-card h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.15rem;
+  margin: 0 0 0.55rem;
+  color: var(--text);
+}
+
+.post-card p.excerpt {
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+/* ---------- About ---------- */
+.about {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin: 3rem 0;
+  text-align: center;
+}
+
+.about .eyebrow-small {
+  color: var(--accent-2);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+
+.about h2 {
+  font-family: "Space Grotesk", sans-serif;
+  margin: 0 0 1rem;
+  font-size: 1.7rem;
+}
+
+.about p {
+  color: var(--text-dim);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* ---------- Article ---------- */
+article.post {
+  padding: 2.5rem 0 4rem;
+}
+
+.post-header {
+  margin-bottom: 2rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.post-header h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.2;
+  margin: 0 0 0.9rem;
+}
+
+.post-meta {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.post-hero-image {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.post-body {
+  font-size: 1.05rem;
+  color: #d7dcec;
+}
+
+.post-body p {
+  margin: 0 0 1.3rem;
+}
+
+.post-body figure {
+  margin: 2rem 0;
+}
+
+.post-body figure img {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.post-body figcaption {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  margin-top: 0.6rem;
+}
+
+.data-table-wrap {
+  overflow-x: auto;
+  margin: 2rem 0;
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background: var(--surface);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+table.data-table th,
+table.data-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+table.data-table th {
+  color: var(--accent);
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--bg-alt);
+}
+
+table.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.post-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.post-nav a {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.post-nav a:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.post-nav .direction {
+  display: block;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3rem;
+}
+
+.post-nav .next {
+  text-align: right;
+}
+
+/* ---------- Footer ---------- */
+footer.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+footer.site-footer a {
+  color: var(--text-dim);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .nav-inner {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  nav.site-nav ul {
+    gap: 1.2rem;
+  }
+
+  .post-nav {
+    flex-direction: column;
+  }
+
+  .post-nav .next {
+    text-align: left;
+  }
+}
