@@ -213,6 +213,75 @@ header.site-header {
   margin: 0 auto;
 }
 
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: var(--space-8);
+}
+
+.hero-stats stat-card {
+  min-width: 150px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- Mission sections (alternating bands) ---------- */
+.mission-section {
+  padding: var(--space-9) 0;
+}
+
+.mission-section.alt {
+  background: var(--bg-alt);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.mission-section .section-heading {
+  margin-top: 0;
+}
+
 /* ---------- Section headings ---------- */
 .section-heading {
   display: flex;
@@ -832,23 +901,23 @@ interactive-card {
 }
 
 .interactive-card-reveal {
-  display: grid;
-  grid-template-rows: 0fr;
+  max-height: 0;
+  overflow: hidden;
   opacity: 0;
-  transition: grid-template-rows var(--duration-base) var(--ease-standard),
+  transition: max-height var(--duration-base) var(--ease-standard),
     opacity var(--duration-base) var(--ease-standard);
 }
 
 .interactive-card-inner:hover .interactive-card-reveal,
 .interactive-card-inner[aria-expanded="true"] .interactive-card-reveal {
-  grid-template-rows: 1fr;
+  max-height: 320px;
   opacity: 1;
 }
 
 .interactive-card-reveal > div {
-  overflow: hidden;
   color: var(--text-dim);
   font-size: 0.88rem;
+  padding-top: 0.4rem;
 }
 
 /* ---------- Stat card ---------- */

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Space Race — Space &amp; Aviation History</title>
-  <meta name="description" content="A blog exploring the history of the Space Race, the rivalry between Boeing and Airbus, and where space exploration stands today." />
+  <title>The Space Race — Mission Control</title>
+  <meta name="description" content="An interactive aerospace education platform. The Space Race never ended — it evolved. Explore flight, space, and engineering through labs, simulations, and stories." />
   <link rel="icon" href="assets/images/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,64 +17,189 @@
 
   <main>
     <section class="hero container">
-      <span class="eyebrow">20th Century History</span>
-      <h1>The Space Race: what is it, and who's leading it?</h1>
-      <p>A blog about the rivalry that took us to the Moon, the parallel battle for the skies between Boeing and Airbus, and where space exploration stands today.</p>
+      <span class="eyebrow">Mission Control</span>
+      <h1>The Space Race never ended. It evolved.</h1>
+      <p>
+        From a 10cm CubeSat to the aircraft overhead, this is where flight and space
+        exploration get explained — through interactive labs, simulations, and stories,
+        not a textbook.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/space-lab/index.html">Enter the Labs</a>
+        <a class="btn btn-secondary" href="/playground/index.html">Open Playground</a>
+      </div>
+      <div class="hero-stats">
+        <stat-card value="3" label="Labs"></stat-card>
+        <stat-card value="11" label="Planned Simulators" accent="engineering"></stat-card>
+        <stat-card value="1957" label="Where It Started" accent="flight"></stat-card>
+      </div>
     </section>
 
-    <div class="container">
-      <div class="section-heading">
-        <h2>Latest posts</h2>
-        <a href="blog/index.html">View all →</a>
+    <section class="mission-section">
+      <div class="container">
+        <section-header
+          eyebrow="Explore Flight"
+          title="Flight Lab"
+          link-href="/flight-lab/index.html"
+          link-text="View Flight Lab →"
+        ></section-header>
+        <feature-grid columns="3">
+          <info-card title="Commercial Aircraft" href="/blog/what-about-the-aviation.html">
+            The Airbus vs. Boeing rivalry that shaped modern air travel.
+          </info-card>
+          <info-card title="Aerodynamics" status="coming-soon">
+            How lift, drag, and airflow actually work.
+          </info-card>
+          <info-card title="Interactive Aircraft" status="coming-soon">
+            Click through a real aircraft, part by part.
+          </info-card>
+        </feature-grid>
       </div>
+    </section>
 
-      <div class="post-grid">
-        <article class="post-card">
-          <a class="card-link" href="blog/cubesats.html">
-            <div class="thumb">
-              <img src="assets/images/cubesat.svg" alt="What about CubeSats?" />
-            </div>
-            <div class="card-body">
-              <div class="meta">Aug 5, 2026 · 2 min read</div>
-              <h3>What about CubeSats?</h3>
-              <p class="excerpt">The Space Race never ended, it evolved. Here's how a 10cm cube let universities, startups and small nations join the race to space.</p>
-            </div>
-          </a>
-        </article>
-
-        <article class="post-card">
-          <a class="card-link" href="blog/what-about-the-aviation.html">
-            <div class="thumb">
-              <img src="assets/images/aviation.png" alt="What about the Aviation?" />
-            </div>
-            <div class="card-body">
-              <div class="meta">Jan 16, 2025 · 2 min read</div>
-              <h3>What about the Aviation?</h3>
-              <p class="excerpt">While the Space Race made headlines, a quieter rivalry was unfolding closer to the ground — between Boeing and a scrappy new competitor called Airbus.</p>
-            </div>
-          </a>
-        </article>
-
-        <article class="post-card">
-          <a class="card-link" href="blog/where-are-we-now.html">
-            <div class="thumb">
-              <img src="assets/images/where-are-we-now.png" alt="Where are we now?" />
-            </div>
-            <div class="card-body">
-              <div class="meta">Dec 1, 2022 · 2 min read</div>
-              <h3>Where are we now?</h3>
-              <p class="excerpt">We've walked on the Moon and driven rovers on Mars. So what's the next milestone — and what stands in the way of getting humans to Mars?</p>
-            </div>
-          </a>
-        </article>
+    <section class="mission-section alt">
+      <div class="container">
+        <section-header
+          eyebrow="Explore Space"
+          title="Space Lab"
+          link-href="/space-lab/index.html"
+          link-text="View Space Lab →"
+        ></section-header>
+        <feature-grid columns="3">
+          <info-card title="CubeSats" href="/blog/cubesats.html">
+            The 10cm standard that let almost anyone build a spacecraft.
+          </info-card>
+          <info-card title="Rockets" status="coming-soon">
+            Stages, engines, and how a launch vehicle reaches orbit.
+          </info-card>
+          <info-card title="Satellite Orbit Simulator" status="coming-soon">
+            Adjust altitude and inclination and watch the orbit change.
+          </info-card>
+        </feature-grid>
       </div>
+    </section>
 
-      <div class="about">
-        <div class="eyebrow-small">Nice to meet you</div>
-        <h2>An open book</h2>
-        <p>Welcome to my blog — a place where I write about the things that fascinate me, from the Cold War space race to the aircraft that shaped modern aviation. It's been a genuine passion project, and I'm glad you're here. Have a look around, and if something sparks a question or a disagreement, I'd love to hear it.</p>
+    <section class="mission-section">
+      <div class="container">
+        <section-header
+          eyebrow="Under the Hood"
+          title="Engineering Lab"
+          link-href="/engineering-lab/index.html"
+          link-text="View Engineering Lab →"
+        ></section-header>
+        <feature-grid columns="3">
+          <info-card title="Power Systems" status="coming-soon">
+            Solar panels, batteries, and keeping the lights on.
+          </info-card>
+          <info-card title="Communications" status="coming-soon">
+            Getting data to and from a vehicle in flight or in orbit.
+          </info-card>
+          <info-card title="AI in Aerospace" status="coming-soon">
+            Where machine learning is already flying today.
+          </info-card>
+        </feature-grid>
       </div>
-    </div>
+    </section>
+
+    <section class="mission-section alt">
+      <div class="container">
+        <section-header
+          eyebrow="Latest Mission"
+          title="Fresh from the blog"
+          link-href="/blog/index.html"
+          link-text="View all posts →"
+        ></section-header>
+        <feature-grid columns="1">
+          <mission-card
+            image="assets/images/cubesat.svg"
+            eyebrow="Aug 5, 2026 · 2 min read"
+            title="What about CubeSats?"
+            href="/blog/cubesats.html"
+          >
+            The Space Race never ended, it evolved. Here's how a 10cm cube let
+            universities, startups and small nations join the race to space.
+          </mission-card>
+        </feature-grid>
+      </div>
+    </section>
+
+    <section class="mission-section">
+      <div class="container">
+        <section-header
+          eyebrow="Interactive Models"
+          title="Learn by doing"
+          link-href="/playground/index.html"
+          link-text="Open Playground →"
+        ></section-header>
+        <feature-grid columns="3">
+          <info-card title="Interactive Aircraft Explorer" status="coming-soon">
+            Click through a commercial, military, private, or cargo aircraft.
+          </info-card>
+          <info-card title="Build a CubeSat" status="coming-soon">
+            Choose a mission and see what fits inside the unit budget.
+          </info-card>
+          <info-card title="Satellite Orbit Simulator" status="coming-soon">
+            Adjust altitude and inclination and watch the orbit change.
+          </info-card>
+        </feature-grid>
+      </div>
+    </section>
+
+    <section class="mission-section alt">
+      <div class="container">
+        <section-header
+          eyebrow="History, In Order"
+          title="How we got here"
+          link-href="/timeline/index.html"
+          link-text="View full timeline →"
+        ></section-header>
+        <div class="timeline">
+          <timeline-event date="1957" title="Sputnik 1" side="left">
+            The first artificial satellite reaches orbit, and the Space Race begins.
+          </timeline-event>
+          <timeline-event date="1969" title="Apollo 11" side="right">
+            Neil Armstrong becomes the first person to walk on the Moon.
+          </timeline-event>
+          <timeline-event date="2003" title="First CubeSats reach orbit" side="left">
+            The 10cm standard invented in 1999 flies for the first time — the start
+            of a more distributed Space Race.
+          </timeline-event>
+        </div>
+      </div>
+    </section>
+
+    <section class="mission-section">
+      <div class="container">
+        <section-header
+          eyebrow="Featured Learning Paths"
+          title="Not sure where to start?"
+        ></section-header>
+        <feature-grid columns="3">
+          <interactive-card
+            title="The Space Race, Then and Now"
+            teaser="From Gagarin's first orbit to today's CubeSats."
+          >
+            <p><a href="/blog/the-space-race.html">The Space Race: What is it and who is leading?</a></p>
+            <p><a href="/blog/where-are-we-now.html">Where are we now?</a></p>
+            <p><a href="/blog/cubesats.html">What about CubeSats?</a></p>
+          </interactive-card>
+          <interactive-card
+            title="Rivalry in the Skies"
+            teaser="How Boeing and Airbus shaped modern aviation."
+          >
+            <p><a href="/blog/what-about-the-aviation.html">What about the Aviation?</a></p>
+            <p><a href="/flight-lab/index.html">Visit Flight Lab</a></p>
+          </interactive-card>
+          <interactive-card
+            title="Learn by Building"
+            teaser="Skip the reading and jump into the interactive tools."
+          >
+            <p><a href="/playground/index.html">Open Playground</a></p>
+            <p><a href="/space-lab/index.html">Visit Space Lab</a></p>
+          </interactive-card>
+        </feature-grid>
+      </div>
+    </section>
   </main>
 
   <site-footer></site-footer>
