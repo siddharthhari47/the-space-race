@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/blog.html", "destination": "/blog/", "permanent": true },
+    { "source": "/posts/:slug", "destination": "/blog/:slug", "permanent": true }
+  ]
+}

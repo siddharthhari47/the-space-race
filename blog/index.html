@@ -5,27 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blog — The Space Race</title>
   <meta name="description" content="All posts from The Space Race blog." />
-  <link rel="icon" href="assets/images/logo.webp" />
+  <link rel="icon" href="../assets/images/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="nav-inner">
-      <a class="brand" href="index.html">
-        <img src="assets/images/logo.webp" alt="The Space Race logo" />
-        <span>The Space Race</span>
-      </a>
-      <nav class="site-nav">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="blog.html">Blog</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <site-header current="blog"></site-header>
 
   <main>
     <section class="hero container">
@@ -37,9 +25,9 @@
     <div class="container">
       <div class="post-grid">
         <article class="post-card">
-          <a class="card-link" href="posts/cubesats.html">
+          <a class="card-link" href="cubesats.html">
             <div class="thumb">
-              <img src="assets/images/cubesat.svg" alt="What about CubeSats?" />
+              <img src="../assets/images/cubesat.svg" alt="What about CubeSats?" />
             </div>
             <div class="card-body">
               <div class="meta">Aug 5, 2026 · 2 min read</div>
@@ -50,9 +38,9 @@
         </article>
 
         <article class="post-card">
-          <a class="card-link" href="posts/the-space-race.html">
+          <a class="card-link" href="the-space-race.html">
             <div class="thumb">
-              <img src="assets/images/space-race.png" alt="The Space Race: What is it and who is leading?" />
+              <img src="../assets/images/space-race.png" alt="The Space Race: What is it and who is leading?" />
             </div>
             <div class="card-body">
               <div class="meta">Oct 22, 2022 · 2 min read</div>
@@ -63,9 +51,9 @@
         </article>
 
         <article class="post-card">
-          <a class="card-link" href="posts/what-about-the-aviation.html">
+          <a class="card-link" href="what-about-the-aviation.html">
             <div class="thumb">
-              <img src="assets/images/aviation.png" alt="What about the Aviation?" />
+              <img src="../assets/images/aviation.png" alt="What about the Aviation?" />
             </div>
             <div class="card-body">
               <div class="meta">Jan 16, 2025 · 2 min read</div>
@@ -76,9 +64,9 @@
         </article>
 
         <article class="post-card">
-          <a class="card-link" href="posts/where-are-we-now.html">
+          <a class="card-link" href="where-are-we-now.html">
             <div class="thumb">
-              <img src="assets/images/where-are-we-now.png" alt="Where are we now?" />
+              <img src="../assets/images/where-are-we-now.png" alt="Where are we now?" />
             </div>
             <div class="card-body">
               <div class="meta">Dec 1, 2022 · 2 min read</div>
@@ -91,11 +79,6 @@
     </div>
   </main>
 
-  <footer class="site-footer">
-    <p>Written by Siddharth Hariharan · <a href="mailto:info@mysite.com">info@mysite.com</a></p>
-    <p>&copy; 2026 The Space Race. All rights reserved.</p>
-  </footer>
-
-  <script src="assets/js/main.js"></script>
+  <site-footer></site-footer>
 </body>
 </html>

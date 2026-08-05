@@ -10,27 +10,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="nav-inner">
-      <a class="brand" href="../index.html">
-        <img src="../assets/images/logo.webp" alt="The Space Race logo" />
-        <span>The Space Race</span>
-      </a>
-      <nav class="site-nav">
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../blog.html">Blog</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <site-header current="blog"></site-header>
 
   <main class="container">
     <article class="post">
       <div class="post-header">
-        <a class="back-link" href="../blog.html">&larr; All posts</a>
+        <a class="back-link" href="index.html">&larr; All posts</a>
         <h1>What about the Aviation?</h1>
         <div class="post-meta">Siddharth Hariharan · Jan 16, 2025 · 2 min read</div>
       </div>
@@ -105,11 +93,6 @@
     </article>
   </main>
 
-  <footer class="site-footer">
-    <p>Written by Siddharth Hariharan · <a href="mailto:info@mysite.com">info@mysite.com</a></p>
-    <p>&copy; 2026 The Space Race. All rights reserved.</p>
-  </footer>
-
-  <script src="../assets/js/main.js"></script>
+  <site-footer></site-footer>
 </body>
 </html>
