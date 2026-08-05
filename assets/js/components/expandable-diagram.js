@@ -3,13 +3,19 @@
 // Swapping `src` + `data-src` is the entire "port to a new diagram" step.
 class ExpandableDiagram extends HTMLElement {
   connectedCallback() {
-    const src = this.getAttribute("src") || "";
-    const alt = this.getAttribute("alt") || "";
-    const dataSrc = this.getAttribute("data-src");
+    this.load(this.getAttribute("src"), this.getAttribute("data-src"), this.getAttribute("alt"));
+  }
+
+  // Public API: swap the diagram after initial mount, e.g. from a category
+  // switcher. This is the only "port to a new diagram" step needed —
+  // callers never touch this element's internals directly.
+  load(src, dataSrc, alt = "") {
+    if (src) this.setAttribute("src", src);
+    if (dataSrc) this.setAttribute("data-src", dataSrc);
 
     this.innerHTML = `
       <div class="diagram-stage">
-        <img class="diagram-image" src="${src}" alt="${alt}" />
+        <img class="diagram-image" src="${src || ""}" alt="${alt || ""}" />
       </div>
       <div class="diagram-panels"></div>
       <dialog class="diagram-dialog">

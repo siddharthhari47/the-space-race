@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Aircraft Explorer — The Space Race</title>
+  <meta name="description" content="Click through a real commercial aircraft, part by part — wings, control surfaces, engines, and more." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/pages/interactive-aircraft.js" defer></script>
+</head>
+<body>
+  <site-header current="flight-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Flight Lab</a>
+    <h1 class="lab-title">Interactive Aircraft Explorer</h1>
+    <p class="lab-intro">
+      Every aircraft is really just a set of answers to the same problem: how do you generate
+      lift, control it, and power it, all while keeping the weight down. Click or tab through
+      the parts below to see how a real airliner answers each one.
+    </p>
+
+    <div class="category-switcher" role="tablist" aria-label="Aircraft category">
+      <button type="button" class="category-tab" role="tab" aria-selected="true" tabindex="0" aria-controls="aircraft-diagram" data-category="commercial">Commercial</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-diagram" data-category="military">Military</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-diagram" data-category="private">Private</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-diagram" data-category="cargo">Cargo</button>
+    </div>
+
+    <div class="category-note" hidden></div>
+
+    <expandable-diagram
+      id="aircraft-diagram"
+      src="/assets/images/aircraft-commercial.svg"
+      data-src="/assets/data/aircraft-pins-commercial.json"
+      alt="Side view illustration of a commercial twin-engine airliner"
+    ></expandable-diagram>
+
+    <p class="lab-intro spaced">
+      Click a highlighted point on the aircraft, or tab to it and press Enter. Arrow keys move
+      between points once you're focused on the diagram.
+    </p>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="commercial-aircraft.html">Flight Lab: Commercial Aircraft</a></li>
+        <li><a href="index.html">Back to Flight Lab</a></li>
+      </ul>
+
+      <h2>Further Reading</h2>
+      <ul>
+        <li><a href="../blog/what-about-the-aviation.html">What about the Aviation?</a></li>
+        <li><a href="../space-lab/index.html">Visit Space Lab</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

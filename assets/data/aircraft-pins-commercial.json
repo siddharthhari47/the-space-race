@@ -1,0 +1,79 @@
+[
+  {
+    "id": "wing",
+    "label": "Wing",
+    "x": 50,
+    "y": 62.5,
+    "description": "The wing is what generates lift, using the pressure difference created as air flows over its curved upper surface and flatter underside. Almost everything else on this aircraft exists to control, power, or support what the wing does."
+  },
+  {
+    "id": "slats",
+    "label": "Slats",
+    "x": 44,
+    "y": 53,
+    "description": "Slats extend from the wing's leading edge to smooth airflow at high angles of attack, delaying the stall that would otherwise happen at low landing speeds."
+  },
+  {
+    "id": "flaps",
+    "label": "Flaps",
+    "x": 49,
+    "y": 57,
+    "description": "Flaps extend from the trailing edge of the wing to increase its curvature and area, letting the aircraft generate more lift at lower speeds. That's what lets it take off and land on a runway instead of needing a much longer one."
+  },
+  {
+    "id": "ailerons",
+    "label": "Ailerons",
+    "x": 58,
+    "y": 75,
+    "description": "Ailerons sit near the wingtips and move opposite to each other, one up and one down, rolling the aircraft left or right around its length."
+  },
+  {
+    "id": "fuel-tanks",
+    "label": "Fuel Tanks",
+    "x": 44.5,
+    "y": 55.5,
+    "description": "Most of an airliner's fuel is stored inside the wings themselves, close to the aircraft's centre of gravity, which keeps the aircraft balanced as fuel burns off during a flight."
+  },
+  {
+    "id": "engine",
+    "label": "Engine",
+    "x": 47,
+    "y": 67.5,
+    "description": "Modern airliners are almost always twin-engine now, a direct result of the more efficient design pioneered by aircraft like the Airbus A300B. Each engine both propels the aircraft and powers its electrical and hydraulic systems."
+  },
+  {
+    "id": "landing-gear",
+    "label": "Landing Gear",
+    "x": 49,
+    "y": 85,
+    "description": "The wheels, struts, and brakes that take the weight of landing, taxiing, and takeoff, then fold away to reduce drag once airborne."
+  },
+  {
+    "id": "rudder",
+    "label": "Rudder",
+    "x": 86.5,
+    "y": 38.75,
+    "description": "The rudder is the moving trailing edge of the tail fin. It swings the nose left or right, mostly used to keep the aircraft coordinated in a turn rather than to steer it directly."
+  },
+  {
+    "id": "elevator",
+    "label": "Elevator",
+    "x": 85,
+    "y": 48.75,
+    "description": "The elevator is the moving trailing edge of the horizontal tail. Pulling it up pitches the nose up, sending the aircraft climbing; pushing it down sends the nose lower."
+  },
+  {
+    "id": "pitot-tube",
+    "label": "Pitot Tube",
+    "x": 14,
+    "y": 44.75,
+    "description": "A small tube facing directly into the airflow, measuring air pressure to tell the aircraft's instruments how fast it's actually flying."
+  },
+  {
+    "id": "static-port",
+    "label": "Static Port",
+    "x": 25,
+    "y": 48.75,
+    "description": "A small port that measures the surrounding, undisturbed air pressure, used alongside the pitot tube to calculate airspeed and altitude."
+  }
+]
