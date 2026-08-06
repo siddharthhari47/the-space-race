@@ -56,7 +56,7 @@ export const SIMULATOR_REGISTRY = {
   },
   "aircraft-explorer": {
     title: "Interactive Aircraft Explorer",
-    description: "Click through a real aircraft, part by part, with a zoom-in view of every labeled point.",
+    description: "A real 3D model you can rotate and zoom freely — drag to explore a commercial airliner from any angle.",
     page: "/flight-lab/interactive-aircraft.html",
     status: "live",
     category: "flight",

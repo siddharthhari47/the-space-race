@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/pages/home.js" defer></script>
 </head>
 <body>
   <site-header current="home" brand-href="/index.html"></site-header>
@@ -30,7 +31,7 @@
       </div>
       <div class="hero-stats">
         <stat-card value="3" label="Labs"></stat-card>
-        <stat-card value="11" label="Planned Simulators" accent="engineering"></stat-card>
+        <stat-card data-stat="simulator-count" value="11" label="Planned Simulators" accent="engineering"></stat-card>
         <stat-card value="1957" label="Where It Started" accent="flight"></stat-card>
       </div>
     </section>

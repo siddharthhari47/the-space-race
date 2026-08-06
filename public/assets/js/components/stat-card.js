@@ -1,5 +1,18 @@
 class StatCard extends HTMLElement {
+  static get observedAttributes() {
+    return ["value", "label"];
+  }
+
   connectedCallback() {
+    this._render();
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue || !this.isConnected) return;
+    this._render();
+  }
+
+  _render() {
     const value = this.getAttribute("value") || "";
     const label = this.getAttribute("label") || "";
 
