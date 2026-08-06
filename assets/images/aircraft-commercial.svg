@@ -5,13 +5,30 @@
       <stop offset="100%" stop-color="#05070f"/>
     </linearGradient>
     <linearGradient id="acBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="45%" stop-color="#dfe7ef"/>
+      <stop offset="100%" stop-color="#8592a3"/>
+    </linearGradient>
+    <linearGradient id="acWingTop" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#e2e8f0"/>
       <stop offset="100%" stop-color="#94a3b8"/>
     </linearGradient>
-    <linearGradient id="acWing" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#cbd5e1"/>
-      <stop offset="100%" stop-color="#64748b"/>
+    <linearGradient id="acWingBottom" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#5c6b81"/>
     </linearGradient>
+    <linearGradient id="acStripe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="50%" stop-color="#5eead4"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="acEngine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <clipPath id="fuselageClip">
+      <path d="M150,185 Q150,145 260,143 L760,148 Q840,150 895,180 Q840,210 760,212 L260,217 Q150,217 150,185 Z"/>
+    </clipPath>
   </defs>
 
   <rect width="1000" height="400" fill="url(#acBg)"/>
@@ -28,17 +45,25 @@
   </g>
 
   <!-- horizontal stabilizer (tail wing) -->
-  <polygon points="790,192 862,197 848,212 800,210" fill="url(#acWing)" stroke="#475569" stroke-width="2"/>
+  <polygon points="790,192 862,197 848,212 800,210" fill="url(#acWingTop)" stroke="#475569" stroke-width="2"/>
 
-  <!-- vertical stabilizer (tail fin) -->
-  <polygon points="818,150 878,148 862,182 812,182" fill="url(#acWing)" stroke="#475569" stroke-width="2"/>
+  <!-- vertical stabilizer (tail fin), painted like a real airline tail -->
+  <polygon points="818,150 878,148 862,182 812,182" fill="url(#acStripe)" stroke="#0f766e" stroke-width="2"/>
+  <circle cx="843" cy="167" r="9" fill="#05070f" opacity="0.85"/>
+  <circle cx="843" cy="167" r="5" fill="#5eead4"/>
 
-  <!-- main wing -->
-  <polygon points="420,203 600,292 553,317 458,236" fill="url(#acWing)" stroke="#475569" stroke-width="2"/>
+  <!-- main wing, two-tone upper/lower surface -->
+  <polygon points="420,203 600,292 553,317 458,236" fill="url(#acWingTop)" stroke="#475569" stroke-width="2"/>
+  <polygon points="458,236 553,317 553,323 452,242" fill="url(#acWingBottom)"/>
 
-  <!-- engine nacelle -->
-  <ellipse cx="470" cy="270" rx="40" ry="20" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
-  <ellipse cx="452" cy="270" rx="12" ry="16" fill="#334155" stroke="#5eead4" stroke-width="1.5"/>
+  <!-- winglet -->
+  <polygon points="598,289 613,254 621,257 607,293" fill="url(#acWingTop)" stroke="#475569" stroke-width="1.5"/>
+
+  <!-- engine pylon + nacelle -->
+  <rect x="462" y="234" width="10" height="34" fill="#475569"/>
+  <ellipse cx="470" cy="270" rx="40" ry="20" fill="url(#acEngine)" stroke="#64748b" stroke-width="2"/>
+  <ellipse cx="452" cy="270" rx="12" ry="16" fill="#1e293b" stroke="#5eead4" stroke-width="1.5"/>
+  <path d="M444,262 A 14 14 0 0 1 444,278" fill="none" stroke="#5eead4" stroke-width="1" opacity="0.6"/>
 
   <!-- landing gear -->
   <line x1="486" y1="308" x2="486" y2="336" stroke="#64748b" stroke-width="3"/>
@@ -46,25 +71,34 @@
   <line x1="232" y1="213" x2="232" y2="236" stroke="#64748b" stroke-width="3"/>
   <circle cx="232" cy="242" r="8" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
 
-  <!-- fuselage -->
+  <!-- fuselage body + livery, clipped to the fuselage silhouette -->
+  <g clip-path="url(#fuselageClip)">
+    <path d="M150,185 Q150,145 260,143 L760,148 Q840,150 895,180 Q840,210 760,212 L260,217 Q150,217 150,185 Z" fill="url(#acBody)"/>
+    <rect x="130" y="149" width="780" height="4" fill="#ffffff" opacity="0.35"/>
+    <rect x="130" y="192" width="780" height="15" fill="url(#acStripe)"/>
+    <ellipse cx="172" cy="163" rx="22" ry="9" fill="#ffffff" opacity="0.18"/>
+  </g>
   <path d="M150,185 Q150,145 260,143 L760,148 Q840,150 895,180 Q840,210 760,212 L260,217 Q150,217 150,185 Z"
-        fill="url(#acBody)" stroke="#64748b" stroke-width="2"/>
+        fill="none" stroke="#64748b" stroke-width="2"/>
 
   <!-- cockpit window -->
   <rect x="182" y="156" width="46" height="17" rx="8" fill="#0f172a" opacity="0.9"/>
 
   <!-- passenger windows -->
   <g fill="#0f172a" opacity="0.55">
-    <circle cx="290" cy="178" r="4"/>
-    <circle cx="315" cy="178" r="4"/>
-    <circle cx="340" cy="178" r="4"/>
-    <circle cx="365" cy="178" r="4"/>
-    <circle cx="390" cy="178" r="4"/>
-    <circle cx="620" cy="178" r="4"/>
-    <circle cx="645" cy="178" r="4"/>
-    <circle cx="670" cy="178" r="4"/>
-    <circle cx="695" cy="178" r="4"/>
-    <circle cx="720" cy="178" r="4"/>
+    <circle cx="270" cy="178" r="4"/>
+    <circle cx="293" cy="178" r="4"/>
+    <circle cx="316" cy="178" r="4"/>
+    <circle cx="339" cy="178" r="4"/>
+    <circle cx="362" cy="178" r="4"/>
+    <circle cx="385" cy="178" r="4"/>
+    <circle cx="600" cy="178" r="4"/>
+    <circle cx="623" cy="178" r="4"/>
+    <circle cx="646" cy="178" r="4"/>
+    <circle cx="669" cy="178" r="4"/>
+    <circle cx="692" cy="178" r="4"/>
+    <circle cx="715" cy="178" r="4"/>
+    <circle cx="738" cy="178" r="4"/>
   </g>
 
   <!-- pitot tube -->

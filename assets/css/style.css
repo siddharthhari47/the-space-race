@@ -1149,12 +1149,25 @@ timeline-event[side="right"] .timeline-dot {
 }
 
 /* ---------- Expandable diagram ---------- */
-.diagram-stage {
+expandable-diagram {
+  display: block;
+  position: relative;
+}
+
+.diagram-viewport {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border);
   background: var(--bg-alt);
+}
+
+.diagram-stage {
+  position: relative;
+  transform: scale(1);
+  transform-origin: 50% 50%;
+  transition: transform 0.4s var(--ease-standard);
+  will-change: transform;
 }
 
 .diagram-image {
@@ -1206,29 +1219,56 @@ timeline-event[side="right"] .timeline-dot {
   border: 0;
 }
 
-.diagram-panels {
-  margin-top: 1.5rem;
-  display: grid;
-  gap: 1rem;
-}
-
-.diagram-panel {
+.diagram-callout {
+  position: absolute;
+  z-index: var(--z-dropdown);
+  width: max-content;
+  max-width: 260px;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--accent);
   border-radius: var(--radius-md);
-  padding: 1.2rem 1.4rem;
+  box-shadow: var(--shadow-lg);
+  padding: 1rem 1.2rem;
+  transform: translateY(-50%);
 }
 
-.diagram-panel h4 {
+.diagram-callout.side-right {
+  transform: translate(20px, -50%);
+}
+
+.diagram-callout.side-left {
+  transform: translate(calc(-100% - 20px), -50%);
+}
+
+.diagram-callout h4 {
   margin: 0 0 0.4rem;
   font-family: "Space Grotesk", sans-serif;
   color: var(--accent);
+  font-size: 1rem;
+  padding-right: 1.2rem;
 }
 
-.diagram-panel p {
+.diagram-callout p {
   margin: 0;
   color: var(--text-dim);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
+}
+
+.diagram-callout .callout-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.2rem;
+}
+
+.diagram-callout .callout-close:hover {
+  color: var(--text);
 }
 
 .diagram-dialog {
