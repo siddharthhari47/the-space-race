@@ -13,10 +13,6 @@
       <stop offset="0%" stop-color="#e2e8f0"/>
       <stop offset="100%" stop-color="#94a3b8"/>
     </linearGradient>
-    <linearGradient id="acWingBottom" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#94a3b8"/>
-      <stop offset="100%" stop-color="#5c6b81"/>
-    </linearGradient>
     <linearGradient id="acStripe" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#0f766e"/>
       <stop offset="50%" stop-color="#5eead4"/>
@@ -52,24 +48,24 @@
   <circle cx="843" cy="167" r="9" fill="#05070f" opacity="0.85"/>
   <circle cx="843" cy="167" r="5" fill="#5eead4"/>
 
-  <!-- main wing, two-tone upper/lower surface -->
-  <polygon points="420,203 600,292 553,317 458,236" fill="url(#acWingTop)" stroke="#475569" stroke-width="2"/>
-  <polygon points="458,236 553,317 553,323 452,242" fill="url(#acWingBottom)"/>
+  <!-- main wing: one clean swept quadrilateral, generously spaced from everything below it -->
+  <polygon points="435,208 615,275 645,292 475,228" fill="url(#acWingTop)" stroke="#475569" stroke-width="2"/>
 
-  <!-- winglet -->
-  <polygon points="598,289 613,254 621,257 607,293" fill="url(#acWingTop)" stroke="#475569" stroke-width="1.5"/>
+  <!-- winglet, clear of the engine/gear cluster near the root -->
+  <polygon points="640,289 655,258 662,261 647,294" fill="url(#acWingTop)" stroke="#475569" stroke-width="1.5"/>
 
-  <!-- engine pylon + nacelle -->
-  <rect x="462" y="234" width="10" height="34" fill="#475569"/>
-  <ellipse cx="470" cy="270" rx="40" ry="20" fill="url(#acEngine)" stroke="#64748b" stroke-width="2"/>
-  <ellipse cx="452" cy="270" rx="12" ry="16" fill="#1e293b" stroke="#5eead4" stroke-width="1.5"/>
-  <path d="M444,262 A 14 14 0 0 1 444,278" fill="none" stroke="#5eead4" stroke-width="1" opacity="0.6"/>
+  <!-- retracted main gear bay, a closed panel on the belly near the wing root -->
+  <rect x="452" y="212" width="46" height="12" rx="4" fill="none" stroke="#475569" stroke-width="1.5"/>
+  <line x1="475" y1="212" x2="475" y2="224" stroke="#475569" stroke-width="1"/>
 
-  <!-- landing gear -->
-  <line x1="486" y1="308" x2="486" y2="336" stroke="#64748b" stroke-width="3"/>
-  <circle cx="486" cy="342" r="10" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
-  <line x1="232" y1="213" x2="232" y2="236" stroke="#64748b" stroke-width="3"/>
-  <circle cx="232" cy="242" r="8" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+  <!-- landing gear (small, tucked — this aircraft is shown cruising, not landing) -->
+  <line x1="475" y1="230" x2="475" y2="262" stroke="#64748b" stroke-width="3"/>
+  <circle cx="475" cy="268" r="8" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+
+  <!-- engine pylon + nacelle, well clear of the wing's trailing edge and the landing gear -->
+  <rect x="525" y="249" width="10" height="13" fill="#475569"/>
+  <ellipse cx="530" cy="280" rx="38" ry="19" fill="url(#acEngine)" stroke="#64748b" stroke-width="2"/>
+  <ellipse cx="512" cy="280" rx="12" ry="15" fill="#1e293b" stroke="#5eead4" stroke-width="1.5"/>
 
   <!-- fuselage body + livery, clipped to the fuselage silhouette -->
   <g clip-path="url(#fuselageClip)">

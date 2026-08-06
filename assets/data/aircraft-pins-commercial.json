@@ -2,7 +2,7 @@
   {
     "id": "wing",
     "label": "Wing",
-    "x": 50,
+    "x": 54,
     "y": 62.5,
     "description": "The wing is what generates lift, using the pressure difference created as air flows over its curved upper surface and flatter underside. Almost everything else on this aircraft exists to control, power, or support what the wing does."
   },
@@ -17,14 +17,14 @@
     "id": "flaps",
     "label": "Flaps",
     "x": 49,
-    "y": 57,
+    "y": 58,
     "description": "Flaps extend from the trailing edge of the wing to increase its curvature and area, letting the aircraft generate more lift at lower speeds. That's what lets it take off and land on a runway instead of needing a much longer one."
   },
   {
     "id": "ailerons",
     "label": "Ailerons",
-    "x": 58,
-    "y": 75,
+    "x": 63,
+    "y": 72,
     "description": "Ailerons sit near the wingtips and move opposite to each other, one up and one down, rolling the aircraft left or right around its length."
   },
   {
@@ -37,15 +37,15 @@
   {
     "id": "engine",
     "label": "Engine",
-    "x": 47,
-    "y": 67.5,
+    "x": 53,
+    "y": 70,
     "description": "Modern airliners are almost always twin-engine now, a direct result of the more efficient design pioneered by aircraft like the Airbus A300B. Each engine both propels the aircraft and powers its electrical and hydraulic systems."
   },
   {
     "id": "landing-gear",
     "label": "Landing Gear",
-    "x": 49,
-    "y": 85,
+    "x": 47.5,
+    "y": 67.5,
     "description": "The wheels, struts, and brakes that take the weight of landing, taxiing, and takeoff, then fold away to reduce drag once airborne."
   },
   {
