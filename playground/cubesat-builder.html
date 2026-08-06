@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build a CubeSat — Playground — The Space Race</title>
+  <meta name="description" content="Choose a CubeSat size, pick optional components, and see what fits inside the mass and volume budget." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="playground"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Playground</a>
+    <h1 class="lab-title">Build a CubeSat</h1>
+    <p class="lab-intro">
+      Pick a size, add optional components, and see whether your mission fits inside the mass
+      and volume budget.
+    </p>
+
+    <simulation-container type="cubesat-builder"></simulation-container>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="../space-lab/cubesats.html">Space Lab: CubeSats</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="index.html">Back to Playground</a></li>
+        <li><a href="orbit-simulator.html">Satellite Orbit Simulator</a></li>
+        <li><a href="power-budget-simulator.html">Power Budget Simulator</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

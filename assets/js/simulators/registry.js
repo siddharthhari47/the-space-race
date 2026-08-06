@@ -2,6 +2,12 @@
 // looks itself up here and lazy-imports `module` only when status is "live".
 // Adding a simulator later = one new module file + one entry here + a
 // <simulation-container type="..."> tag wherever it should appear.
+//
+// `page`, when present, is a dedicated URL for this simulator — used by the
+// Playground catalogue to link straight to it. Most entries also have a
+// `module` and are embeddable anywhere via <simulation-container>; a few
+// (like aircraft-explorer) are full standalone pages with no mount()
+// module of their own, so they carry only `page`.
 export const SIMULATOR_REGISTRY = {
   "cubesat-exploded-view": {
     title: "CubeSat Exploded View",
@@ -14,6 +20,7 @@ export const SIMULATOR_REGISTRY = {
     title: "Build a CubeSat",
     description: "Choose a mission, pick components, and see what fits inside the unit budget.",
     module: "/assets/js/simulators/cubesat-builder.js",
+    page: "/playground/cubesat-builder.html",
     status: "live",
     category: "space",
   },
@@ -28,6 +35,7 @@ export const SIMULATOR_REGISTRY = {
     title: "Power Budget Simulator",
     description: "Balance solar panel area, battery capacity, and payload draw over an orbit.",
     module: "/assets/js/simulators/power-budget-simulator.js",
+    page: "/playground/power-budget-simulator.html",
     status: "live",
     category: "engineering",
   },
@@ -42,14 +50,15 @@ export const SIMULATOR_REGISTRY = {
     title: "Satellite Orbit Simulator",
     description: "Adjust altitude and inclination and watch how the orbit and ground track change.",
     module: "/assets/js/simulators/orbit-simulator.js",
+    page: "/playground/orbit-simulator.html",
     status: "live",
     category: "space",
   },
   "aircraft-explorer": {
     title: "Interactive Aircraft Explorer",
-    description: "Click through a commercial, military, private, or cargo aircraft to learn every part.",
-    module: "/assets/js/simulators/aircraft-explorer.js",
-    status: "coming-soon",
+    description: "Click through a real aircraft, part by part, with a zoom-in view of every labeled point.",
+    page: "/flight-lab/interactive-aircraft.html",
+    status: "live",
     category: "flight",
   },
   "flight-dynamics-simulator": {
