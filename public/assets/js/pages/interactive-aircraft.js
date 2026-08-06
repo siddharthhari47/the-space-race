@@ -1,19 +1,16 @@
 const CATEGORIES = {
-  commercial: {
-    label: "Commercial",
-    src: "/assets/images/aircraft-commercial.svg",
-    data: "/assets/data/aircraft-pins-commercial.json",
-    alt: "Side view illustration of a commercial twin-engine airliner",
-    available: true,
-  },
+  commercial: { label: "Commercial", available: true },
   military: { label: "Military", available: false },
   private: { label: "Private", available: false },
   cargo: { label: "Cargo", available: false },
 };
 
+// The 3D viewer only has a commercial model this pass. Selecting another
+// category just surfaces an honest note rather than swapping the model —
+// there's no separate mount() to call here the way expandable-diagram had
+// a load() method; the R3F scene is a single always-on canvas.
 function init() {
   const tabs = Array.from(document.querySelectorAll(".category-tab"));
-  const diagram = document.querySelector("#aircraft-diagram");
   const note = document.querySelector(".category-note");
   const switcher = document.querySelector(".category-switcher");
 
@@ -28,12 +25,11 @@ function init() {
 
     if (!config.available) {
       note.hidden = false;
-      note.textContent = `${config.label} aircraft are coming soon — here's the commercial explorer in the meantime.`;
+      note.textContent = `${config.label} aircraft are coming soon — here's the commercial model in the meantime.`;
       return;
     }
 
     note.hidden = true;
-    diagram.load(config.src, config.data, config.alt);
   }
 
   tabs.forEach((tab) => tab.addEventListener("click", () => selectTab(tab)));

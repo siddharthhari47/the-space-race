@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../assets/css/style.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
   <script type="module" src="/assets/js/pages/interactive-aircraft.js" defer></script>
+  <script type="module" src="/assets/js/dist/aircraft-viewer.js" defer></script>
 </head>
 <body>
   <site-header current="flight-lab"></site-header>
@@ -20,30 +21,30 @@
     <a class="back-link" href="index.html">&larr; Flight Lab</a>
     <h1 class="lab-title">Interactive Aircraft Explorer</h1>
     <p class="lab-intro">
-      Every aircraft is really just a set of answers to the same problem: how do you generate
-      lift, control it, and power it, all while keeping the weight down. Click or tab through
-      the parts below to see how a real airliner answers each one.
+      A real 3D model you can rotate freely — drag to spin it around, scroll or pinch to zoom
+      in. It rotates gently on its own; grab it any time to look closer at a wing, an engine,
+      or the tail.
     </p>
 
     <div class="category-switcher" role="tablist" aria-label="Aircraft category">
-      <button type="button" class="category-tab" role="tab" aria-selected="true" tabindex="0" aria-controls="aircraft-diagram" data-category="commercial">Commercial</button>
-      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-diagram" data-category="military">Military</button>
-      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-diagram" data-category="private">Private</button>
-      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-diagram" data-category="cargo">Cargo</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="true" tabindex="0" aria-controls="aircraft-3d-root" data-category="commercial">Commercial</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-3d-root" data-category="military">Military</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-3d-root" data-category="private">Private</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-3d-root" data-category="cargo">Cargo</button>
     </div>
 
     <div class="category-note" hidden></div>
 
-    <expandable-diagram
-      id="aircraft-diagram"
-      src="/assets/images/aircraft-commercial.svg"
-      data-src="/assets/data/aircraft-pins-commercial.json"
-      alt="Side view illustration of a commercial twin-engine airliner"
-    ></expandable-diagram>
+    <div
+      id="aircraft-3d-root"
+      class="diagram-viewport aircraft-3d-viewport"
+      role="img"
+      aria-label="Interactive 3D model of a commercial airliner. Drag to rotate, scroll or pinch to zoom."
+    ></div>
 
     <p class="lab-intro spaced">
-      Click a highlighted point on the aircraft, or tab to it and press Enter. Arrow keys move
-      between points once you're focused on the diagram.
+      Drag anywhere on the model to rotate it, and scroll or pinch to zoom. Release it and it
+      picks the slow spin back up right where you left it.
     </p>
 
     <div class="continue-explore">

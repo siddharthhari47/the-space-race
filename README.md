@@ -1,40 +1,55 @@
 # The Space Race
 
 An interactive aerospace education platform — "The Space Race never ended,
-it evolved." Plain HTML/CSS/JS, no build step, deployed as a static site.
-Reusable UI is built from vanilla Web Components rather than a framework, so
-new pages and new interactive modules can be added without a redesign.
+it evolved." Almost the entire site is plain HTML/CSS/JS with no build step;
+reusable UI is built from vanilla Web Components rather than a framework, so
+new pages and new interactive modules can be added without a redesign. The
+one exception is the 3D aircraft viewer, which needs React Three Fiber and
+is compiled by Vite.
 
 ## Structure
 
-- `index.html` — home page ("Mission Control")
-- `blog/` — narrative blog posts (`index.html` is the listing page)
-- `flight-lab/`, `space-lab/`, `engineering-lab/` — topic reference pages, one
-  `index.html` per section plus flat sibling pages for each sub-topic
-- `timeline/`, `playground/` — single-page sections for now
-- `assets/css/style.css` — all styling, including design tokens in `:root`
-- `assets/js/components/` — Web Components (`<site-header>`, `<info-card>`,
-  `<mission-card>`, `<simulation-container>`, ...). Every page loads them all
-  via one script tag: `<script type="module" src="/assets/js/components/index.js">`
-- `assets/js/simulators/` — Playground plugin modules, keyed by id in
-  `registry.js`. Adding a simulator = one module file + one registry entry +
-  a `<simulation-container type="...">` tag wherever it should appear.
-- `assets/images/` — logo and page imagery
+- `public/` — the actual static site, copied verbatim by Vite (no bundling,
+  no hashing, no HTML parsing — see `vite.config.ts` for why that matters).
+  This is where almost everything lives:
+  - `index.html` — home page ("Mission Control")
+  - `blog/` — narrative blog posts (`index.html` is the listing page)
+  - `flight-lab/`, `space-lab/`, `engineering-lab/` — topic reference pages
+  - `timeline/`, `playground/` — single-page sections for now
+  - `assets/css/style.css` — all styling, including design tokens in `:root`
+  - `assets/js/components/` — Web Components (`<site-header>`, `<info-card>`,
+    `<mission-card>`, `<simulation-container>`, ...). Every page loads them
+    all via one script tag:
+    `<script type="module" src="/assets/js/components/index.js">`
+  - `assets/js/simulators/` — Playground plugin modules, keyed by id in
+    `registry.js`. Adding a simulator = one module file + one registry entry
+    + a `<simulation-container type="...">` tag wherever it should appear.
+  - `assets/images/`, `assets/data/` — imagery and JSON data for interactive
+    diagrams
+- `src/aircraft-3d/` — the one part of the site that isn't static HTML: a
+  React Three Fiber aircraft model (`Aircraft.tsx` composes
+  `Fuselage`/`Wings`/`Engines`/`LandingGear`, `main.tsx` mounts it into
+  `#aircraft-3d-root` on `flight-lab/interactive-aircraft.html`). Vite builds
+  this to a fixed path, `assets/js/dist/aircraft-viewer.js`, so the HTML
+  script tag never needs to change between builds.
 
 ## Local preview
 
-Just open `index.html` in a browser, or serve the folder with any static
-file server, e.g.:
+```
+npm install
+npm run build
+npm run preview
+```
 
-```
-npx serve .
-```
+`npm run dev` (Vite's live dev server) works for iterating on the 3D
+component itself, but most pages are plain static HTML referenced by
+absolute paths outside Vite's module graph — build-then-preview is the
+reliable way to check the whole site together.
 
 ## Deploying to Vercel
 
-This is a static site with no build command — Vercel will detect it
-automatically. `vercel.json` holds redirects from the site's old URL
-structure. From this folder:
+`vercel.json` sets `buildCommand: npm run build` and `outputDirectory: dist`,
+plus redirects from the site's old URL structure. From this folder:
 
 ```
 npx vercel

@@ -1162,6 +1162,11 @@ expandable-diagram {
   background: var(--bg-alt);
 }
 
+.aircraft-3d-viewport {
+  aspect-ratio: 16 / 10;
+  touch-action: none;
+}
+
 .diagram-stage {
   position: relative;
   transform: scale(1);
