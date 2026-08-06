@@ -1,111 +1,81 @@
 import { useMemo } from "react";
-import * as THREE from "three";
-import { bodyMaterial } from "./Materials";
-import { FUSELAGE_RADIUS, FUSELAGE_TIP_X } from "./Fuselage";
+import { loftGeometry, surfaceSections, airfoilLoop, type SurfaceStation } from "./Geometry";
+import { bodyMaterial, stripeMaterial } from "./Materials";
+import { FUSELAGE_RADIUS } from "./Fuselage";
 
-const EXTRUDE_SETTINGS = {
-  depth: 0.08,
-  bevelEnabled: true,
-  bevelThickness: 0.02,
-  bevelSize: 0.02,
-  bevelSegments: 2,
-} as const;
-
-// A flat 2D outline extruded for thickness, then laid horizontal with a
-// single rotation.x = -PI/2. That rotation is the standard "make an
-// extruded shape lie flat" move: it keeps the shape's local X as world X
-// (front/back — the fuselage's own axis) and turns the shape's local Y
-// (drawn as "up" on paper) into world Z (left/right), so a wing planform
-// sketched exactly as you'd draw it on paper — leading edge, tip, trailing
-// edge — comes out correctly oriented with no further guessing.
-function buildPlanform(points: [number, number][]) {
-  const shape = new THREE.Shape();
-  shape.moveTo(points[0][0], points[0][1]);
-  for (let i = 1; i < points.length; i++) {
-    shape.lineTo(points[i][0], points[i][1]);
-  }
-  shape.closePath();
-  return new THREE.ExtrudeGeometry(shape, EXTRUDE_SETTINGS);
-}
-
-function SweptSurface({
-  points,
-  position,
-  mirror,
-}: {
-  points: [number, number][];
-  position: [number, number, number];
-  mirror?: boolean;
-}) {
-  const geometry = useMemo(() => buildPlanform(points), [points]);
-
-  return (
-    <group position={position} scale={[1, 1, mirror ? -1 : 1]}>
-      <mesh geometry={geometry} material={bodyMaterial} rotation={[-Math.PI / 2, 0, 0]} castShadow />
-    </group>
-  );
-}
-
-const MAIN_WING_ROOT_X = 0.3;
-const MAIN_WING_POINTS: [number, number][] = [
-  [0.9, 0],
-  [-0.3, 2.6],
-  [-0.9, 2.6],
-  [-0.5, 0],
+// Main wing: tapered, swept, with quadratic upward flex and a raked tip —
+// six lofted airfoil stations, not an extruded slab. The final two
+// stations shrink and rise sharply, closing the tip into a modern raked
+// wingtip without a separate winglet piece.
+const WING_SPAN = 3.1;
+const WING_STATIONS: SurfaceStation[] = [
+  { span: 0, chord: 1.5, sweep: 0, rise: 0 },
+  { span: 0.2, chord: 1.28, sweep: 0.28, rise: 0.015 },
+  { span: 0.45, chord: 1.0, sweep: 0.62, rise: 0.075 },
+  { span: 0.7, chord: 0.74, sweep: 0.96, rise: 0.18 },
+  { span: 0.9, chord: 0.52, sweep: 1.24, rise: 0.3 },
+  { span: 1.0, chord: 0.34, sweep: 1.4, rise: 0.4 },
+  { span: 1.05, chord: 0.16, sweep: 1.5, rise: 0.52 },
 ];
 
-const H_STAB_ROOT_X = -2.0;
-const H_STAB_POINTS: [number, number][] = [
-  [0.45, 0],
-  [0.05, 1.1],
-  [-0.25, 1.1],
-  [-0.1, 0],
+const H_STAB_SPAN = 1.15;
+const H_STAB_STATIONS: SurfaceStation[] = [
+  { span: 0, chord: 0.62, sweep: 0, rise: 0 },
+  { span: 0.5, chord: 0.44, sweep: 0.22, rise: 0.06 },
+  { span: 1.0, chord: 0.26, sweep: 0.44, rise: 0.14 },
+  { span: 1.05, chord: 0.12, sweep: 0.5, rise: 0.17 },
 ];
 
-const V_STAB_POINTS: [number, number][] = [
-  [0.75, 0],
-  [0.15, 1.15],
-  [-0.25, 1.15],
-  [-0.1, 0],
+const V_STAB_SPAN = 1.05;
+const V_STAB_STATIONS: SurfaceStation[] = [
+  { span: 0, chord: 0.95, sweep: 0, rise: 0 },
+  { span: 0.5, chord: 0.66, sweep: 0.42, rise: 0 },
+  { span: 1.0, chord: 0.42, sweep: 0.78, rise: 0 },
+  { span: 1.06, chord: 0.2, sweep: 0.86, rise: 0 },
 ];
+
+const THIN_AIRFOIL = airfoilLoop(14, 0.09);
 
 export default function Wings() {
-  const vStabGeometry = useMemo(() => buildPlanform(V_STAB_POINTS), []);
-  const wingZ = FUSELAGE_RADIUS * 0.85;
-  const stabZ = FUSELAGE_RADIUS * 0.55;
+  const wingRight = useMemo(
+    () => loftGeometry(surfaceSections(WING_STATIONS, WING_SPAN, "z", 1)),
+    []
+  );
+  const wingLeft = useMemo(
+    () => loftGeometry(surfaceSections(WING_STATIONS, WING_SPAN, "z", -1)),
+    []
+  );
+  const hStabRight = useMemo(
+    () => loftGeometry(surfaceSections(H_STAB_STATIONS, H_STAB_SPAN, "z", 1, THIN_AIRFOIL)),
+    []
+  );
+  const hStabLeft = useMemo(
+    () => loftGeometry(surfaceSections(H_STAB_STATIONS, H_STAB_SPAN, "z", -1, THIN_AIRFOIL)),
+    []
+  );
+  const vStab = useMemo(
+    () => loftGeometry(surfaceSections(V_STAB_STATIONS, V_STAB_SPAN, "y", 1, THIN_AIRFOIL)),
+    []
+  );
 
   return (
     <group>
-      {/* main wings, slightly below the fuselage centerline */}
-      <SweptSurface points={MAIN_WING_POINTS} position={[MAIN_WING_ROOT_X, -0.05, wingZ]} />
-      <SweptSurface points={MAIN_WING_POINTS} position={[MAIN_WING_ROOT_X, -0.05, -wingZ]} mirror />
-
-      {/* winglets, angled up from each wingtip */}
-      <group position={[MAIN_WING_ROOT_X - 0.3, 0.15, wingZ + 2.6]} rotation={[Math.PI * 0.32, 0, 0]}>
-        <mesh material={bodyMaterial} castShadow>
-          <boxGeometry args={[0.35, 0.5, 0.06]} />
-        </mesh>
-      </group>
-      <group position={[MAIN_WING_ROOT_X - 0.3, 0.15, -(wingZ + 2.6)]} rotation={[-Math.PI * 0.32, 0, 0]}>
-        <mesh material={bodyMaterial} castShadow>
-          <boxGeometry args={[0.35, 0.5, 0.06]} />
-        </mesh>
+      {/* main wings, rooted into the belly fairing */}
+      <group position={[0.25, -FUSELAGE_RADIUS * 0.55, 0]}>
+        <mesh geometry={wingRight} material={bodyMaterial} castShadow />
+        <mesh geometry={wingLeft} material={bodyMaterial} castShadow />
       </group>
 
-      {/* horizontal stabilizers at the tail */}
-      <SweptSurface points={H_STAB_POINTS} position={[H_STAB_ROOT_X, 0.12, stabZ]} />
-      <SweptSurface points={H_STAB_POINTS} position={[H_STAB_ROOT_X, 0.12, -stabZ]} mirror />
+      {/* horizontal stabilizers on the upswept tail */}
+      <group position={[-1.85, 0.16, 0]}>
+        <mesh geometry={hStabRight} material={bodyMaterial} castShadow />
+        <mesh geometry={hStabLeft} material={bodyMaterial} castShadow />
+      </group>
 
-      {/* vertical stabilizer: unlike the horizontal surfaces, this one
-          wants no rotation at all — ExtrudeGeometry's default orientation
-          (shape's X/Y = world X/Y, extrusion = thin world Z) already
-          stands it upright with its chord along the fuselage axis */}
-      <mesh
-        geometry={vStabGeometry}
-        material={bodyMaterial}
-        position={[FUSELAGE_TIP_X * -0.78, FUSELAGE_RADIUS * 0.85, 0]}
-        castShadow
-      />
+      {/* vertical stabilizer — the teal accent surface */}
+      <group position={[-1.78, 0.2, 0]}>
+        <mesh geometry={vStab} material={stripeMaterial} castShadow />
+      </group>
     </group>
   );
 }
