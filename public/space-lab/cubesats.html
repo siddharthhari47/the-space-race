@@ -44,14 +44,18 @@
       Cal Poly's P-POD deployer, a spring-loaded tube that ejects CubeSats into orbit once their
       rocket arrives.</p>
 
-      <p>That low cost is what opened the door. Universities, startups, and small national space
+      <p>Building to that standard is dramatically cheaper than designing a satellite from
+      scratch, and that's what opened the door. Universities, startups, and small national space
       programmes — several flying their first ever satellite as a CubeSat with help from
       international partnerships like Japan's BIRDS Project — have all used the same standard to
       reach orbit for a fraction of what a traditional satellite costs.</p>
 
       <h2>Exploded View</h2>
-      <p>Click through a 1U CubeSat's internal layers, from the outer solar panels down to the
-      structural frame.</p>
+      <p>A CubeSat looks deceptively simple from the outside: a metal box roughly the size of a
+      Rubik's Cube. Open it up and every cubic centimeter is fought over — solar panels,
+      batteries, a radio, a flight computer, sometimes an entire scientific instrument, all
+      stacked into less room than a shoebox. Pull it apart layer by layer and see what actually
+      fits.</p>
       <expandable-diagram
         src="/assets/images/cubesat-exploded.svg"
         data-src="/assets/data/cubesat-pins.json"
@@ -59,22 +63,38 @@
       ></expandable-diagram>
 
       <h2>Build a CubeSat</h2>
-      <p>Pick a size, add optional components, and see whether your mission fits inside the mass
-      and volume budget.</p>
+      <p>Every real CubeSat mission starts with the same fight: too many components, not enough
+      volume or mass. Pick a size, add the components your mission actually needs, and see how
+      fast the budget runs out — most first attempts don't fit, and that's completely normal.</p>
       <simulation-container type="cubesat-builder"></simulation-container>
+      <p>If yours didn't fit either, you've just run into the same wall every real CubeSat team
+      hits early. The fix is almost never a bigger battery — it's cutting an instrument.</p>
 
       <h2>Power Budget</h2>
-      <p>Every CubeSat has to generate at least as much power as it uses, averaged over an
-      orbit that includes time in Earth's shadow.</p>
+      <p>Every CubeSat has to generate at least as much power as it uses, averaged over an orbit
+      that includes roughly a third spent in Earth's shadow, with the solar panels producing
+      nothing at all.</p>
       <simulation-container type="power-budget-simulator"></simulation-container>
+      <p>A budget that just barely balances on paper often fails in orbit — batteries degrade,
+      panels get shadowed by the spacecraft's own structure, and margin that looked comfortable
+      in a spreadsheet evaporates fast.</p>
 
       <h2>Orbit Simulator</h2>
-      <p>Adjust altitude and inclination and watch the orbit — and its orbital period — change in
-      real time.</p>
+      <p>Altitude decides almost everything about a CubeSat's life: how fast it moves, how long
+      it survives before atmospheric drag drags it back down, and how often it passes over a
+      ground station that can actually hear it. Adjust altitude and inclination and watch the
+      orbit — and its period — change in real time.</p>
       <simulation-container type="orbit-simulator"></simulation-container>
+      <p>Notice how a CubeSat at low altitudes only stays up a few years before drag brings it
+      down. That's not a flaw — it's a feature engineers rely on, since it means dead satellites
+      eventually clear themselves out of orbit instead of piling up as debris forever.</p>
 
       <h2>More Tools</h2>
-      <p>Two more CubeSat tools are still in progress:</p>
+      <p>Two pieces of the CubeSat picture aren't built yet: a mission planner, for laying out an
+      orbit, a payload, and a ground station schedule together the way a real mission designer
+      has to juggle all three at once, and a communications simulator, showing how link budget,
+      ground station count, and data rate trade off once your CubeSat is actually flying and
+      trying to phone home. Both are in development.</p>
       <feature-grid columns="2">
         <simulation-container type="cubesat-mission-planner"></simulation-container>
         <simulation-container type="communications-simulator"></simulation-container>
@@ -84,9 +104,9 @@
       <p>CubeSats have gone well past Earth orbit. In May 2018, two 6U CubeSats, MarCO-A and
       MarCO-B, launched alongside NASA's InSight lander and rode along to Mars, relaying its
       signal home during entry, descent, and landing — the first time a CubeSat had survived deep
-      space. Closer to home, companies like Planet Labs run entire fleets of small CubeSats that
-      photograph the whole of Earth's landmass daily, work that used to require a handful of far
-      larger, far more expensive satellites.</p>
+      space. Not every CubeSat is chasing a deep-space first, though. Companies like Planet Labs
+      run entire fleets of small CubeSats that photograph the whole of Earth's landmass daily —
+      work that used to require a handful of far larger, far more expensive satellites.</p>
 
       <p><a href="../blog/cubesats.html">Read the full story: What about CubeSats? →</a></p>
     </div>
@@ -107,6 +127,7 @@
       <ul>
         <li><a href="../blog/the-space-race.html">The Space Race: What is it and who is leading?</a></li>
         <li><a href="../blog/where-are-we-now.html">Where are we now?</a></li>
+        <li><a href="../references/index.html">References</a></li>
       </ul>
     </div>
   </main>

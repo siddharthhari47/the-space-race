@@ -473,6 +473,56 @@ mission-card p.excerpt {
   letter-spacing: 0.06em;
 }
 
+/* ---------- About page ---------- */
+.about-hero {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+  margin: 2rem 0 3rem;
+}
+
+.about-photo-placeholder {
+  flex: 0 0 200px;
+  width: 200px;
+  aspect-ratio: 3 / 4;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-hero-text {
+  flex: 1 1 auto;
+  padding-top: 0.25rem;
+}
+
+.about-hero-text .lab-intro {
+  margin-top: 0.5rem;
+}
+
+.about-section {
+  margin: 2.75rem 0;
+}
+
+.about-section h2 {
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--accent);
+  font-size: var(--fs-h3);
+  margin: 0 0 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .about-hero {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-photo-placeholder {
+    width: 160px;
+  }
+}
+
 /* ---------- Wrap-up grid ---------- */
 .matters-grid {
   display: grid;
