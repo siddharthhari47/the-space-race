@@ -62,6 +62,20 @@ export default function ExplorerShell({ config }: ExplorerShellProps) {
     clearHighlight();
   }, [tour, clearHighlight]);
 
+  // A plain state change to selectedHotspot isn't enough to drive a reset
+  // on its own: if the user free-rotated/zoomed without ever selecting a
+  // hotspot, selectedHotspot is already null, so setting it to null again
+  // wouldn't retrigger CameraRig's fly-to effect. resetSignal is a bump
+  // counter CameraRig also watches, so "Reset View" always flies back to
+  // the default even from an untouched selection state.
+  const [resetSignal, setResetSignal] = useState(0);
+  const resetView = useCallback(() => {
+    if (tour.isPlaying) tour.exit();
+    setSelectedHotspot(null);
+    clearHighlight();
+    setResetSignal((n) => n + 1);
+  }, [tour, clearHighlight]);
+
   const registerMarkerRef = useCallback((index: number, el: HTMLButtonElement | null) => {
     markerRefs.current[index] = el;
   }, []);
@@ -98,9 +112,12 @@ export default function ExplorerShell({ config }: ExplorerShellProps) {
 
   return (
     <div className="explorer-shell">
-      {tour.hasStops && (
-        <div className="explorer-toolbar">
-          {tour.isPlaying ? (
+      <div className="explorer-toolbar">
+        <button type="button" className="btn btn-secondary" onClick={resetView}>
+          Reset View
+        </button>
+        {tour.hasStops &&
+          (tour.isPlaying ? (
             <button type="button" className="btn btn-secondary" onClick={tour.pause}>
               Pause Guided Tour
             </button>
@@ -108,24 +125,29 @@ export default function ExplorerShell({ config }: ExplorerShellProps) {
             <button type="button" className="btn btn-primary" onClick={tour.play}>
               Start Guided Tour
             </button>
-          )}
-        </div>
-      )}
+          ))}
+      </div>
 
       <div className="explorer-main">
         <div className="explorer-canvas-region" onKeyDown={handleMarkerKeydown}>
           <Canvas
             shadows
-            camera={{ position: config.cameraDefault.position, fov: 35, near: 0.1, far: 500 }}
+            camera={{ position: config.cameraDefault.position, fov: 35, near: 0.1, far: 5000 }}
             dpr={[1, 2]}
           >
-            <color attach="background" args={["#05070f"]} />
-            <fog attach="fog" args={["#05070f", 90, 220]} />
+            {/* Sky (rendered in Scene) supplies the background — the far
+                plane is pushed out to 5000 so its dome (distance 3000)
+                doesn't get clipped. A light sky-colored fog stands in for
+                the old dark-space fog; its near/far are set past the
+                model's own ~90-unit extent so it only adds atmospheric
+                depth at the horizon, not on the aircraft itself. */}
+            <fog attach="fog" args={["#cfe3ff", 150, 500]} />
             <Suspense fallback={null}>
               <Scene
                 config={config}
                 onModelLoaded={handleModelLoaded}
                 selectedHotspot={selectedHotspot}
+                resetSignal={resetSignal}
                 focusIndex={focusIndex}
                 onSelectHotspot={selectHotspot}
                 registerMarkerRef={registerMarkerRef}

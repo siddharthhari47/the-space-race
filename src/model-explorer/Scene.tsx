@@ -1,4 +1,4 @@
-import { ContactShadows, Environment, Lightformer, Stars } from "@react-three/drei";
+import { ContactShadows, Environment, Lightformer, Sky } from "@react-three/drei";
 import * as THREE from "three";
 import Model from "./Model";
 import CameraRig from "./CameraRig";
@@ -9,37 +9,48 @@ interface SceneProps {
   config: ModelExplorerConfig;
   onModelLoaded?: (scene: THREE.Group) => void;
   selectedHotspot: HotspotConfig | null;
+  resetSignal: number;
   focusIndex: number;
   onSelectHotspot: (hotspot: HotspotConfig, index: number) => void;
   registerMarkerRef: (index: number, el: HTMLButtonElement | null) => void;
 }
 
-// Lighting rig ported from src/aircraft-3d/main.tsx's Scene(), with
-// positions/scale/ContactShadows/Stars parameters scaled up roughly 10-12x
-// to match this model's real scene bounding box (~49 x 12 x 43 units,
-// versus the old procedural aircraft's ~4-5 unit scale). Kept as
-// procedural Lightformers rather than an external HDRI fetch, same
-// reasoning as before: self-contained bundle, no runtime dependency on a
-// CDN staying up.
+// Same direction used for both the visible sun disc (Sky) and the actual
+// key light, so the shading on the model always matches where the sun
+// appears to be — a mismatch would read as subtly wrong even to someone
+// who couldn't say why.
+const SUN_POSITION: [number, number, number] = [500, 220, 300];
+
+// Lighting rig ported from src/aircraft-3d/main.tsx's Scene(), originally
+// tuned for a dark "floating in space" background. Swapped to a daytime
+// sky (drei's procedural Sky — physically-based Preetham model, no
+// external HDRI/texture fetch, consistent with keeping this bundle
+// self-contained) since an airliner reads better against open sky than a
+// starfield. Ambient light raised accordingly: a bright sky bounces
+// noticeably more fill light onto the underside of the model than the
+// near-black space background did.
 export default function Scene({
   config,
   onModelLoaded,
   selectedHotspot,
+  resetSignal,
   focusIndex,
   onSelectHotspot,
   registerMarkerRef,
 }: SceneProps) {
   return (
     <>
+      <Sky sunPosition={SUN_POSITION} turbidity={4} rayleigh={1.5} mieCoefficient={0.004} mieDirectionalG={0.85} distance={3000} />
+
       <Environment resolution={256} frames={1}>
         <Lightformer intensity={2} position={[0, 40, 0]} scale={[90, 40, 1]} rotation-x={Math.PI / 2} />
         <Lightformer intensity={1} position={[-45, 15, 30]} scale={[40, 22, 1]} rotation-y={Math.PI / 3} />
         <Lightformer intensity={0.7} position={[45, 10, -30]} scale={[40, 20, 1]} rotation-y={-Math.PI / 3} />
-        <Lightformer intensity={0.35} color="#5eead4" position={[0, -25, 0]} scale={[80, 30, 1]} rotation-x={-Math.PI / 2} />
+        <Lightformer intensity={0.3} color="#bcd7ff" position={[0, -25, 0]} scale={[80, 30, 1]} rotation-x={-Math.PI / 2} />
       </Environment>
 
-      <directionalLight position={[40, 50, 25]} intensity={0.8} castShadow shadow-mapSize={[2048, 2048]} />
-      <ambientLight intensity={0.15} />
+      <directionalLight position={SUN_POSITION} intensity={1.4} castShadow shadow-mapSize={[2048, 2048]} />
+      <ambientLight intensity={0.4} />
 
       <Model url={config.modelUrl} onLoaded={onModelLoaded} />
 
@@ -51,11 +62,9 @@ export default function Scene({
         registerRef={registerMarkerRef}
       />
 
-      <ContactShadows position={[1.6, -0.25, 0.3]} opacity={0.4} scale={80} blur={2.5} far={16} />
+      <ContactShadows position={[1.6, -0.25, 0.3]} opacity={0.35} scale={80} blur={2.5} far={16} />
 
-      <Stars radius={150} depth={80} count={1200} factor={3} saturation={0} fade speed={0.4} />
-
-      <CameraRig config={config} selectedHotspot={selectedHotspot} />
+      <CameraRig config={config} selectedHotspot={selectedHotspot} resetSignal={resetSignal} />
     </>
   );
 }
