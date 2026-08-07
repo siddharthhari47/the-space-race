@@ -45,7 +45,11 @@ export default function Scene({
 }: SceneProps) {
   return (
     <>
-      <Sky sunPosition={SUN_POSITION} turbidity={4} rayleigh={1.5} mieCoefficient={0.004} mieDirectionalG={0.85} distance={3000} />
+      {/* Lower turbidity + higher rayleigh than the initial pass: the first
+          version read as pale/washed-out rather than blue, which left
+          the white cloud sprites with almost no contrast against the
+          background — exactly the "just looks like white" problem. */}
+      <Sky sunPosition={SUN_POSITION} turbidity={1.5} rayleigh={3} mieCoefficient={0.003} mieDirectionalG={0.8} distance={3000} />
 
       <Environment resolution={256} frames={1}>
         <Lightformer intensity={2} position={[0, 40, 0]} scale={[90, 40, 1]} rotation-x={Math.PI / 2} />

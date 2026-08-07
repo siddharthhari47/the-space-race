@@ -31,12 +31,28 @@ function makeCloudTexture(): THREE.CanvasTexture {
 
   for (const [cx, cy, r] of puffs) {
     const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-    gradient.addColorStop(0, "rgba(255,255,255,0.9)");
-    gradient.addColorStop(0.6, "rgba(255,255,255,0.55)");
+    gradient.addColorStop(0, "rgba(255,255,255,1)");
+    gradient.addColorStop(0.6, "rgba(255,255,255,0.85)");
     gradient.addColorStop(1, "rgba(255,255,255,0)");
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, size, size);
   }
+
+  // Flat white puffs on a flat white-ish sky have almost no contrast —
+  // confirmed live, that's exactly what read as "just looks like white."
+  // `source-atop` confines this next fill to pixels the puffs above
+  // already covered, so it shades the existing silhouette (brighter top,
+  // cooler shadowed underside) instead of painting outside it — the
+  // standard trick for making a flat billboard sprite read as
+  // three-dimensional.
+  ctx.globalCompositeOperation = "source-atop";
+  const shade = ctx.createLinearGradient(0, 0, 0, size);
+  shade.addColorStop(0, "rgba(255,255,255,0.15)");
+  shade.addColorStop(0.55, "rgba(255,255,255,0)");
+  shade.addColorStop(1, "rgba(190,205,225,0.35)");
+  ctx.fillStyle = shade;
+  ctx.fillRect(0, 0, size, size);
+  ctx.globalCompositeOperation = "source-over";
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.needsUpdate = true;
@@ -69,8 +85,8 @@ function CloudCluster({ texture, center, puffCount, spread, baseScale }: CloudCl
           center[1] + (b - 0.5) * spread * 0.35,
           center[2] + (c - 0.5) * spread,
         ] as [number, number, number],
-        scale: baseScale * (0.6 + rand(i * 3.7) * 0.8),
-        opacity: 0.5 + rand(i * 5.1) * 0.3,
+        scale: baseScale * (0.7 + rand(i * 3.7) * 0.9),
+        opacity: 0.8 + rand(i * 5.1) * 0.18,
       };
     });
   }, [center, puffCount, spread, baseScale]);
@@ -95,8 +111,13 @@ function CloudCluster({ texture, center, puffCount, spread, baseScale }: CloudCl
 // A handful of clusters scattered around and below the aircraft at
 // varying distance, so they read as atmospheric depth (some near, some
 // far, some below eye level) rather than a flat backdrop pasted behind
-// the model.
+// the model. A couple sit close to the default camera's line of sight
+// (camera ~[60,28,65] looking at ~[1.6,4.2,0.3]) so clouds are actually
+// visible without the user having to rotate first.
 const CLUSTER_CENTERS: Array<[number, number, number]> = [
+  [10, -8, 20],
+  [-25, -12, -15],
+  [45, -20, 35],
   [-60, -18, 40],
   [70, -25, -50],
   [-30, -35, -80],
@@ -116,8 +137,8 @@ export default function Clouds() {
           texture={texture}
           center={center}
           puffCount={5}
-          spread={55}
-          baseScale={45}
+          spread={48}
+          baseScale={50}
         />
       ))}
     </>
