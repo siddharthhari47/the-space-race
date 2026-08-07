@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rockets — Space Lab — The Space Race</title>
+  <meta name="description" content="Staging, delta-v, and how Falcon 9's reusability rewrote the economics of getting to orbit." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="space-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Space Lab</a>
+    <h1 class="lab-title">Rockets</h1>
+    <p class="lab-intro">
+      Every spacecraft on this site, from a 10cm CubeSat to a crewed capsule, has to get to
+      orbit the same way: strapped to a controlled explosion, built to throw away most of
+      itself along the way.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="~9.4 km/s" label="Delta-v needed to reach low Earth orbit" accent="space"></stat-card>
+      <stat-card value="2015" label="Falcon 9's first successful booster landing" accent="space"></stat-card>
+      <stat-card value="3" label="Stages in the Saturn V" accent="space"></stat-card>
+      <stat-card value="2017" label="First reflight of an orbital-class booster" accent="space"></stat-card>
+    </div>
+
+    <callout-box type="did-you-know">
+      <p>The math behind every rocket ever flown was worked out in 1903 — the same year the
+      Wright brothers first flew. Konstantin Tsiolkovsky, a Russian schoolteacher, derived the
+      rocket equation describing exactly how much velocity a rocket can gain from its fuel,
+      decades before anyone built one that reached orbit.</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>A rocket has to carry its own oxidizer as well as its fuel, since there's no air to
+      burn against once it leaves the atmosphere. That's most of what a rocket actually is:
+      tanks. The engines, payload, and everything else are a small fraction of the total mass
+      at launch — the rest burns off getting there.</p>
+
+      <p>That's also why almost every orbital rocket is built in stages. Once a stage's fuel is
+      spent, its empty tanks and engines are just dead weight, so the rocket drops them and
+      keeps accelerating on a lighter, smaller stage. The Saturn V that sent Apollo to the Moon
+      used three stages; most rockets flying today use two.</p>
+
+      <p>For decades, none of that hardware was reused — every stage burned up, fell into the
+      ocean, or was discarded after a single flight. That changed in December 2015, when
+      SpaceX landed a Falcon 9 first stage back on solid ground after it had already delivered
+      its payload toward orbit. Fifteen months later, that same booster flew again, the first
+      reflight of an orbital-class rocket stage. Reusability didn't just save hardware, it did
+      to launch costs roughly what the CubeSat standard did to spacecraft costs: made getting
+      to space something more than a handful of national programs could afford.</p>
+
+      <p>Here's how that older, fully expendable era compares to what's flying today:</p>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rocket</th>
+              <th>First Flight</th>
+              <th>Stages</th>
+              <th>Reusable</th>
+              <th>Payload to LEO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Saturn V</td>
+              <td>1967</td>
+              <td>3</td>
+              <td>No</td>
+              <td>~140,000 kg</td>
+            </tr>
+            <tr>
+              <td>Falcon 9</td>
+              <td>2010</td>
+              <td>2</td>
+              <td>First stage</td>
+              <td>~22,800 kg</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The Saturn V still moved far more mass — it had to, to send a crewed spacecraft all the
+      way to the Moon and back. But it flew thirteen times, ever, and every single launch used
+      entirely new hardware. Falcon 9 boosters now fly dozens of missions each.</p>
+
+      <h2>Build Your Rocket</h2>
+      <p>Stack stages, engines, and payload, and see if the numbers actually reach orbit:</p>
+      <feature-grid columns="2">
+        <simulation-container type="rocket-builder"></simulation-container>
+        <simulation-container type="interactive-rocket"></simulation-container>
+      </feature-grid>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="cubesats.html">Space Lab: CubeSats</a></li>
+        <li><a href="index.html">Back to Space Lab</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="satellites.html">Explore Satellites</a></li>
+        <li><a href="../timeline/index.html">See the full Timeline</a></li>
+      </ul>
+
+      <h2>Further Reading</h2>
+      <ul>
+        <li><a href="../blog/the-space-race.html">The Space Race: What is it and who is leading?</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

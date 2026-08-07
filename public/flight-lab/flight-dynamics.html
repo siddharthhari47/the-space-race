@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flight Dynamics — Flight Lab — The Space Race</title>
+  <meta name="description" content="Pitch, roll, and yaw — the three-axis control problem the Wright brothers solved before anyone else." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="flight-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Flight Lab</a>
+    <h1 class="lab-title">Flight Dynamics</h1>
+    <p class="lab-intro">
+      Getting off the ground was never the hard part — plenty of people managed brief hops
+      before 1903. Staying controlled once you're up there was the problem nobody else had
+      actually solved.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="1903" label="Wright brothers solve three-axis control" accent="flight"></stat-card>
+      <stat-card value="3" label="Axes of rotation: pitch, roll, yaw" accent="flight"></stat-card>
+      <stat-card value="3" label="Primary control surfaces: elevator, ailerons, rudder" accent="flight"></stat-card>
+    </div>
+
+    <callout-box type="did-you-know">
+      <p>Otto Lilienthal, one of the most accomplished glider pilots of the 19th century, flew
+      by shifting his own body weight to steer — the same instinct that works on a bicycle. It
+      worked for gentle glides, but it couldn't scale to powered, sustained flight. The Wright
+      brothers' insight was that an aircraft needed to warp its own surfaces to control itself,
+      not rely on the pilot moving around underneath it.</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>An aircraft in flight can rotate around three independent axes, and controlling all
+      three at once is what separates real flight from a controlled fall. Pitch is the nose
+      moving up or down, roll is one wingtip dropping while the other rises, and yaw is the nose
+      swinging left or right. An aircraft has to manage all three simultaneously, continuously,
+      for the entire flight.</p>
+
+      <p>Before the Wright brothers, most experimenters focused on lift and power and treated
+      control as an afterthought — or, like Lilienthal, solved it only partially, with methods
+      that didn't scale. The Wrights' breakthrough was wing warping: twisting the wingtips in
+      opposite directions using cables, which rolled the aircraft left or right on command. That
+      single mechanical idea, refined into the ailerons used on every aircraft since, is what
+      made the 1903 Wright Flyer a genuine aircraft rather than a powered glider that happened
+      to survive its first flight.</p>
+
+      <p>Modern aircraft use three dedicated control surfaces, one per axis. The elevator, on
+      the horizontal tail, controls pitch. Ailerons, near the wingtips, control roll. The
+      rudder, on the vertical tail, controls yaw. A pilot rarely moves just one — turning an
+      airliner, for instance, uses coordinated aileron and rudder together, banking the aircraft
+      into the turn rather than skidding through it flat.</p>
+
+      <h2>Flight Dynamics Simulator</h2>
+      <p>Move the stick and rudder pedals and watch pitch, roll, and yaw respond independently.</p>
+      <simulation-container type="flight-dynamics-simulator"></simulation-container>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="aerodynamics.html">Aerodynamics</a></li>
+        <li><a href="aircraft-systems.html">Aircraft Systems</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="index.html">Back to Flight Lab</a></li>
+        <li><a href="../timeline/index.html">See the full Timeline</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

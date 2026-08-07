@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aircraft Systems — Flight Lab — The Space Race</title>
+  <meta name="description" content="Hydraulics, fly-by-wire, and pressurization — the systems that keep a plane flying, not just shaped like one." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="flight-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Flight Lab</a>
+    <h1 class="lab-title">Aircraft Systems</h1>
+    <p class="lab-intro">
+      A wing explains how an aircraft flies. It doesn't explain how a pilot's small hand
+      movements turn into a control surface moving, or how everyone on board keeps breathing
+      seven miles up. That's what the systems underneath are for.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="1988" label="First fly-by-wire commercial airliner (Airbus A320)" accent="flight"></stat-card>
+      <stat-card value="6,000–8,000 ft" label="Cabin altitude maintained at 35,000+ ft cruise" accent="flight"></stat-card>
+      <stat-card value="3" label="Independent hydraulic systems on a typical airliner" accent="flight"></stat-card>
+    </div>
+
+    <callout-box type="engineering-insight">
+      <p>Almost nothing critical on a commercial aircraft exists in a single copy. Hydraulics,
+      electrical generators, even flight computers are duplicated or triplicated, each one
+      capable of running the aircraft alone. The design philosophy isn't "prevent every
+      failure" — it's "make sure no single failure is ever catastrophic."</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>On early aircraft, moving the control column pulled a cable that physically moved a
+      control surface — direct, mechanical, and limited by how hard a human could pull. Larger,
+      faster aircraft needed more force than muscle could supply, so hydraulic systems took
+      over: pressurized fluid doing the heavy work, with the pilot's input scaled up rather than
+      applied directly.</p>
+
+      <p>Fly-by-wire went a step further, replacing the mechanical linkage itself with
+      electronic signals. The pilot's inputs go to a flight computer, which decides how to move
+      the control surfaces — and can quietly refuse to let the pilot exceed the aircraft's
+      structural limits. The Airbus A320, introduced in 1988, was the first commercial airliner
+      built around fly-by-wire from the start, a design philosophy Airbus has used across every
+      aircraft family since.</p>
+
+      <p>None of this matters if everyone on board can't breathe. Air gets thin fast with
+      altitude, and at a typical cruising altitude above 35,000 feet, it's not breathable at
+      all. Pressurization systems pump compressed air into the cabin, keeping the pressure
+      inside equivalent to somewhere between 6,000 and 8,000 feet — noticeably thinner than sea
+      level, which is part of why flying leaves people more tired than the same hours spent on
+      the ground, but perfectly breathable without supplemental oxygen.</p>
+
+      <p>An aircraft also needs power and air when its own engines aren't running, which is
+      what the Auxiliary Power Unit is for: a small turbine, usually tucked into the tail, that
+      supplies electricity and compressed air on the ground and serves as a backup power source
+      in flight.</p>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="commercial-aircraft.html">Commercial Aircraft</a></li>
+        <li><a href="flight-dynamics.html">Flight Dynamics</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="index.html">Back to Flight Lab</a></li>
+        <li><a href="../engineering-lab/index.html">Visit Engineering Lab</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Satellites — Space Lab — The Space Race</title>
+  <meta name="description" content="LEO, MEO, and GEO — what keeps a satellite useful in orbit, and why the orbit you pick depends entirely on the job." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="space-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Space Lab</a>
+    <h1 class="lab-title">Satellites</h1>
+    <p class="lab-intro">
+      A satellite is just an object that's falling around something else instead of into it.
+      Which orbit you put one in — how high, how fast, how tilted — depends entirely on what
+      you need it to actually do.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="35,786 km" label="Altitude of a geostationary orbit" accent="space"></stat-card>
+      <stat-card value="~90 min" label="Typical orbital period in low Earth orbit" accent="space"></stat-card>
+      <stat-card value="1957" label="Year the first satellite reached orbit" accent="space"></stat-card>
+    </div>
+
+    <callout-box type="did-you-know">
+      <p>The geostationary orbit wasn't discovered by an engineer — it was proposed by a
+      science fiction writer. In a 1945 magazine article, Arthur C. Clarke worked out that a
+      satellite at the right altitude above the equator would orbit at exactly the speed the
+      Earth rotates, appearing to hang motionless in the sky. Communications satellites still
+      use that orbit today.</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>Every satellite orbit is a trade-off between altitude, speed, and coverage, and
+      engineers group the useful ones into three broad families. Low Earth orbit, roughly 160
+      to 2,000 km up, is where the ISS, most Earth-observation satellites, and nearly every
+      CubeSat fly — close enough for sharp imagery and short communication delays, but moving
+      fast enough that a single satellite only sees any given point on the ground for a few
+      minutes at a time.</p>
+
+      <p>Medium Earth orbit, a band centered around 20,000 km, is where GPS and similar
+      navigation constellations live — high enough that a modest number of satellites can cover
+      the whole planet between them. Geostationary orbit sits much higher still, at exactly the
+      altitude where a satellite's orbital period matches Earth's rotation: 35,786 km. A
+      satellite there appears fixed in the sky from the ground, which is exactly why
+      geostationary orbit is where most television and weather satellites are parked — a
+      ground antenna can point at one spot and never have to move.</p>
+
+      <p>What all three orbits share is physics, not engineering choice: how fast a satellite
+      has to move to stay up, and how long it takes to go around, are both determined entirely
+      by altitude. Lower orbits move faster and circle the planet quickly; higher orbits move
+      slower and take longer. Try it directly below.</p>
+
+      <h2>Satellite Orbit Simulator</h2>
+      <p>Adjust altitude and inclination and watch the orbit — and its orbital period — change
+      in real time.</p>
+      <simulation-container type="orbit-simulator"></simulation-container>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="cubesats.html">Space Lab: CubeSats</a></li>
+        <li><a href="rockets.html">Space Lab: Rockets</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="index.html">Back to Space Lab</a></li>
+        <li><a href="../playground/orbit-simulator.html">Open the Orbit Simulator in Playground</a></li>
+      </ul>
+
+      <h2>Further Reading</h2>
+      <ul>
+        <li><a href="../blog/where-are-we-now.html">Where are we now?</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

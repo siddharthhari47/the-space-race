@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spacecraft — Space Lab — The Space Race</title>
+  <meta name="description" content="From Vostok 1 to Crew Dragon — what it takes to carry a person to orbit and, harder still, bring them back." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="space-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Space Lab</a>
+    <h1 class="lab-title">Spacecraft</h1>
+    <p class="lab-intro">
+      Getting to orbit is a rocket's job. Keeping a person alive once they're there, and
+      getting them back through the atmosphere in one piece, is the spacecraft's — and it's
+      arguably the harder half of the problem.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="1961" label="Vostok 1 — first crewed spacecraft" accent="space"></stat-card>
+      <stat-card value="1967" label="Soyuz's first flight — still flying today" accent="space"></stat-card>
+      <stat-card value="~1,650°C" label="Typical reentry heat-shield temperature" accent="space"></stat-card>
+    </div>
+
+    <callout-box type="engineering-insight">
+      <p>Early heat shields, including Vostok's, worked by ablation: the outer material was
+      designed to burn away and flake off deliberately, carrying reentry heat with it rather
+      than letting it soak into the capsule. It's a strategy that treats losing material as a
+      feature, not a failure — the shield is only doing its job if a visible layer of it is
+      gone by the time the capsule lands.</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>A crewed spacecraft has to solve problems a satellite never faces: keeping a breathable
+      atmosphere, managing heat both from the sun and from the astronauts themselves, and above
+      all, surviving reentry. Coming back from orbit means shedding an enormous amount of speed
+      as heat, and the temperatures involved — often around 1,650°C on the heat shield's outer
+      surface — would destroy most materials outright without a way to manage it.</p>
+
+      <p>Vostok 1 carried Yuri Gagarin into orbit in 1961, the first time any spacecraft had
+      carried a person at all. It was simple by necessity: a spherical descent capsule, an
+      ablative heat shield, and very little automation the cosmonaut could actually override.
+      Six years later, in 1967, the Soviet Union introduced Soyuz — a more capable, more
+      controllable design that, after a difficult early history, became one of the most reliable
+      crewed spacecraft ever built. Soyuz is still flying today, over half a century after its
+      first launch.</p>
+
+      <p>Modern spacecraft look different from either. SpaceX's Crew Dragon, which began flying
+      astronauts in 2020, replaced Soyuz's mostly-analog cockpit with touchscreens and a much
+      higher degree of automation, while keeping the same fundamental job: protect the crew,
+      survive reentry, land safely.</p>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Spacecraft</th>
+              <th>First Flight</th>
+              <th>Crew Capacity</th>
+              <th>Operator</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Vostok 1</td>
+              <td>1961</td>
+              <td>1</td>
+              <td>Soviet Union</td>
+            </tr>
+            <tr>
+              <td>Soyuz</td>
+              <td>1967</td>
+              <td>3</td>
+              <td>Roscosmos</td>
+            </tr>
+            <tr>
+              <td>Crew Dragon</td>
+              <td>2020</td>
+              <td>Up to 4</td>
+              <td>SpaceX</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Nearly sixty years separate Vostok 1 from Crew Dragon, and the crew capacity has only
+      grown from one to four. The hard problem was never fitting more people in — it was making
+      the whole trip survivable and repeatable in the first place.</p>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="rockets.html">Rockets</a></li>
+        <li><a href="space-stations.html">Space Stations</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="index.html">Back to Space Lab</a></li>
+        <li><a href="../timeline/index.html">See the full Timeline</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

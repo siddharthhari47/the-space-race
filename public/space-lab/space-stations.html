@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space Stations — Space Lab — The Space Race</title>
+  <meta name="description" content="From Salyut 1 to a quarter-century of continuous crew aboard the ISS — building a permanent home in orbit." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="space-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Space Lab</a>
+    <h1 class="lab-title">Space Stations</h1>
+    <p class="lab-intro">
+      A spacecraft gets someone to orbit. A space station is the much harder promise that
+      followed: that people could actually live and work up there, not just visit.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="1971" label="Salyut 1 — first space station" accent="space"></stat-card>
+      <stat-card value="2000" label="Continuous crew presence aboard the ISS begins" accent="space"></stat-card>
+      <stat-card value="~25 years" label="Continuous human presence in orbit, and counting" accent="space"></stat-card>
+    </div>
+
+    <callout-box type="did-you-know">
+      <p>The International Space Station is one of the most expensive objects ever built,
+      assembled from pieces launched by multiple countries over more than a decade. Exact
+      lifetime cost figures vary depending on what's counted, but by any measure it represents
+      one of the largest sustained engineering investments humanity has made in a single
+      structure.</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>The Soviet Union launched Salyut 1, the first space station, in 1971 — a single module
+      with no ability to be resupplied or expanded, designed to prove that people could live in
+      orbit for weeks at a time rather than days. It succeeded at that, though its first crew
+      tragically died during their return to Earth, a reminder of how unforgiving the engineering
+      margins were in that era.</p>
+
+      <p>Stations after Salyut grew more ambitious: Skylab in the United States, then Mir, which
+      the Soviet Union and later Russia operated for fifteen years and which pioneered the idea
+      of a modular station built up piece by piece over time rather than launched as one unit.
+      The International Space Station, assembled starting in 1998, took that modular approach
+      further than any station before it, built from components launched by multiple countries
+      and space agencies over more than a decade.</p>
+
+      <p>Since 2000, the ISS has never been empty. Crews rotate in and out every few months, but
+      there has been at least one person aboard continuously for close to a quarter century — by
+      far the longest unbroken human presence off the surface of the Earth, and the clearest
+      proof yet that long-duration life in orbit is genuinely sustainable, not just a
+      demonstration.</p>
+
+      <h2>Docking Simulator</h2>
+      <p>Practice the final approach — align, close the distance, and dock without overshooting.</p>
+      <simulation-container type="docking-simulator"></simulation-container>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="spacecraft.html">Spacecraft</a></li>
+        <li><a href="satellites.html">Satellites</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="index.html">Back to Space Lab</a></li>
+        <li><a href="../timeline/index.html">See the full Timeline</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aerodynamics — Flight Lab — The Space Race</title>
+  <meta name="description" content="How lift, drag, and angle of attack actually work — and why a wing stalls." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="flight-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Flight Lab</a>
+    <h1 class="lab-title">Aerodynamics</h1>
+    <p class="lab-intro">
+      Everything on this site that flies through air rather than vacuum — an airliner, a
+      fighter jet, a rocket in its first few seconds — answers to the same handful of rules.
+      This is where those rules actually come from.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="4" label="Forces balanced in steady, level flight" accent="flight"></stat-card>
+      <stat-card value="1738" label="Year Bernoulli described the pressure principle behind lift" accent="flight"></stat-card>
+      <stat-card value="15–20°" label="Typical critical angle of attack before a stall" accent="flight"></stat-card>
+    </div>
+
+    <callout-box type="engineering-insight">
+      <p>The upturned wingtips on modern airliners aren't styling — they're winglets, and they
+      exist to fight a specific loss. High pressure air under the wing spills around the tip to
+      the low-pressure air on top, rolling into a vortex that drags the aircraft back. A
+      winglet blocks part of that spillage, cutting fuel burn by a few percent for very little
+      added weight.</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>Four forces act on anything flying through air: lift holding it up, weight pulling it
+      down, thrust pushing it forward, and drag holding it back. Level, unaccelerated flight is
+      just those four forces in balance — change any one of them and the aircraft climbs,
+      descends, speeds up, or slows down.</p>
+
+      <p>Lift itself is often explained badly. The popular version — that air splits at the
+      leading edge and has to "catch up" over the longer path across the curved top of the wing
+      — isn't actually true. What really happens is closer to Newton's third law: a wing
+      angled into the airflow deflects air downward and slightly forward, and the air pushes
+      back on the wing in the opposite direction — up. The pressure difference between the
+      wing's upper and lower surfaces, the part Daniel Bernoulli's 1738 work on fluid pressure
+      helps explain, is a real and necessary part of the picture too; the two explanations
+      describe the same phenomenon rather than competing with each other.</p>
+
+      <p>How much lift a wing generates depends heavily on its angle of attack — the angle
+      between the wing and the oncoming air, not the angle between the wing and the ground.
+      Increase that angle and lift increases, up to a point. Push past a critical angle,
+      typically somewhere around 15 to 20 degrees depending on the wing's design, and airflow
+      over the top separates from the surface instead of following it. Lift collapses almost
+      immediately. That's a stall, and it's a function of angle of attack alone — it can happen
+      at any speed, in any attitude, nose up or nose down.</p>
+
+      <p>Drag comes in more than one form. Some of it is simple friction and shape resistance,
+      the kind that increases with speed. Some of it, induced drag, is a direct side effect of
+      producing lift in the first place, and it's strongest at low speed and high angle of
+      attack — which is exactly why aircraft feel most sluggish and vulnerable right after
+      takeoff and just before landing.</p>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Interactive Modules</h2>
+      <ul>
+        <li><a href="interactive-aircraft.html">Interactive Aircraft Explorer</a></li>
+      </ul>
+
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="flight-dynamics.html">Flight Dynamics</a></li>
+        <li><a href="index.html">Back to Flight Lab</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="commercial-aircraft.html">Commercial Aircraft</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>
