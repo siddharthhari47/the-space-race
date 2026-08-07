@@ -1,8 +1,9 @@
-import { ContactShadows, Environment, Lightformer, Sky } from "@react-three/drei";
+import { Environment, Lightformer, Sky } from "@react-three/drei";
 import * as THREE from "three";
 import Model from "./Model";
 import CameraRig from "./CameraRig";
 import HotspotMarkers from "./HotspotMarkers";
+import Clouds from "./Clouds";
 import type { HotspotConfig, ModelExplorerConfig } from "./types";
 
 interface SceneProps {
@@ -28,7 +29,11 @@ const SUN_POSITION: [number, number, number] = [500, 220, 300];
 // self-contained) since an airliner reads better against open sky than a
 // starfield. Ambient light raised accordingly: a bright sky bounces
 // noticeably more fill light onto the underside of the model than the
-// near-black space background did.
+// near-black space background did. No ground-contact shadow: the model is
+// meant to read as flying, not resting on invisible glass, so a shadow
+// blob directly underneath it was working against the scene rather than
+// selling it — puffy cloud sprites (Clouds.tsx) carry the "in the sky"
+// feeling instead.
 export default function Scene({
   config,
   onModelLoaded,
@@ -62,7 +67,7 @@ export default function Scene({
         registerRef={registerMarkerRef}
       />
 
-      <ContactShadows position={[1.6, -0.25, 0.3]} opacity={0.35} scale={80} blur={2.5} far={16} />
+      <Clouds />
 
       <CameraRig config={config} selectedHotspot={selectedHotspot} resetSignal={resetSignal} />
     </>
