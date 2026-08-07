@@ -26,11 +26,15 @@ is compiled by Vite.
     + a `<simulation-container type="...">` tag wherever it should appear.
   - `assets/images/`, `assets/data/` — imagery and JSON data for interactive
     diagrams
-- `src/aircraft-3d/` — the one part of the site that isn't static HTML: a
-  React Three Fiber aircraft model (`Aircraft.tsx` composes
-  `Fuselage`/`Wings`/`Engines`/`LandingGear`, `main.tsx` mounts it into
-  `#aircraft-3d-root` on `flight-lab/interactive-aircraft.html`). Vite builds
-  this to a fixed path, `assets/js/dist/aircraft-viewer.js`, so the HTML
+- `src/model-explorer/` — the one part of the site that isn't static HTML: a
+  reusable React Three Fiber GLTF viewer (`<InteractiveModelExplorer>`-style
+  framework). `main.tsx` reads a `data-model="<key>"` attribute off its
+  mount div (e.g. `#model-explorer-root` on
+  `flight-lab/interactive-aircraft.html`), resolves the matching config in
+  `configs/*.ts` via `import.meta.glob`, and mounts `ExplorerShell`. Adding a
+  new model is a new GLB in `public/models/` + a new config file + a
+  `data-model` attribute on a page — no viewer code changes. Vite builds
+  this to a fixed path, `assets/js/dist/model-explorer.js`, so the HTML
   script tag never needs to change between builds.
 
 ## Local preview

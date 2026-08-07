@@ -12,40 +12,34 @@
   <link rel="stylesheet" href="../assets/css/style.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
   <script type="module" src="/assets/js/pages/interactive-aircraft.js" defer></script>
-  <script type="module" src="/assets/js/dist/aircraft-viewer.js" defer></script>
+  <script type="module" src="/assets/js/dist/model-explorer.js" defer></script>
 </head>
 <body>
   <site-header current="flight-lab"></site-header>
 
-  <main class="container lab-page">
+  <main class="container-wide lab-page">
     <a class="back-link" href="index.html">&larr; Flight Lab</a>
     <h1 class="lab-title">Interactive Aircraft Explorer</h1>
     <p class="lab-intro">
-      A real 3D model you can rotate freely — drag to spin it around, scroll or pinch to zoom
-      in. It rotates gently on its own; grab it any time to look closer at a wing, an engine,
-      or the tail.
+      A real, scanned 3D model you can rotate freely — drag to spin it around, scroll or pinch
+      to zoom in. Click a glowing marker to fly in on a specific part and learn what it does.
     </p>
 
     <div class="category-switcher" role="tablist" aria-label="Aircraft category">
-      <button type="button" class="category-tab" role="tab" aria-selected="true" tabindex="0" aria-controls="aircraft-3d-root" data-category="commercial">Commercial</button>
-      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-3d-root" data-category="military">Military</button>
-      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-3d-root" data-category="private">Private</button>
-      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="aircraft-3d-root" data-category="cargo">Cargo</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="true" tabindex="0" aria-controls="model-explorer-root" data-category="commercial">Commercial</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="model-explorer-root" data-category="military">Military</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="model-explorer-root" data-category="private">Private</button>
+      <button type="button" class="category-tab" role="tab" aria-selected="false" tabindex="-1" aria-controls="model-explorer-root" data-category="cargo">Cargo</button>
     </div>
 
     <div class="category-note" hidden></div>
 
     <div
-      id="aircraft-3d-root"
-      class="diagram-viewport aircraft-3d-viewport"
+      id="model-explorer-root"
+      data-model="boeing-777-300er"
       role="img"
-      aria-label="Interactive 3D model of a commercial airliner. Drag to rotate, scroll or pinch to zoom."
+      aria-label="Interactive 3D model of a Boeing 777-300ER. Drag to rotate, scroll or pinch to zoom, click a marker to explore a part."
     ></div>
-
-    <p class="lab-intro spaced">
-      Drag anywhere on the model to rotate it, and scroll or pinch to zoom. Release it and it
-      picks the slow spin back up right where you left it.
-    </p>
 
     <div class="continue-explore">
       <h2>Related Technologies</h2>
