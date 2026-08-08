@@ -40,9 +40,7 @@ export const NAV_ITEMS = [
   // stays a plain link, like Timeline/Playground/Blog, until real
   // sub-pages exist to link to.
   { id: "engineering-lab", label: "Engineering Lab", href: "/engineering-lab/index.html" },
-  { id: "timeline", label: "Timeline", href: "/timeline/index.html" },
   { id: "playground", label: "Playground", href: "/playground/index.html" },
   { id: "blog", label: "Blog", href: "/blog/index.html" },
   { id: "about", label: "About", href: "/about/index.html" },
-  { id: "references", label: "References", href: "/references/index.html" },
 ];
