@@ -10,24 +10,27 @@ import type { HotspotConfig, ModelExplorerConfig } from "./types";
 
 interface ExplorerShellProps {
   config: ModelExplorerConfig;
+  // "full" (default): the dedicated-page exhibit — toolbar, side-by-side
+  // sidebar drawer, unchanged from the original single-model behavior.
+  // "embedded": a compact instance meant to sit inline in theory-page
+  // prose (see model-viewer-embed.js) — no toolbar, sidebar renders
+  // inline/stacked instead of as a drawer, and a specific hotspot can be
+  // pre-selected on load via focusHotspotId. Hotspot markers stay
+  // interactive either way — embedded mode narrows the starting view, it
+  // doesn't lock the viewer to one part.
+  mode?: "full" | "embedded";
+  focusHotspotId?: string;
 }
 
 // Top-level layout and state owner: canvas region + a sidebar that opens
 // on hotspot selection, plus a credits footer rendered straight from
 // config.credit (not hand-written per-page HTML), so every future model
 // automatically carries correct attribution with zero page edits.
-export default function ExplorerShell({ config }: ExplorerShellProps) {
+export default function ExplorerShell({ config, mode = "full", focusHotspotId }: ExplorerShellProps) {
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotConfig | null>(null);
   const [focusIndex, setFocusIndex] = useState(0);
   const markerRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const { registerScene, applyHotspot, clearHighlight } = useModelHighlight();
-
-  const handleModelLoaded = useCallback(
-    (scene: THREE.Group) => {
-      registerScene(scene);
-    },
-    [registerScene]
-  );
+  const { registerScene, applyHotspot, clearHighlight } = useModelHighlight(config.largeMeshDiagonalThreshold);
 
   // Pure: applies a hotspot's selection with no awareness of *why* it was
   // selected. Used both by direct marker clicks and by the guided tour's
@@ -40,6 +43,26 @@ export default function ExplorerShell({ config }: ExplorerShellProps) {
       applyHotspot(hotspot);
     },
     [applyHotspot]
+  );
+
+  // Embedded instances can ask to open already focused on one part (e.g. a
+  // theory page's "Main Rotor" embed) — applied once, right after the
+  // model's meshes are registered for highlighting, so the highlight/dim
+  // pass actually has geometry to match against (registering happens on
+  // GLTF load, same effect that already runs for every model).
+  const initialFocusAppliedRef = useRef(false);
+  const handleModelLoaded = useCallback(
+    (scene: THREE.Group) => {
+      registerScene(scene);
+      if (mode === "embedded" && focusHotspotId && !initialFocusAppliedRef.current) {
+        const index = config.hotspots.findIndex((h) => h.id === focusHotspotId);
+        if (index !== -1) {
+          initialFocusAppliedRef.current = true;
+          applySelection(config.hotspots[index], index);
+        }
+      }
+    },
+    [registerScene, mode, focusHotspotId, config.hotspots, applySelection]
   );
 
   const tour = useGuidedTour({
@@ -111,22 +134,24 @@ export default function ExplorerShell({ config }: ExplorerShellProps) {
   );
 
   return (
-    <div className="explorer-shell">
-      <div className="explorer-toolbar">
-        <button type="button" className="btn btn-secondary" onClick={resetView}>
-          Reset View
-        </button>
-        {tour.hasStops &&
-          (tour.isPlaying ? (
-            <button type="button" className="btn btn-secondary" onClick={tour.pause}>
-              Pause Guided Tour
-            </button>
-          ) : (
-            <button type="button" className="btn btn-primary" onClick={tour.play}>
-              Start Guided Tour
-            </button>
-          ))}
-      </div>
+    <div className={mode === "embedded" ? "explorer-shell explorer-shell--embedded" : "explorer-shell"}>
+      {mode === "full" && (
+        <div className="explorer-toolbar">
+          <button type="button" className="btn btn-secondary" onClick={resetView}>
+            Reset View
+          </button>
+          {tour.hasStops &&
+            (tour.isPlaying ? (
+              <button type="button" className="btn btn-secondary" onClick={tour.pause}>
+                Pause Guided Tour
+              </button>
+            ) : (
+              <button type="button" className="btn btn-primary" onClick={tour.play}>
+                Start Guided Tour
+              </button>
+            ))}
+        </div>
+      )}
 
       <div className="explorer-main">
         <div className="explorer-canvas-region" onKeyDown={handleMarkerKeydown}>

@@ -484,6 +484,10 @@ const hotspots: HotspotConfig[] = [
 export const boeing777300er: ModelExplorerConfig = {
   modelUrl: "/models/boeing-777-300er.glb",
   title: "Boeing 777-300ER",
+  // This model's source materials are all verified metallicFactor: 0 (see
+  // Model.tsx) — a compression-pass artifact baked some to metalness 1.
+  // Not appropriate for models with genuine PBR metalness/roughness maps.
+  forceZeroMetalness: true,
   credit: {
     text: '"Boeing 777-300ER Model" by hakai315 is licensed under Creative Commons Attribution 4.0 (CC BY 4.0).',
     modelUrl: "https://skfb.ly/oSUMt",

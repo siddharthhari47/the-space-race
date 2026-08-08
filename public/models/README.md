@@ -78,3 +78,90 @@ hotspot coordinate system in `configs/boeing-777-300er.ts` depends on both.
 This file uses `KHR_draco_mesh_compression` (required extension) — the
 loader must be configured with a Draco decoder (`useGLTF(url, true)` in
 drei, or an explicit `DRACOLoader` on the `GLTFLoader` instance).
+
+## merlin-mk2-helicopter.glb
+
+### Attribution (required — CC BY 4.0)
+
+> "Merlin MK2 Helicopter" (https://skfb.ly/6VLMt) by sudreyskr is licensed
+> under Creative Commons Attribution 4.0 (CC BY 4.0)
+> (http://creativecommons.org/licenses/by/4.0/).
+
+The source file's own embedded glTF metadata (`asset.extras`) independently
+confirms this — author, license, and Sketchfab source URL are all present
+in the file as supplied, not just in the brief that accompanied it. The
+model has been modified for web use (geometry Draco-compressed, textures
+resized and re-encoded — see Processing below); this attribution covers the
+modified version per the license terms. This attribution is reproduced
+verbatim in the credits section of `flight-lab/interactive-helicopter.html`
+and on `references/index.html`. It must remain visible in both places and
+in this file, including through any further re-optimization.
+
+### Processing
+
+Source file (42.98MB, not committed — Sketchfab download, kept locally
+outside the repo) needed a different approach than the Boeing model: it has
+8 materials × 3 PBR textures each (24 textures, several at 4096×4096 —
+texture data alone was ~40MB of the 42.98MB total), where Boeing had none.
+
+`@gltf-transform/cli`'s own `--texture-compress`/`--texture-size` flags
+crash on this machine (`sharp`/`libvips` `colourspace: parameter space not
+set` — a pre-existing, documented limitation, see the Boeing section above)
+for *any* texture operation, not just format conversion, so texture
+resizing was done manually instead of through the CLI's built-in step:
+
+```bash
+# 1. Geometry pass only (no texture-compress — it crashes here), unpacked
+#    to loose files so the images can be processed independently:
+npx @gltf-transform/cli optimize <source>.glb merlin.gltf \
+  --compress draco --texture-compress false \
+  --simplify false --join false --flatten false --instance false
+
+# 2. Each extracted PNG resized to fit within 1024x1024 (down from up to
+#    4096x4096) via Pillow, then re-saved: baseColor and metallicRoughness
+#    as JPEG q90 (both tolerate lossy compression well; materials are all
+#    alphaMode OPAQUE, so no alpha channel is lost), normal maps as JPEG
+#    q92 (higher quality — compression artifacts distort normals more
+#    visibly than color/roughness data, but at 1024px and q92 the
+#    difference was not visually meaningful against keeping them
+#    lossless). The gltf JSON's `images[].uri`/`mimeType` were updated to
+#    match the new filenames — image dimensions aren't declared in glTF
+#    JSON, so the resize itself needed no other JSON changes.
+
+# 3. Re-packed with geometry re-compressed via Draco:
+npx @gltf-transform/cli draco merlin.gltf public/models/merlin-mk2-helicopter.glb
+```
+
+**Why `--join/--flatten/--instance false`:** same reasoning as Boeing —
+preserves the 8 named mesh parts (`Body`, `BodyTop`, `Prop`, `Sides`,
+`Windows`, `BackWing`, `BackProp`, `Door`) that
+`configs/merlin-mk2-helicopter.ts`'s hotspots bind to by name/position.
+
+**Why `--simplify false`:** the source is already low-poly (35,862 total
+vertices across all 8 meshes) — there's nothing worth decimating.
+
+### Before / after
+
+| | Source | Optimized |
+|---|---|---|
+| File size | 42.98 MB | 3.42 MB |
+| Nodes | 19 | 19 (unchanged) |
+| Mesh primitives | 8 | 8 (unchanged — no merging) |
+| Materials | 8 | 8 (unchanged — this model's materials are genuine PBR textures, not flat colors, so palette-consolidation doesn't apply the way it did for Boeing) |
+| Vertices | 35,862 | 35,865 (Draco re-quantization introduces a handful of duplicate boundary vertices — negligible) |
+| Textures | 24 (up to 4096×4096 PNG) | 24 (capped at 1024×1024; baseColor/metallicRoughness/normal all JPEG) |
+| Scene bounding box | -1285.57,-71.26,-884.02 → 903.69,498.93,860.38 | identical |
+
+Verified via `npx @gltf-transform/cli inspect` before and after.
+
+### Runtime note
+
+Same as Boeing: uses `KHR_draco_mesh_compression` (required) and
+`KHR_materials_clearcoat` (used, not required — three.js's `GLTFLoader`
+supports it natively via `MeshPhysicalMaterial`, no extra configuration
+needed). Unlike Boeing, this model's materials have real
+`metallicRoughnessTexture` maps — the viewer's `Model.tsx` has a
+Boeing-specific `metalness = 0` correction (for a compression artifact
+Boeing's flat-color materials hit) that must **not** apply to this model;
+it's gated behind `config.forceZeroMetalness`, which the Merlin config
+leaves unset.

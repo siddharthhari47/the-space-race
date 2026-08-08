@@ -108,4 +108,13 @@ export interface ModelExplorerConfig {
   hotspots: HotspotConfig[];
   guidedTourDwellMs: number;
   overlays?: OverlayConfig[];
+  // Boeing-specific correction (see Model.tsx) for a compression artifact
+  // in a model whose source materials are all verified metallicFactor: 0.
+  // Leave unset for any model with genuine metallic/roughness textures —
+  // forcing metalness to 0 on those would flatten real material response.
+  forceZeroMetalness?: boolean;
+  // Per-model large-mesh cutoff for useModelHighlight's includeLargeMeshes
+  // opt-in — only meaningful relative to this model's own unit scale (see
+  // useModelHighlight.ts). Omit to use the Boeing-calibrated default (20).
+  largeMeshDiagonalThreshold?: number;
 }

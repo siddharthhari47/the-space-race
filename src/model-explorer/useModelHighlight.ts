@@ -12,13 +12,17 @@ interface MeshEntry {
 }
 
 // A mesh whose own bounding-box diagonal exceeds this is treated as a
-// large, scene-spanning structural piece (this model's "wing" node, at
-// ~46 units, is the only one anywhere close) and excluded from a
-// position hotspot's match unless that hotspot opts in via
-// `includeLargeMeshes`. The overall model's bounding-box diagonal is
-// ~66 units; every legitimate small-part mesh seen while authoring the
-// hotspot config stayed well under this.
-const LARGE_MESH_DIAGONAL_THRESHOLD = 20;
+// large, scene-spanning structural piece and excluded from a position
+// hotspot's match unless that hotspot opts in via `includeLargeMeshes`.
+// This is a per-model value, not a universal constant — it only makes
+// sense relative to that model's own unit scale. Boeing's GLB (~66-unit
+// overall bounding-box diagonal, "wing" mesh ~46 units) uses the default
+// of 20 below; the Merlin helicopter's GLB is authored at a completely
+// different scale (~2850-unit overall diagonal, its "Prop"/rotor mesh
+// alone ~2450) and sets its own `largeMeshDiagonalThreshold` in its
+// config accordingly — without that, every mesh on a model at this scale
+// would count as "large" and nothing would highlight by default.
+const DEFAULT_LARGE_MESH_DIAGONAL_THRESHOLD = 20;
 
 const HIGHLIGHT_EMISSIVE = new THREE.Color("#5eead4");
 const HIGHLIGHT_EMISSIVE_INTENSITY = 0.55;
@@ -61,7 +65,7 @@ function restore(entry: MeshEntry) {
 // documented here rather than special-cased, since the alternative
 // (excluding "large" meshes from incidental matches) would also risk
 // breaking the Wing hotspot's own match against that same mesh.
-export function useModelHighlight() {
+export function useModelHighlight(largeMeshDiagonalThreshold: number = DEFAULT_LARGE_MESH_DIAGONAL_THRESHOLD) {
   const entriesRef = useRef<MeshEntry[]>([]);
   const nodesByName = useRef<Map<string, THREE.Object3D>>(new Map());
 
@@ -103,7 +107,7 @@ export function useModelHighlight() {
       const point = new THREE.Vector3(...hotspot.position);
       matched = new Set(
         entries
-          .filter((e) => hotspot.includeLargeMeshes || e.diagonal <= LARGE_MESH_DIAGONAL_THRESHOLD)
+          .filter((e) => hotspot.includeLargeMeshes || e.diagonal <= largeMeshDiagonalThreshold)
           .filter((e) => e.box.distanceToPoint(point) <= hotspot.radius)
           .map((e) => e.mesh)
       );

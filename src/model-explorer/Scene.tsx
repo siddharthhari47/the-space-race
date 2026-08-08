@@ -61,7 +61,7 @@ export default function Scene({
       <directionalLight position={SUN_POSITION} intensity={1.4} castShadow shadow-mapSize={[2048, 2048]} />
       <ambientLight intensity={0.4} />
 
-      <Model url={config.modelUrl} onLoaded={onModelLoaded} />
+      <Model url={config.modelUrl} onLoaded={onModelLoaded} forceZeroMetalness={config.forceZeroMetalness} />
 
       <HotspotMarkers
         hotspots={config.hotspots}
