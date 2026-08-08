@@ -175,6 +175,7 @@ const hotspots: HotspotConfig[] = [
       facts: [
         "A folding tail boom, common on naval helicopters including the Merlin, exists purely for shipboard storage — folding it shortens the aircraft's footprint enough to fit more airframes on a hangar deck.",
         "Tail boom strikes (rotor blades or the tail itself contacting the ground or an obstacle) are one of the most common serious ground-handling accidents in helicopter operations, precisely because the boom extends so far behind where the pilot is sitting.",
+        "A small skid fitted low near the tail, easy to mistake for a tow point or an antenna, has one job: take the impact if the tail comes down too hard on landing, so the tail rotor itself never does.",
       ],
       role: "A long, awkward, unavoidable piece of structure — everything about the tail boom's design is a trade-off between keeping the tail rotor far enough away to be effective and not making the aircraft impossibly long.",
     },
@@ -198,6 +199,7 @@ const hotspots: HotspotConfig[] = [
       facts: [
         "A helicopter's empty weight fraction (structure weight versus useful load) is typically worse than a fixed-wing aircraft's, because so much of the airframe exists just to carry and control the rotor system overhead.",
         "Vibration from the rotor is transmitted directly into the fuselage at multiple frequencies (once per blade, per revolution), which is why helicopter cabins historically feel and sound very different from fixed-wing ones — a lot of engineering effort goes into damping it.",
+        "The fuselage usually carries more antennae than its shape lets on: a loop antenna faired flush against the skin, a blade antenna on the belly, a whip further back on the tail boom, each tuned for a different radio system and placed to stay clear of the rotor disc and of each other.",
       ],
       role: "Everything else on this aircraft — rotor, engines, tail — exists to move this one structure and whatever's inside it from one place to another.",
     },
@@ -220,6 +222,7 @@ const hotspots: HotspotConfig[] = [
       facts: [
         "Search-and-rescue and naval helicopter cockpits are often designed so a pilot can see almost straight down without leaning out — critical for judging a hover position over water or a moving ship deck.",
         "Helicopter cockpit workload during a hover is genuinely different from cruise flight — small, continuous corrections on all the controls at once, which is a large part of why hovering takes so much longer to learn than forward flight.",
+        "A pitot tube usually sits near the nose, often fitted with a small removable cover on the ground to keep insects and dust out — forget to remove it before flight and the airspeed indicator reads nothing at all.",
       ],
       role: "Every control this aircraft has — collective, cyclic, pedals — starts here, and the visibility built into this section is what makes flying it close to obstacles possible at all.",
     },
