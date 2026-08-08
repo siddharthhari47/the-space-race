@@ -285,6 +285,10 @@ export const merlinMk2Helicopter: ModelExplorerConfig = {
   // the source (fog/clip distances), not by lighting.
   fogDistance: { near: 2000, far: 10000 },
   cameraFar: 10000,
+  // Between controlsLimits.maxDistance (8000, the farthest the camera can
+  // orbit out to) and cameraFar (10000) — the camera needs to always stay
+  // inside this sphere.
+  skyRadius: 9000,
   // A real, secondary contributor: the shared lighting rig was tuned
   // against Boeing's flat matte, zero-texture materials, and this model's
   // real metallicRoughness textures reflect it more strongly. Kept as a

@@ -1,9 +1,10 @@
-import { Environment, Lightformer, Sky } from "@react-three/drei";
+import { Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
 import Model from "./Model";
 import CameraRig from "./CameraRig";
 import HotspotMarkers from "./HotspotMarkers";
 import Clouds from "./Clouds";
+import GradientSky from "./GradientSky";
 import type { HotspotConfig, ModelExplorerConfig } from "./types";
 
 interface SceneProps {
@@ -16,10 +17,9 @@ interface SceneProps {
   registerMarkerRef: (index: number, el: HTMLButtonElement | null) => void;
 }
 
-// Same direction used for both the visible sun disc (Sky) and the actual
-// key light, so the shading on the model always matches where the sun
-// appears to be — a mismatch would read as subtly wrong even to someone
-// who couldn't say why.
+// Direction for the actual key light. GradientSky doesn't render a sun
+// disc (kept deliberately simple — see its own file), but the key light
+// still needs a consistent direction to shade the model believably.
 const SUN_POSITION: [number, number, number] = [500, 220, 300];
 
 // Lighting rig ported from src/aircraft-3d/main.tsx's Scene(), originally
@@ -52,20 +52,21 @@ export default function Scene({
 
   return (
     <>
-      {/* A plain blue fallback behind the Sky dome — the physically-based
-          Preetham model Sky renders doesn't cover every view direction (a
-          camera angle that dips below its horizon, e.g. looking up from
-          under the aircraft's belly, showed the canvas's default white
-          clear color instead of sky — confirmed live). This guarantees
-          blue behind it no matter the angle, rather than trying to fight
-          the sky model's own horizon behavior further. */}
+      {/* A plain blue fallback behind everything, belt-and-suspenders. */}
       <color attach="background" args={["#8ec5ff"]} />
 
-      {/* Lower turbidity + higher rayleigh than the initial pass: the first
-          version read as pale/washed-out rather than blue, which left
-          the white cloud sprites with almost no contrast against the
-          background — exactly the "just looks like white" problem. */}
-      <Sky sunPosition={SUN_POSITION} turbidity={1.5} rayleigh={3} mieCoefficient={0.003} mieDirectionalG={0.8} distance={3000} />
+      {/* Not drei's <Sky> — that component's fragment shader hardcodes
+          the camera position as world origin (read the actual
+          three-stdlib source to confirm this, it's not a documented
+          limitation) and clamps any below-horizon view direction to the
+          same pale, hazy color. Fine when the camera stays within a few
+          hundred units of origin; produces a visible box edge for a
+          model/camera operating thousands of units out (the helicopter),
+          and a flat pale-white wash for any camera angle that dips below
+          the horizon on *either* model — confirmed live, reported
+          directly twice as "the bottom looks white." GradientSky has
+          neither assumption. */}
+      <GradientSky radius={config.skyRadius ?? 2500} />
 
       <Environment resolution={256} frames={1}>
         <Lightformer intensity={2 * lightScale} position={[0, 40, 0]} scale={[90, 40, 1]} rotation-x={Math.PI / 2} />
