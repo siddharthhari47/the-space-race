@@ -59,7 +59,7 @@ const hotspots: HotspotConfig[] = [
         "A helicopter's rotor blades are twisted along their length — steeper pitch near the root, flatter near the tip — because the tip is moving much faster through the air than the root and needs less angle to produce the same lift.",
         "In autorotation (engine failure), the rotor keeps spinning from airflow pushing up through it during a controlled descent — the same blades that generate lift powered can generate it unpowered, which is what makes a safe engine-out landing possible at all.",
       ],
-      role: "The rotor is the engine's output made visible — every other system on this aircraft exists to either drive it, control it, or work around what it does to the airframe.",
+      role: "The rotor is the engine's output made visible. Every other system on this aircraft exists to either drive it, control it, or work around what it does to the airframe.",
     },
   },
   {
@@ -86,7 +86,7 @@ const hotspots: HotspotConfig[] = [
         "Cyclic control doesn't tilt the blades directly at the point you'd expect — because a spinning blade behaves like a gyroscope, the input has to be applied about 90 degrees earlier in the rotation than the direction you actually want the disc to tip.",
         "Igor Sikorsky's early helicopter designs struggled for years before a workable swashplate mechanism made controlled forward flight possible — the rotor problem, not the engine, was the hard part of inventing the helicopter.",
       ],
-      role: "Every control input a pilot makes — climb, descend, move in any direction — passes through this one mechanism before it ever reaches a blade.",
+      role: "A pilot only ever really commands one thing directly: this mechanism. Climb, descend, or turn in any direction, and the input passes through the swashplate before it ever reaches a blade.",
     },
   },
   {
@@ -155,7 +155,7 @@ const hotspots: HotspotConfig[] = [
         "Because the fin offloads some anti-torque duty at speed, a well-designed tail rotor is often sized around the demands of a hover, not cruise flight — hovering is the harder case for it, not flying fast.",
         "The tail rotor is mounted on this same structure, which is why a hard strike to the tail fin on landing is treated as seriously as damage to the main rotor itself.",
       ],
-      role: "Passive where the tail rotor is active — it doesn't need pedal input or power to help stabilize the tail, it just needs airflow.",
+      role: "Where the tail rotor is active, the fin is passive. It needs no pedal input and no power to help stabilize the tail, just airflow.",
     },
   },
   {
@@ -179,7 +179,7 @@ const hotspots: HotspotConfig[] = [
         "Tail boom strikes (rotor blades or the tail itself contacting the ground or an obstacle) are one of the most common serious ground-handling accidents in helicopter operations, precisely because the boom extends so far behind where the pilot is sitting.",
         "A small skid fitted low near the tail, easy to mistake for a tow point or an antenna, has one job: take the impact if the tail comes down too hard on landing, so the tail rotor itself never does.",
       ],
-      role: "A long, awkward, unavoidable piece of structure — everything about the tail boom's design is a trade-off between keeping the tail rotor far enough away to be effective and not making the aircraft impossibly long.",
+      role: "Everything about the tail boom's design comes down to one trade-off: keep the tail rotor far enough away to actually work, without making the whole aircraft impossibly long.",
     },
   },
   {
@@ -203,7 +203,7 @@ const hotspots: HotspotConfig[] = [
         "Vibration from the rotor is transmitted directly into the fuselage at multiple frequencies (once per blade, per revolution), which is why helicopter cabins historically feel and sound very different from fixed-wing ones — a lot of engineering effort goes into damping it.",
         "The fuselage usually carries more antennae than its shape lets on: a loop antenna faired flush against the skin, a blade antenna on the belly, a whip further back on the tail boom, each tuned for a different radio system and placed to stay clear of the rotor disc and of each other.",
       ],
-      role: "Everything else on this aircraft — rotor, engines, tail — exists to move this one structure and whatever's inside it from one place to another.",
+      role: "Everything else on this aircraft, rotor, engines, tail, exists for one reason: to move this structure and whatever's inside it from one place to another.",
     },
   },
   {
@@ -227,7 +227,7 @@ const hotspots: HotspotConfig[] = [
         "Helicopter cockpit workload during a hover is genuinely different from cruise flight — small, continuous corrections on all the controls at once, which is a large part of why hovering takes so much longer to learn than forward flight.",
         "A pitot tube usually sits near the nose, often fitted with a small removable cover on the ground to keep insects and dust out — forget to remove it before flight and the airspeed indicator reads nothing at all.",
       ],
-      role: "Every control this aircraft has — collective, cyclic, pedals — starts here, and the visibility built into this section is what makes flying it close to obstacles possible at all.",
+      role: "Collective, cyclic, pedals: every control this aircraft has starts here. The visibility built into this section is what makes flying it close to obstacles possible at all.",
     },
   },
   {
@@ -250,7 +250,7 @@ const hotspots: HotspotConfig[] = [
         "Naval search-and-rescue helicopters routinely fly with the side door open in flight — the hoist operator needs a clear view and clear path straight down to whoever or whatever is being winched aboard.",
         "Door placement relative to the center of gravity matters more on a helicopter than it looks — loading heavy cargo through an off-center door can shift the aircraft's balance enough to affect how it handles in a hover.",
       ],
-      role: "The practical link between the aircraft and whatever it was actually sent to do — everything else on this page is about flying it, this is about what it's flying for.",
+      role: "Everything else on this page is about flying the aircraft. The door is about what it's actually flying for, the practical link between the airframe and the mission.",
     },
   },
 ];
