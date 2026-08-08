@@ -52,6 +52,15 @@ export default function Scene({
 
   return (
     <>
+      {/* A plain blue fallback behind the Sky dome — the physically-based
+          Preetham model Sky renders doesn't cover every view direction (a
+          camera angle that dips below its horizon, e.g. looking up from
+          under the aircraft's belly, showed the canvas's default white
+          clear color instead of sky — confirmed live). This guarantees
+          blue behind it no matter the angle, rather than trying to fight
+          the sky model's own horizon behavior further. */}
+      <color attach="background" args={["#8ec5ff"]} />
+
       {/* Lower turbidity + higher rayleigh than the initial pass: the first
           version read as pale/washed-out rather than blue, which left
           the white cloud sprites with almost no contrast against the
