@@ -14,9 +14,16 @@ class InfoCard extends HTMLElement {
       ${badge}
     `;
 
+    // External links (an absolute http(s) URL, as opposed to this site's own
+    // root- or relative-path hrefs) open in a new tab so following a source
+    // out to NASA/ESA/a manufacturer doesn't navigate the visitor away from
+    // the page they were reading.
+    const isExternal = /^https?:\/\//.test(href || "");
+    const linkAttrs = isExternal ? ` target="_blank" rel="noopener noreferrer"` : "";
+
     this.innerHTML =
       href && status !== "coming-soon"
-        ? `<a class="info-card-inner" href="${href}">${body}</a>`
+        ? `<a class="info-card-inner" href="${href}"${linkAttrs}>${body}</a>`
         : `<div class="info-card-inner" aria-disabled="true">${body}</div>`;
   }
 }

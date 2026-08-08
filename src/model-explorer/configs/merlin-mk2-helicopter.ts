@@ -144,6 +144,7 @@ const hotspots: HotspotConfig[] = [
     radius: 300,
     cameraPosition: [893, 432, 298],
     cameraTarget: [493, 132, -52],
+    tourOrder: 5,
     confidence: "geometric",
     content: {
       purpose:
@@ -166,6 +167,7 @@ const hotspots: HotspotConfig[] = [
     radius: 350,
     cameraPosition: [1047, 663, 769],
     cameraTarget: [450, 150, 0],
+    tourOrder: 6,
     confidence: "estimated",
     content: {
       purpose:
@@ -189,7 +191,7 @@ const hotspots: HotspotConfig[] = [
     radius: 300,
     cameraPosition: [566, 346, 550],
     cameraTarget: [66, -4, 0],
-    tourOrder: 5,
+    tourOrder: 7,
     confidence: "geometric",
     content: {
       purpose:
@@ -213,6 +215,7 @@ const hotspots: HotspotConfig[] = [
     radius: 220,
     cameraPosition: [-1150, 340, 400],
     cameraTarget: [-800, 90, 0],
+    tourOrder: 8,
     confidence: "estimated",
     content: {
       purpose:
@@ -236,11 +239,11 @@ const hotspots: HotspotConfig[] = [
     radius: 150,
     cameraPosition: [-317, 309, 350],
     cameraTarget: [-617, 59, 0],
-    tourOrder: 6,
+    tourOrder: 9,
     confidence: "geometric",
     content: {
       purpose:
-        "A helicopter's door isn't just an entrance — on a utility or naval type like this one, it's sized and placed for whatever the mission actually needs to get in or out quickly: a stretcher, a hoist operator, cargo, or troops.",
+        "On a utility or naval type like this one, the door is sized and placed for whatever the mission actually needs to get in or out quickly: a stretcher, a hoist operator, cargo, or troops.",
       howItWorks:
         "Side doors are commonly built to slide rather than swing, since a swinging door needs clearance a busy helipad or ship deck often doesn't have, and a sliding door can be opened in flight for hoist operations or door-gunner positions without the airflow tearing it off its hinges. Placement matters too — far enough from the tail rotor to be safe to use on the ground, close enough to the center of the cabin to load evenly.",
       facts: [

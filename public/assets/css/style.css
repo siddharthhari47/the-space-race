@@ -481,16 +481,6 @@ mission-card p.excerpt {
   margin: 2rem 0 3rem;
 }
 
-.about-photo-placeholder {
-  flex: 0 0 200px;
-  width: 200px;
-  aspect-ratio: 3 / 4;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .about-photo {
   flex: 0 0 200px;
   width: 200px;
@@ -560,7 +550,7 @@ mission-card p.excerpt {
     text-align: center;
   }
 
-  .about-photo-placeholder {
+  .about-photo {
     width: 160px;
   }
 }
@@ -635,6 +625,13 @@ article.post {
 
 .post-body p {
   margin: 0 0 1.3rem;
+}
+
+/* Spacing for a standalone .post-body paragraph (not a .post-body p
+   descendant) that needs breathing room before the next section, e.g.
+   the last of a run of model-credit paragraphs on references/index.html. */
+.model-credit-last {
+  margin: 0 0 2rem;
 }
 
 .post-body h2 {
