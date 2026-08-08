@@ -157,16 +157,25 @@ export default function ExplorerShell({ config, mode = "full", focusHotspotId }:
         <div className="explorer-canvas-region" onKeyDown={handleMarkerKeydown}>
           <Canvas
             shadows
-            camera={{ position: config.cameraDefault.position, fov: 35, near: 0.1, far: 5000 }}
+            camera={{
+              position: config.cameraDefault.position,
+              fov: 35,
+              near: 0.1,
+              far: config.cameraFar ?? 5000,
+            }}
             dpr={[1, 2]}
           >
             {/* Sky (rendered in Scene) supplies the background — the far
                 plane is pushed out to 5000 so its dome (distance 3000)
                 doesn't get clipped. A light sky-colored fog stands in for
-                the old dark-space fog; its near/far are set past the
-                model's own ~90-unit extent so it only adds atmospheric
-                depth at the horizon, not on the aircraft itself. */}
-            <fog attach="fog" args={["#cfe3ff", 150, 500]} />
+                the old dark-space fog; its near/far default to just past
+                Boeing's ~90-unit extent so it only adds atmospheric depth
+                at the horizon, not on the aircraft itself. Per-model
+                override via config.fogDistance — see types.ts. */}
+            <fog
+              attach="fog"
+              args={["#cfe3ff", config.fogDistance?.near ?? 150, config.fogDistance?.far ?? 500]}
+            />
             <Suspense fallback={null}>
               <Scene
                 config={config}

@@ -277,11 +277,21 @@ export const merlinMk2Helicopter: ModelExplorerConfig = {
   },
   guidedTourDwellMs: 7000,
   largeMeshDiagonalThreshold: 1000,
-  // The shared lighting rig (Scene.tsx) was tuned against Boeing's flat
-  // matte, zero-texture materials. This model's real metallicRoughness
-  // textures reflect that same rig far more strongly and blew out to a
-  // washed-out, low-contrast look at full intensity — confirmed live.
-  lightingIntensityScale: 0.4,
+  // The real cause of "I can't see anything": the default camera-to-target
+  // distance here (~3900) plus this model's own radius (~1700) exceeds the
+  // 500-unit-scale defaults for both fog-far and the camera's far clip
+  // plane — the model was being rendered either 100% fog-colored or
+  // silently clipped out of the frame entirely, not dimly lit. Fixed at
+  // the source (fog/clip distances), not by lighting.
+  fogDistance: { near: 2000, far: 10000 },
+  cameraFar: 10000,
+  // A real, secondary contributor: the shared lighting rig was tuned
+  // against Boeing's flat matte, zero-texture materials, and this model's
+  // real metallicRoughness textures reflect it more strongly. Kept as a
+  // moderate reduction, not the aggressive one from the earlier (wrong)
+  // diagnosis — verified against actual rendered pixel brightness, not
+  // guessed.
+  lightingIntensityScale: 0.6,
   // Real rotor RPM (300-400 for the main rotor) would just read as a blur
   // and be genuinely uncomfortable to look at up close — these are a
   // deliberately calm, legible "yes, this spins" rate instead. Axes are

@@ -71,20 +71,36 @@ export default function Model({ url, onLoaded, forceZeroMetalness, spinNodes }: 
 
   // Resolved once per model/spin-config change, not per frame — findable by
   // name since these are the same node names the hotspot configs already
-  // reference. rotateOnWorldAxis (not obj.rotation.y) is deliberate: some
-  // nodes carry their own small baked tilt/orientation from the source file
-  // (a rotor's coning angle, for one), and rotating around the node's own
-  // local axis would spin around that tilted axis instead of the intended
-  // world-space one.
-  const spinTargetsRef = useRef<Array<{ object: THREE.Object3D; axis: THREE.Vector3; speed: number }>>([]);
+  // reference.
+  //
+  // Rotating the named node directly (an earlier version of this did
+  // exactly that) is wrong for this GLB: these nodes' own local origins
+  // are FBX-export artifacts that don't sit anywhere near the mesh's
+  // actual visual center — confirmed live, it made the tail rotor swing
+  // through a wide arc around a point hundreds of units away instead of
+  // spinning in place, reported directly as "the tail rotor is moving on
+  // its own." The fix is a pivot group: a new empty Object3D positioned at
+  // the mesh's real world-space bounding-box center, with the mesh
+  // reparented into it via `attach()` (which preserves the mesh's current
+  // world transform — nothing jumps when this runs). Rotating the *pivot*,
+  // whose origin actually is the visual center, spins the mesh around the
+  // point it looks like it should.
+  const spinTargetsRef = useRef<Array<{ pivot: THREE.Object3D; axis: THREE.Vector3; speed: number }>>([]);
   useEffect(() => {
-    spinTargetsRef.current = (spinNodes ?? [])
-      .map((spin) => {
-        const object = clonedScene.getObjectByName(spin.nodeName);
-        if (!object) return null;
-        return { object, axis: new THREE.Vector3(...spin.axis).normalize(), speed: spin.radiansPerSecond };
-      })
-      .filter((entry): entry is { object: THREE.Object3D; axis: THREE.Vector3; speed: number } => entry !== null);
+    clonedScene.updateMatrixWorld(true);
+    const targets: Array<{ pivot: THREE.Object3D; axis: THREE.Vector3; speed: number }> = [];
+    for (const spin of spinNodes ?? []) {
+      const object = clonedScene.getObjectByName(spin.nodeName);
+      const parent = object?.parent;
+      if (!object || !parent) continue;
+      const center = new THREE.Box3().setFromObject(object).getCenter(new THREE.Vector3());
+      const pivot = new THREE.Group();
+      pivot.position.copy(center);
+      parent.add(pivot);
+      pivot.attach(object);
+      targets.push({ pivot, axis: new THREE.Vector3(...spin.axis).normalize(), speed: spin.radiansPerSecond });
+    }
+    spinTargetsRef.current = targets;
   }, [clonedScene, spinNodes]);
 
   const reduceMotion = useMemo(
@@ -96,8 +112,8 @@ export default function Model({ url, onLoaded, forceZeroMetalness, spinNodes }: 
 
   useFrame((_state, delta) => {
     if (reduceMotion) return;
-    for (const { object, axis, speed } of spinTargetsRef.current) {
-      object.rotateOnWorldAxis(axis, speed * delta);
+    for (const { pivot, axis, speed } of spinTargetsRef.current) {
+      pivot.rotateOnWorldAxis(axis, speed * delta);
     }
   });
 

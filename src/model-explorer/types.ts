@@ -132,4 +132,20 @@ export interface ModelExplorerConfig {
   // A flat circular ground pad rendered beneath the model, for the models
   // (like a parked helicopter) that read better grounded than mid-flight.
   groundPad?: { radius: number; center: Vec3 };
+  // Scene fog near/far distance, in this model's own units. The default
+  // (150/500) was tuned for Boeing's ~90-unit overall scale — a model at a
+  // much larger scale (the Merlin helicopter, ~2850 units) sits entirely
+  // past that far distance at any normal camera distance, rendering as
+  // 100% fog color and making the whole model invisible against a
+  // similarly-colored sky. Confirmed live as the real cause of "I can't
+  // see anything," not a lighting/exposure problem.
+  fogDistance?: { near: number; far: number };
+  // Camera far clip plane. Default 5000 (past the Sky dome's own distance
+  // of 3000) was fine for Boeing's ~90-unit scale, but a model at a much
+  // larger scale can have its own geometry sit farther from the camera
+  // than 5000 units at a normal viewing distance — parts of it get
+  // silently clipped out of the frame entirely, not just fogged. Checked
+  // by hand for the Merlin config: default camera-to-target distance
+  // (~3900) plus the model's own radius (~1700) exceeds 5000.
+  cameraFar?: number;
 }
