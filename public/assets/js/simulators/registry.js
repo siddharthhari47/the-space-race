@@ -61,6 +61,13 @@ export const SIMULATOR_REGISTRY = {
     status: "live",
     category: "flight",
   },
+  "helicopter-explorer": {
+    title: "Interactive Helicopter Explorer",
+    description: "A real 3D helicopter model you can rotate and zoom freely — click through the rotor, swashplate, tail rotor, and more.",
+    page: "/flight-lab/interactive-helicopter.html",
+    status: "live",
+    category: "flight",
+  },
   "flight-dynamics-simulator": {
     title: "Flight Dynamics",
     description: "Explore pitch, roll, and yaw and how control surfaces move an aircraft through the air.",

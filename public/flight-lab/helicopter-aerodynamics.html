@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helicopter Aerodynamics — Flight Lab — The Space Race</title>
+  <meta name="description" content="How a helicopter actually flies — the rotor, the swashplate, and why it never needs a runway." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="flight-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Flight Lab</a>
+    <h1 class="lab-title">Helicopter Aerodynamics</h1>
+    <p class="lab-intro">
+      An aircraft wing only makes lift once air is moving past it fast enough, which is the
+      entire reason a runway exists. A helicopter's wing never stops moving — it's just spinning
+      in a circle instead of being dragged forward by the whole aircraft, which is what lets it
+      take off straight up.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="300-400" label="Typical main rotor RPM" accent="flight"></stat-card>
+      <stat-card value="~100:1" label="Main gearbox speed reduction" accent="flight"></stat-card>
+      <stat-card value="2" label="Control inputs the swashplate translates: collective, cyclic" accent="flight"></stat-card>
+    </div>
+
+    <callout-box type="did-you-know">
+      <p>Leonardo da Vinci sketched a rotor-lift flying machine around 1483, four centuries
+      before anyone built one that actually flew. The idea — spin something to make lift — was
+      never the hard part. The problem, which took until the 1930s to properly solve, was
+      controlling an aircraft whose only wing was also its only source of thrust, torque, and
+      structural load, all happening on the same spinning disc at once.</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>A rotor blade is a wing with a job that never lets up. Slice through it anywhere along
+      its length and the cross-section is an airfoil, curved on top and flatter on the bottom,
+      shaped to produce lift exactly the way a fixed wing does when air flows over it. The
+      difference is how that airflow happens. A fixed wing needs the whole aircraft moving
+      forward. A rotor blade gets its airflow from spinning, so the aircraft underneath it can
+      sit completely still — hovering — while the blade is still doing full aerodynamic work,
+      dozens of times a second.</p>
+
+      <p>That's also why a rotor blade is twisted, not flat, from root to tip. The tip of a
+      spinning blade is moving much faster through the air than the point closest to the hub —
+      simple geometry, since the tip covers a bigger circle in the same rotation. A flat blade
+      would make wildly uneven lift along its length. Twisting it — steeper pitch near the root,
+      flatter near the tip — evens that out, so the blade contributes lift fairly consistently
+      from hub to tip instead of mostly at one end.</p>
+
+      <h2>See the Rotor for Yourself</h2>
+      <p>None of that is obvious from a photo. Rotate the model below and look at how the main
+      rotor sits relative to everything underneath it — one continuous mast running straight up
+      from the gearbox into a hub that's holding several blades at once, each one free to change
+      its own pitch as it spins. Click the marker for more on how it actually produces lift.</p>
+      <model-viewer-embed data-model="merlin-mk2-helicopter" data-focus="main-rotor"></model-viewer-embed>
+
+      <h2>Why the Rotor Needs to Tilt</h2>
+      <p>A hovering helicopter is already interesting, but a helicopter that can only hover
+      isn't very useful. Moving in any direction means tilting the whole rotor disc that way,
+      and a spinning disc doesn't tilt because you push on it from below — it tilts because the
+      blades are being told to change their own pitch, over and over, at a specific point in
+      every single rotation. That's the swashplate's job, and it's arguably the single cleverest
+      mechanism on the whole aircraft.</p>
+
+      <p>Two closely related but different inputs pass through it. Collective changes every
+      blade's pitch by the same amount, everywhere in the rotation — the whole disc makes more
+      or less lift at once, and the helicopter climbs or descends. Cyclic changes each blade's
+      pitch depending on where it currently is in the circle — more lift on one side of the
+      disc than the other, which tips the whole disc (and the helicopter with it) in that
+      direction.</p>
+
+      <figure class="diagram-figure">
+        <svg viewBox="0 0 640 260" role="img" aria-label="Diagram comparing collective and cyclic rotor blade pitch. Collective: all four blade positions show the same pitch angle, and the rotor disc lifts straight up evenly. Cyclic: blade pitch varies around the circle, low on one side and high on the other, tilting the rotor disc and its lift vector to one side.">
+          <text x="150" y="24" text-anchor="middle" class="diagram-label-title">Collective</text>
+          <circle cx="150" cy="130" r="80" class="diagram-disc" />
+          <g class="diagram-blade-group">
+            <rect x="142" y="30" width="16" height="34" rx="3" transform="rotate(12 150 47)" />
+            <rect x="142" y="196" width="16" height="34" rx="3" transform="rotate(12 150 213)" />
+            <rect x="36" y="122" width="34" height="16" rx="3" transform="rotate(12 53 130)" />
+            <rect x="230" y="122" width="34" height="16" rx="3" transform="rotate(12 247 130)" />
+          </g>
+          <line x1="150" y1="130" x2="150" y2="46" class="diagram-arrow" marker-end="url(#arrowhead)" />
+          <text x="150" y="252" text-anchor="middle" class="diagram-label-sub">Every blade, same pitch — lift straight up</text>
+
+          <text x="490" y="24" text-anchor="middle" class="diagram-label-title">Cyclic</text>
+          <circle cx="490" cy="130" r="80" class="diagram-disc" />
+          <g class="diagram-blade-group">
+            <rect x="482" y="34" width="16" height="26" rx="3" transform="rotate(6 490 47)" />
+            <rect x="482" y="200" width="16" height="42" rx="3" transform="rotate(-6 490 221)" />
+            <rect x="376" y="122" width="34" height="16" rx="3" transform="rotate(0 393 130)" />
+            <rect x="570" y="122" width="34" height="16" rx="3" transform="rotate(0 587 130)" />
+          </g>
+          <line x1="490" y1="130" x2="454" y2="52" class="diagram-arrow" marker-end="url(#arrowhead)" />
+          <text x="490" y="252" text-anchor="middle" class="diagram-label-sub">Pitch varies by position — lift (and the disc) tilts</text>
+
+          <defs>
+            <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" class="diagram-arrowhead-fill" />
+            </marker>
+          </defs>
+        </svg>
+      </figure>
+
+      <p>Watch the model below and it'll make more sense than any diagram — the swashplate is a
+      small mechanism low on the mast, but every climb, descent, and turn this aircraft ever
+      makes starts there.</p>
+      <model-viewer-embed data-model="merlin-mk2-helicopter" data-focus="swashplate"></model-viewer-embed>
+
+      <p>One consequence of all this: a helicopter is never really trimmed and left alone the
+      way a cruising airliner can be. The pilot is making small collective and cyclic
+      corrections continuously, because a rotor system that can tilt itself in any direction on
+      command is also a rotor system that will drift in some direction the moment you stop
+      correcting it. That's the trade a helicopter makes for not needing a runway — direct,
+      constant control over lift and direction, in exchange for none of it holding still on its
+      own.</p>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="interactive-helicopter.html">Interactive Helicopter Explorer</a></li>
+        <li><a href="aerodynamics.html">Aerodynamics (Fixed-Wing)</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="index.html">Back to Flight Lab</a></li>
+        <li><a href="../references/index.html">References</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

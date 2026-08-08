@@ -13,3 +13,4 @@ import "./callout-box.js";
 import "./timeline-event.js";
 import "./expandable-diagram.js";
 import "./simulation-container.js";
+import "./model-viewer-embed.js";

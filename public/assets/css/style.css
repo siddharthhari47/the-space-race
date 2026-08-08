@@ -666,6 +666,53 @@ article.post {
   margin-top: 0.6rem;
 }
 
+.diagram-figure {
+  max-width: 640px;
+  margin: 2rem auto;
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.diagram-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.diagram-label-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1rem;
+  fill: var(--text);
+}
+
+.diagram-label-sub {
+  font-size: 0.72rem;
+  fill: var(--text-dim);
+}
+
+.diagram-disc {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.diagram-blade-group rect {
+  fill: var(--accent);
+  opacity: 0.85;
+}
+
+.diagram-arrow {
+  stroke: var(--accent-2);
+  stroke-width: 2.5;
+}
+
+.diagram-arrowhead-fill {
+  fill: var(--accent-2);
+}
+
 .data-table-wrap {
   overflow-x: auto;
   margin: 2rem 0;
@@ -1563,6 +1610,46 @@ expandable-diagram {
   .explorer-sidebar.is-open {
     width: 100%;
   }
+}
+
+/* ---------- Model explorer: embedded (inline theory-page widget) ---------- */
+model-viewer-embed {
+  display: block;
+  margin: var(--space-5) 0;
+}
+
+.model-viewer-embed-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  max-width: 640px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-alt);
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.explorer-shell--embedded {
+  max-width: 640px;
+  gap: var(--space-3);
+}
+
+.explorer-shell--embedded .explorer-main {
+  flex-direction: column;
+}
+
+.explorer-shell--embedded .explorer-canvas-region {
+  aspect-ratio: 4 / 3;
+}
+
+.explorer-shell--embedded .explorer-sidebar.is-open {
+  width: 100%;
+}
+
+.explorer-shell--embedded .explorer-sidebar-body {
+  max-height: none;
 }
 
 .diagram-stage {

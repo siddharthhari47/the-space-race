@@ -18,6 +18,14 @@ export const NAV_ITEMS = [
       { label: "Military Aircraft", href: "/flight-lab/military-aircraft.html" },
       { label: "Private Aviation", href: "/flight-lab/private-aviation.html" },
       { label: "Interactive Aircraft", href: "/flight-lab/interactive-aircraft.html" },
+      // Helicopters is Flight Lab's second pillar (see flight-lab/index.html),
+      // not a sub-topic of Commercial Aircraft — grouped in the same flat
+      // dropdown only because site-header.js doesn't support a nested
+      // second-level flyout yet. Only two entries here since only two
+      // helicopter pages exist so far (Rotor Systems / Controls / Systems
+      // are planned but not built — no dead links in the meantime).
+      { label: "Interactive Helicopter", href: "/flight-lab/interactive-helicopter.html" },
+      { label: "Helicopter Aerodynamics", href: "/flight-lab/helicopter-aerodynamics.html" },
     ],
   },
   {
