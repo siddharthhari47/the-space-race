@@ -165,17 +165,17 @@ export default function ExplorerShell({ config, mode = "full", focusHotspotId }:
             }}
             dpr={[1, 2]}
           >
-            {/* Sky (rendered in Scene) supplies the background — the far
-                plane is pushed out to 5000 so its dome (distance 3000)
-                doesn't get clipped. A light sky-colored fog stands in for
-                the old dark-space fog; its near/far default to just past
-                Boeing's ~90-unit extent so it only adds atmospheric depth
-                at the horizon, not on the aircraft itself. Per-model
+            {/* Sky-colored fog matching GradientSky's horizon color — skip
+                entirely when showEnvironment is off, so a model presented
+                with no environment dressing doesn't still pick up a
+                sky-blue tint at its own far edges. Per-model distance
                 override via config.fogDistance — see types.ts. */}
-            <fog
-              attach="fog"
-              args={["#cfe3ff", config.fogDistance?.near ?? 150, config.fogDistance?.far ?? 500]}
-            />
+            {(config.showEnvironment ?? true) && (
+              <fog
+                attach="fog"
+                args={["#cfe3ff", config.fogDistance?.near ?? 150, config.fogDistance?.far ?? 500]}
+              />
+            )}
             <Suspense fallback={null}>
               <Scene
                 config={config}

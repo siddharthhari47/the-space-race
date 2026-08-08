@@ -49,24 +49,30 @@ export default function Scene({
   // helicopter) reflects it far more strongly and blows out to a
   // washed-out look at the same intensities, confirmed live.
   const lightScale = config.lightingIntensityScale ?? 1;
+  const showEnvironment = config.showEnvironment ?? true;
 
   return (
     <>
-      {/* A plain blue fallback behind everything, belt-and-suspenders. */}
-      <color attach="background" args={["#8ec5ff"]} />
+      {showEnvironment && (
+        <>
+          {/* A plain blue fallback behind everything, belt-and-suspenders. */}
+          <color attach="background" args={["#8ec5ff"]} />
 
-      {/* Not drei's <Sky> — that component's fragment shader hardcodes
-          the camera position as world origin (read the actual
-          three-stdlib source to confirm this, it's not a documented
-          limitation) and clamps any below-horizon view direction to the
-          same pale, hazy color. Fine when the camera stays within a few
-          hundred units of origin; produces a visible box edge for a
-          model/camera operating thousands of units out (the helicopter),
-          and a flat pale-white wash for any camera angle that dips below
-          the horizon on *either* model — confirmed live, reported
-          directly twice as "the bottom looks white." GradientSky has
-          neither assumption. */}
-      <GradientSky radius={config.skyRadius ?? 2500} />
+          {/* Not drei's <Sky> — that component's fragment shader hardcodes
+              the camera position as world origin (read the actual
+              three-stdlib source to confirm this, it's not a documented
+              limitation) and clamps any below-horizon view direction to
+              the same pale, hazy color. Fine when the camera stays within
+              a few hundred units of origin; produces a visible box edge
+              for a model/camera operating thousands of units out, and a
+              flat pale-white wash for any camera angle that dips below
+              the horizon. GradientSky has neither assumption. Only used
+              when showEnvironment is on — a model presented as a plain
+              suspended object (showEnvironment: false) skips this
+              entirely rather than risk it looking wrong again. */}
+          <GradientSky radius={config.skyRadius ?? 2500} />
+        </>
+      )}
 
       <Environment resolution={256} frames={1}>
         <Lightformer intensity={2 * lightScale} position={[0, 40, 0]} scale={[90, 40, 1]} rotation-x={Math.PI / 2} />
@@ -85,7 +91,7 @@ export default function Scene({
         spinNodes={config.spinNodes}
       />
 
-      {config.groundPad && (
+      {showEnvironment && config.groundPad && (
         <mesh
           position={config.groundPad.center}
           rotation-x={-Math.PI / 2}
@@ -110,7 +116,7 @@ export default function Scene({
         registerRef={registerMarkerRef}
       />
 
-      <Clouds />
+      {showEnvironment && <Clouds />}
 
       <CameraRig config={config} selectedHotspot={selectedHotspot} resetSignal={resetSignal} />
     </>

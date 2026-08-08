@@ -155,4 +155,10 @@ export interface ModelExplorerConfig {
   // small scale (max orbit distance 180); a model whose camera legitimately
   // orbits thousands of units out needs this scaled up to match.
   skyRadius?: number;
+  // Renders the background color, GradientSky, clouds, and ground pad.
+  // Default true (Boeing's existing "flying in open sky" presentation,
+  // unchanged). Set false for a plain suspended-object presentation with
+  // no environment at all — the model's own lighting/materials are still
+  // fully rendered, only the sky/cloud/ground dressing is skipped.
+  showEnvironment?: boolean;
 }
