@@ -165,3 +165,81 @@ Boeing-specific `metalness = 0` correction (for a compression artifact
 Boeing's flat-color materials hit) that must **not** apply to this model;
 it's gated behind `config.forceZeroMetalness`, which the Merlin config
 leaves unset.
+
+---
+
+## `sukhoi-su35-fighter.glb`
+
+> "Sukhoi SU-35 Fighter Jet" (https://skfb.ly/pwSpn) by Muhamad Mirza Arrafi
+> is licensed under Creative Commons Attribution 4.0
+> (http://creativecommons.org/licenses/by/4.0/).
+>
+> **Modified for web use.** Geometry Draco-compressed; textures resized to a
+> 1024px cap and re-encoded from PNG to JPEG.
+
+Used by `flight-lab/interactive-fighter-aircraft.html` and embedded in
+`flight-lab/fighter-aircraft.html`.
+
+### Processing
+
+This model needed a two-step pipeline rather than a single `optimize` call,
+because `@gltf-transform/cli`'s texture stage (libvips) refuses these
+particular PNGs outright:
+
+```
+error: colourspace: parameter space not set
+```
+
+PIL reads them without complaint, so the textures were resized and
+re-encoded first, in Python, and the geometry compressed afterwards:
+
+```bash
+# 1. textures: 1024px cap, PNG -> JPEG (WebP where alpha exists)
+python shrink_textures.py sukhoi_su-35_fighter_jet.glb su35-tmp.glb 1024
+
+# 2. geometry: Draco, preserving per-part mesh identity
+npx @gltf-transform/cli optimize su35-tmp.glb sukhoi-su35-fighter.glb \
+  --compress draco --texture-compress false \
+  --simplify false --join false --flatten false --instance false
+```
+
+Order matters. Running `optimize` first produces `EXT_meshopt_compression`
+bufferViews whose real data offsets live in the extension object rather than
+in `bufferView.byteOffset`, so a naive container rewrite afterwards corrupts
+them (`Invalid typed array length` on reload). Shrink textures on the plain
+uncompressed source, then compress.
+
+**Why `--compress draco` explicitly:** `optimize`'s default is meshopt, which
+would require registering a `MeshoptDecoder` at runtime. The site already
+self-hosts a Draco decoder at `/draco/` (see `Model.tsx`), so Draco is the
+option that needs no viewer changes.
+
+**Why `--join/--flatten/--instance false`:** preserves the separate meshes
+that `configs/sukhoi-su35-fighter.ts` derives hotspot positions from.
+
+### Before / after
+
+| | Source | Optimized |
+|---|---|---|
+| File size | 11.33 MB | 1.40 MB |
+| Mesh primitives | 15 | 15 (unchanged — no merging) |
+| Materials | 13 | 10 (dedup removed 3 unused/duplicate) |
+| Vertices | 141,780 | 142,125 (Draco re-quantization; negligible) |
+| Textures | 8 PNG (up to 2048×2048, 4.6 MB total) | 8 JPEG (capped 1024×1024, ~0.8 MB total) |
+| Scene bounding box | -7.13358,-2.14048,-11.41077 → 7.13358,3.77542,10.00856 | -7.13358,-2.14048,-11.41077 → 7.1342,3.77541,10.00856 |
+
+Verified via `npx @gltf-transform/cli inspect` before and after.
+
+### Scale note
+
+This model is authored at **1 unit = 1 metre**, confirmed against three
+independent dimensions of the real aircraft (21.42 vs 21.9 m length, 14.27 vs
+15.3 m span, 5.92 vs 5.9 m height) rather than assumed. That's what makes the
+anatomy-derived hotspot positions in its config defensible.
+
+### Runtime note
+
+Requires `KHR_draco_mesh_compression`, same as Boeing and the Merlin. Every
+material's `metallicFactor` was verified to still be `0` *after* the Draco
+pass, so this model must **not** set `config.forceZeroMetalness` — the Boeing
+compression artifact that flag exists for did not occur here.

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Makes a Fighter Different — Flight Lab — The Space Race</title>
+  <meta name="description" content="An Su-35 can accelerate while pointing straight up. A loaded 777 cannot. Thrust-to-weight, afterburners, and thrust vectoring explain most of the difference." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="flight-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Flight Lab</a>
+    <h1 class="lab-title">What Makes a Fighter Different</h1>
+    <p class="lab-intro">
+      Both aircraft in Flight Lab fly through the same atmosphere, obey the same four forces, and
+      were designed by engineers solving the same equations. They look nothing alike. That's worth
+      explaining.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="&gt;1" label="Su-35 thrust-to-weight at combat weight" accent="flight"></stat-card>
+      <stat-card value="~0.25" label="Loaded airliner thrust-to-weight" accent="flight"></stat-card>
+      <stat-card value="~65%" label="Thrust gained by lighting the afterburner" accent="flight"></stat-card>
+      <stat-card value="21.9 m" label="Su-35 length, against a 777's 73.9 m" accent="flight"></stat-card>
+    </div>
+
+    <callout-box type="did-you-know">
+      <p>A fighter's thrust-to-weight ratio above 1 means something genuinely strange: the engines
+      push harder than gravity pulls. Point the nose at the sky and the aircraft keeps
+      accelerating, with the wings contributing nothing at all. It is, for that moment, flying the
+      way a rocket flies rather than the way an aeroplane does.</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>Start with the number that drives everything else. Thrust-to-weight is exactly what it
+      sounds like: divide how hard the engines push by how much the aircraft weighs. A fully loaded
+      airliner sits somewhere around 0.25, which is plenty. It only ever needs enough thrust to
+      accelerate along a runway until the wings take over, then enough to balance drag for the next
+      nine hours. An Su-35 at combat weight is above 1.</p>
+
+      <p>That single ratio reshapes the whole aircraft. If thrust is abundant, drag stops being the
+      thing you optimise around, and you can afford shapes an airliner designer would reject
+      immediately. A bubble canopy sitting proud of the fuselage. A wing small enough to be thrown
+      around rather than large enough to be efficient. Weapons hung out in the airflow. Each of
+      those costs fuel, and a fighter accepts the bill because the engines can cover it.</p>
+
+      <h2>Where the Extra Thrust Comes From</h2>
+      <p>Jet engines only burn a fraction of the air passing through them. Plenty of oxygen leaves
+      out the back unused, and an afterburner is the blunt exploitation of that fact: spray raw fuel
+      into the exhaust behind the turbine, light it, and the exhaust leaves faster than it
+      otherwise would.</p>
+
+      <p>The gain is large and the cost is brutal. Roughly 50 to 65 percent more thrust, for
+      fuel consumption that can more than double. Nobody cruises on afterburner. It gets used for
+      takeoff, for accelerating through the transonic region, and for the few seconds of a fight
+      where the alternative is losing. The nozzle has to physically open wider while it happens,
+      which is why the petals at the back of a fighter visibly change diameter.</p>
+
+      <p>Look at the back of the aircraft below and you can see the nozzle assembly the afterburner
+      dumps into. The two engines are set noticeably far apart, which turns out to matter for the
+      next section.</p>
+      <model-viewer-embed data-model="sukhoi-su35-fighter" data-focus="afterburner"></model-viewer-embed>
+
+      <h2>Pointing the Exhaust</h2>
+      <p>Every control surface on a conventional aircraft works the same way: it sticks out into
+      moving air and deflects it. That's a fine arrangement right up until there isn't enough
+      moving air. At very low speed, or at very high angles of attack where the airflow has
+      separated, a rudder or an elevator has progressively less to push against, and eventually
+      the pilot is moving a stick connected to nothing useful.</p>
+
+      <p>Thrust vectoring sidesteps the problem entirely. If the nozzles themselves can swivel,
+      the exhaust can be pointed off the centreline, and the resulting force doesn't care how fast
+      the aircraft is travelling through the air. The engine is producing thrust regardless. Point
+      it down and the tail goes down. Point the two nozzles in different directions and the
+      aircraft rolls.</p>
+
+      <p>This is why those widely-spaced engines matter. Two nozzles close together on the
+      centreline could push the tail up or down, but they'd have almost no leverage to roll the
+      aircraft. Spread them apart and differential vectoring becomes a real roll control.</p>
+
+      <callout-box type="engineering-insight">
+        <p>An Su-35 has three separate ways to roll: ailerons on the wings, tailplanes that can move
+        differentially, and thrust vectoring. Redundancy is a side effect. The real reason is that
+        each one stops working in a different part of the envelope, so between them there's always
+        at least one that still bites.</p>
+      </callout-box>
+
+      <h2>Surfaces That Move as a Whole</h2>
+      <p>There's a quieter difference at the tail. A 777 has a fixed horizontal stabilizer with a
+      hinged elevator on the back of it, and that works well below the speed of sound. Past Mach 1
+      a shock wave forms on the surface and the hinged section loses much of its authority, because
+      the airflow behind the shock barely responds to it.</p>
+
+      <p>Supersonic aircraft almost universally solve this the same way, by making the entire
+      horizontal surface pivot instead of hinging a flap onto it. It's called an all-moving
+      tailplane, or a stabilator. More pitch authority for the same area, and it keeps working
+      where an elevator would have given up.</p>
+
+      <p>Rotate the tail section below and compare it against the 777's arrangement, which Flight
+      Lab's <a href="aircraft-systems.html">Aircraft Systems</a> page names part by part.</p>
+      <model-viewer-embed data-model="sukhoi-su35-fighter" data-focus="horizontal-stabilizers"></model-viewer-embed>
+
+      <h2>The Wing That Refuses to Stall</h2>
+      <p>An airliner's wing spends its life at a few degrees of angle of attack, and that's by
+      design. Flight Lab's <a href="aerodynamics.html">Aerodynamics</a> page covers what happens
+      past the critical angle: airflow separates from the upper surface and lift collapses.
+      Somewhere around 15 to 20 degrees for a conventional wing.</p>
+
+      <p>A fighter needs to operate well beyond that, so the wing is blended into the fuselage
+      rather than bolted to it. Those blended extensions ahead of the wing root shed a strong
+      vortex that runs back over the upper surface, and that vortex drags airflow back down onto
+      the wing where it would otherwise have separated. It delays the stall dramatically.
+      Controlled flight at 30 degrees of angle of attack is a normal part of this aircraft's
+      envelope, not an emergency.</p>
+
+      <h2>Two Answers to the Same Atmosphere</h2>
+      <p>Put them side by side and the contrast is the point. A 777-300ER is 73.9 m long with a
+      64.8 m wingspan, carrying up to 396 people across an ocean on two enormous high-bypass
+      engines tuned for efficiency. An Su-35 is 21.9 m long with a 15.3 m span, carrying one
+      person, on two low-bypass engines tuned for thrust. You could lay three Su-35s nose to tail
+      inside the airliner's length.</p>
+
+      <p>Neither is better. They were handed different problems. The airliner's problem is moving
+      mass a long way cheaply, and every design decision follows from that. The fighter's problem
+      is controlling energy fast, and every decision follows from that instead. Same air, same
+      physics, same four forces. Completely different answers.</p>
+
+      <p>So here's the thing worth chewing on: if you had to design an aircraft that did both jobs
+      reasonably well, which compromises would you make first?</p>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Interactive Modules</h2>
+      <ul>
+        <li><a href="interactive-fighter-aircraft.html">Interactive Fighter Aircraft Explorer</a></li>
+        <li><a href="interactive-aircraft.html">Interactive Aircraft Explorer</a></li>
+      </ul>
+
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="military-aircraft.html">Military Aircraft</a></li>
+        <li><a href="aerodynamics.html">Aerodynamics</a></li>
+        <li><a href="aircraft-systems.html">Aircraft Systems</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="index.html">Back to Flight Lab</a></li>
+        <li><a href="../references/index.html">References</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

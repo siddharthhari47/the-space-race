@@ -25,6 +25,7 @@ export const NAV_ITEMS = [
       // would recreate exactly the "separate top-level tile" problem this
       // was meant to fix.
       { label: "Helicopter Aerodynamics", href: "/flight-lab/helicopter-aerodynamics.html" },
+      { label: "What Makes a Fighter Different", href: "/flight-lab/fighter-aircraft.html" },
     ],
   },
   {

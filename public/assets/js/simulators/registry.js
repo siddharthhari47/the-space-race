@@ -68,6 +68,13 @@ export const SIMULATOR_REGISTRY = {
     status: "live",
     category: "flight",
   },
+  "fighter-explorer": {
+    title: "Interactive Fighter Aircraft Explorer",
+    description: "A real 3D Su-35 you can rotate and zoom freely — click through the intakes, engines, thrust-vectoring nozzles, and control surfaces.",
+    page: "/flight-lab/interactive-fighter-aircraft.html",
+    status: "live",
+    category: "flight",
+  },
   "flight-dynamics-simulator": {
     title: "Flight Dynamics",
     description: "Explore pitch, roll, and yaw and how control surfaces move an aircraft through the air.",

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Fighter Aircraft Explorer — The Space Race</title>
+  <meta name="description" content="Rotate a real Su-35 and click through intakes, engines, thrust-vectoring nozzles, and control surfaces at true 1:1 scale." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/dist/model-explorer.js" defer></script>
+</head>
+<body>
+  <site-header current="flight-lab"></site-header>
+
+  <main class="container-wide lab-page">
+    <a class="back-link" href="index.html">&larr; Flight Lab</a>
+    <h1 class="lab-title">Interactive Fighter Aircraft Explorer</h1>
+    <p class="lab-intro">
+      A 777 spends its whole life trying to be efficient. This aircraft has almost the opposite
+      problem: it has to put an enormous amount of energy exactly where the pilot wants it, right
+      now. Start with the engines at the back, then look at how small the wing is compared to the
+      body. Those two things explain most of why a fighter is shaped nothing like the airliner
+      you've already been through.
+    </p>
+
+    <div
+      id="model-explorer-root"
+      data-model="sukhoi-su35-fighter"
+      role="img"
+      aria-label="Interactive 3D model of a Sukhoi Su-35 fighter jet. Drag to rotate, scroll or pinch to zoom, click a marker to explore a part."
+    ></div>
+
+    <p class="lab-intro spaced">
+      Six of the eleven markers sit on parts this model gives as their own separate geometry, so
+      they land exactly on the thing they name: the canopy, the cockpit, the landing gear, the
+      underwing stores. The other five (nose, intakes, engines, wings, tails) sit on one
+      continuous airframe mesh, so they're positioned from the real aircraft's published
+      dimensions instead. That's honest rather than exact, and you'll see an "Estimated placement"
+      badge on those. It works because the model happens to be built at true scale, 1 unit to 1
+      metre, which was checked against the real Su-35's length, span, and height before any marker
+      was placed.
+    </p>
+
+    <p class="lab-intro spaced">
+      Want the physics behind what you just clicked? <a href="fighter-aircraft.html">What Makes a
+      Fighter Different</a> covers thrust-to-weight, afterburners, and thrust vectoring properly.
+      Or go and compare it against the <a href="interactive-aircraft.html">Boeing
+      777-300ER</a>, which is built from a scan at the same real-world scale.
+    </p>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="fighter-aircraft.html">Flight Lab: What Makes a Fighter Different</a></li>
+        <li><a href="military-aircraft.html">Flight Lab: Military Aircraft</a></li>
+        <li><a href="interactive-aircraft.html">Interactive Aircraft Explorer</a></li>
+        <li><a href="index.html">Back to Flight Lab</a></li>
+      </ul>
+
+      <h2>Further Reading</h2>
+      <ul>
+        <li><a href="aerodynamics.html">Flight Lab: Aerodynamics</a></li>
+        <li><a href="../references/index.html">References</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>
