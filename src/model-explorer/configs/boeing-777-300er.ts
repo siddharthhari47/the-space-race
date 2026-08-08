@@ -135,7 +135,6 @@ const hotspots: HotspotConfig[] = [
     shortDescription: "The primary lift-generating surface, swept back and mounted low on the fuselage.",
     position: [2.5, 3.6, 12],
     radius: 5,
-    includeLargeMeshes: true,
     cameraPosition: [-2, 9, 22],
     cameraTarget: [2.5, 3.6, 12],
     tourOrder: 5,

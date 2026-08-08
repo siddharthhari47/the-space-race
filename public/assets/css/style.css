@@ -1433,6 +1433,13 @@ expandable-diagram {
   min-width: 0;
 }
 
+.explorer-hotspot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 .explorer-hotspot-marker {
   width: 26px;
   height: 26px;
@@ -1464,6 +1471,18 @@ expandable-diagram {
 .explorer-hotspot-marker[aria-expanded="true"] .explorer-hotspot-dot,
 .explorer-hotspot-marker:hover .explorer-hotspot-dot {
   background: var(--bg);
+}
+
+.explorer-hotspot-label {
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-pill);
+  background: rgba(5, 7, 15, 0.78);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.68rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .explorer-sidebar {
@@ -1650,6 +1669,11 @@ model-viewer-embed {
 
 .explorer-shell--embedded .explorer-sidebar-body {
   max-height: none;
+}
+
+.explorer-shell--embedded .explorer-toolbar .btn {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8rem;
 }
 
 .diagram-stage {

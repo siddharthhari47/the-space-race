@@ -21,10 +21,10 @@ import type { HotspotConfig, ModelExplorerConfig } from "../types";
 //    blades, and mast are all part of a single "Prop" mesh; the
 //    vertical fin and horizontal stabilizer are both "BackWing") are
 //    consolidated into one hotspot each, rather than several markers
-//    that would all trigger an identical highlight. Their distinct
-//    concepts still get covered — in the merged hotspot's content, not
-//    as separate clickable dots that couldn't actually distinguish
-//    them.
+//    that couldn't actually distinguish between parts of the same mesh.
+//    Their distinct concepts still get covered — in the merged
+//    hotspot's content, not as separate clickable dots with nothing
+//    unique under them.
 // 2. Landing Gear and Flight Controls were investigated and dropped —
 //    there's no skid/wheel geometry anywhere in this model, and no
 //    cockpit interior, so neither has any real position to point at.
@@ -33,10 +33,7 @@ import type { HotspotConfig, ModelExplorerConfig } from "../types";
 //
 // This model's overall bounding-box diagonal (~2850 units) is roughly
 // 40x the Boeing model's (~66 units) — a different Sketchfab export's
-// unit scale, not a real size difference. `largeMeshDiagonalThreshold`
-// below is set for this model's own scale; every one of its 8 meshes is
-// "large" by Boeing's threshold of 20, which is why that constant had to
-// become a per-model config value in the first place.
+// unit scale, not a real size difference.
 const hotspots: HotspotConfig[] = [
   {
     id: "main-rotor",
@@ -45,7 +42,6 @@ const hotspots: HotspotConfig[] = [
     shortDescription: "The spinning assembly directly overhead — hub, mast, and blades — doing all of the lifting.",
     position: [-447, 295, -12],
     radius: 550,
-    includeLargeMeshes: true,
     // Offset scaled to the rotor disc's own ~2450-unit bounding diagonal,
     // not a generic close-up distance — a small offset here put the
     // camera nearly inside the mesh (confirmed live: a flat, blank
@@ -73,7 +69,6 @@ const hotspots: HotspotConfig[] = [
     shortDescription: "The mechanism at the base of the mast that translates stick and lever input into blade pitch.",
     position: [-447, 180, -12],
     radius: 220,
-    includeLargeMeshes: true,
     // Offset magnitude checked against BodyTop's own half-diagonal
     // (~877, since that's the host mesh a hotspot bound this close to it
     // will incidentally sit inside) — same class of "camera too close"
@@ -101,7 +96,6 @@ const hotspots: HotspotConfig[] = [
     shortDescription: "Turns fuel into rotor speed, and gears that speed down to something the mast can survive.",
     position: [-297, 220, -12],
     radius: 260,
-    includeLargeMeshes: true,
     cameraPosition: [359, 689, 738],
     cameraTarget: [-297, 220, -12],
     tourOrder: 3,
@@ -170,7 +164,6 @@ const hotspots: HotspotConfig[] = [
     shortDescription: "The long structural extension carrying the tail rotor drive shaft back from the main gearbox.",
     position: [450, 150, 0],
     radius: 350,
-    includeLargeMeshes: true,
     cameraPosition: [1047, 663, 769],
     cameraTarget: [450, 150, 0],
     confidence: "estimated",
@@ -276,7 +269,6 @@ export const merlinMk2Helicopter: ModelExplorerConfig = {
     maxDistance: 8000,
   },
   guidedTourDwellMs: 7000,
-  largeMeshDiagonalThreshold: 1000,
   // The real cause of "I can't see anything": the default camera-to-target
   // distance here (~3900) plus this model's own radius (~1700) exceeds the
   // 500-unit-scale defaults for both fog-far and the camera's far clip

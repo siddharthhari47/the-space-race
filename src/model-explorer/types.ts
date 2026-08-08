@@ -29,21 +29,12 @@ interface HotspotBase {
   confidence: "geometric" | "estimated";
 }
 
-// Binds a hotspot's highlight to every mesh whose world-space bounding box
-// comes within `radius` of `position` — measured point-to-box (Three.js
-// `Box3.distanceToPoint`), not center-to-center. That distinction matters:
-// this model's "wing" is a single mesh spanning the entire wingspan, so
-// its bounding-box *center* sits near the fuselage centerline regardless
-// of where along the span a hotspot is placed — a center-to-center test
-// would never match it. Point-to-box distance is 0 for any hotspot placed
-// inside that mesh's (large) bounding volume, which is what actually
-// selects it correctly. One consequence: a large enough mesh's bounding
-// box can overlap several unrelated hotspots' local radii — this model's
-// "wing" mesh was confirmed (via a live screenshot) to incidentally light
-// up for the Landing Gear hotspot before `includeLargeMeshes` existed.
-// useModelHighlight excludes oversized meshes from matching by default;
-// only a hotspot that opts in (like this model's "wing" entry) matches
-// them.
+// A hotspot placed at an explicit world-space point — its marker renders
+// there. `radius` described the local match area for a mesh highlight/dim
+// effect that has since been removed (mutating material color across the
+// whole model on every selection read as flicker/glitching on some
+// meshes); kept as authored geometry metadata rather than stripped from
+// every hotspot in both configs, but no longer read by any render path.
 // Used throughout for this Boeing 777 GLB, which has no usable per-part
 // node names (every node is a raw FBX-export artifact like
 // "NurbsPath.028").
@@ -51,22 +42,11 @@ export interface PositionHotspot extends HotspotBase {
   bind: "position";
   position: Vec3;
   radius: number;
-  // Opt-in escape hatch for the rare hotspot that's *supposed* to match a
-  // large, scene-spanning mesh (this model's "wing" node covers the
-  // entire wingspan as one piece). Without this, useModelHighlight
-  // excludes any mesh whose own bounding-box diagonal is disproportionate
-  // to the hotspot's radius, so one huge mesh doesn't visually dominate
-  // every nearby hotspot's highlight (confirmed live: the wing mesh was
-  // incidentally lighting up for the Landing Gear hotspot before this
-  // existed, since its bounding box genuinely overlaps that area).
-  includeLargeMeshes?: boolean;
 }
 
-// Binds a hotspot's highlight to a named node's entire mesh subtree —
-// for future models authored with real part names (e.g. a hand-built
-// CubeSat with "SolarPanel_L"). Not exercised by the Boeing config, but
-// designed in from the start so the framework doesn't need to change to
-// support a cleaner model later.
+// A hotspot bound to a named node — for future models authored with real
+// part names (e.g. a hand-built CubeSat with "SolarPanel_L"). Not
+// exercised by either shipped config today.
 export interface NodeHotspot extends HotspotBase {
   bind: "node";
   nodeName: string;
@@ -113,10 +93,6 @@ export interface ModelExplorerConfig {
   // Leave unset for any model with genuine metallic/roughness textures —
   // forcing metalness to 0 on those would flatten real material response.
   forceZeroMetalness?: boolean;
-  // Per-model large-mesh cutoff for useModelHighlight's includeLargeMeshes
-  // opt-in — only meaningful relative to this model's own unit scale (see
-  // useModelHighlight.ts). Omit to use the Boeing-calibrated default (20).
-  largeMeshDiagonalThreshold?: number;
   // Multiplies every light in Scene.tsx's shared rig (ambient, directional,
   // every Lightformer). That rig was tuned against the Boeing model, whose
   // materials are flat matte color with zero textures — a model with real

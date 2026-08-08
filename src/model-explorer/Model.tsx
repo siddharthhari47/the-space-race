@@ -21,14 +21,15 @@ export default function Model({ url, onLoaded, forceZeroMetalness, spinNodes }: 
   const { scene } = useGLTF(url, true);
 
   // Break the shared-material graph on purpose: some source models reuse a
-  // small palette of materials across many unrelated meshes, so mutating
-  // one mesh's material for a highlight/dim effect would otherwise
-  // visually affect every other mesh sharing that same material instance.
-  // Cloning once per mesh, here, at load time, means later highlight logic
-  // only ever needs to mutate each mesh's own clone. This is the direct
-  // inverse of the old src/aircraft-3d/Materials.ts, which deliberately
-  // shared instances since procedural geometry never needed independent
-  // per-part state.
+  // small palette of materials across many unrelated meshes, and drei's
+  // useGLTF cache means those material instances are shared with every
+  // other mount of the same model — mutating one in place (as
+  // forceZeroMetalness does below) would otherwise leak into every other
+  // mesh, and every other instance of this component, sharing that same
+  // material. Cloning once per mesh, here, at load time, keeps that
+  // mutation local. This is the direct inverse of the old
+  // src/aircraft-3d/Materials.ts, which deliberately shared instances
+  // since procedural geometry never needed independent per-part state.
   const clonedScene = useMemo(() => {
     const cloned = scene.clone(true);
     cloned.traverse((obj) => {

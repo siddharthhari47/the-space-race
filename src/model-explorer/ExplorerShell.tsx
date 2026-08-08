@@ -4,20 +4,20 @@ import * as THREE from "three";
 import Scene from "./Scene";
 import Sidebar from "./Sidebar";
 import LoadingOverlay from "./LoadingOverlay";
-import { useModelHighlight } from "./useModelHighlight";
 import { useGuidedTour } from "./useGuidedTour";
 import type { HotspotConfig, ModelExplorerConfig } from "./types";
 
 interface ExplorerShellProps {
   config: ModelExplorerConfig;
-  // "full" (default): the dedicated-page exhibit — toolbar, side-by-side
-  // sidebar drawer, unchanged from the original single-model behavior.
+  // "full" (default): the dedicated-page exhibit — side-by-side sidebar
+  // drawer, unchanged from the original single-model behavior.
   // "embedded": a compact instance meant to sit inline in theory-page
-  // prose (see model-viewer-embed.js) — no toolbar, sidebar renders
-  // inline/stacked instead of as a drawer, and a specific hotspot can be
-  // pre-selected on load via focusHotspotId. Hotspot markers stay
-  // interactive either way — embedded mode narrows the starting view, it
-  // doesn't lock the viewer to one part.
+  // prose (see model-viewer-embed.js) — sidebar renders inline/stacked
+  // instead of as a drawer, and a specific hotspot can be pre-selected on
+  // load via focusHotspotId. Both modes get the same Reset View / Guided
+  // Tour toolbar. Hotspot markers stay interactive either way — embedded
+  // mode narrows the starting view, it doesn't lock the viewer to one
+  // part.
   mode?: "full" | "embedded";
   focusHotspotId?: string;
 }
@@ -30,30 +30,21 @@ export default function ExplorerShell({ config, mode = "full", focusHotspotId }:
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotConfig | null>(null);
   const [focusIndex, setFocusIndex] = useState(0);
   const markerRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const { registerScene, applyHotspot, clearHighlight } = useModelHighlight(config.largeMeshDiagonalThreshold);
 
   // Pure: applies a hotspot's selection with no awareness of *why* it was
   // selected. Used both by direct marker clicks and by the guided tour's
   // own auto-advance — kept separate so the tour driving a selection
   // doesn't loop back into the tour-pausing logic a manual click needs.
-  const applySelection = useCallback(
-    (hotspot: HotspotConfig, index: number) => {
-      setSelectedHotspot(hotspot);
-      setFocusIndex(index);
-      applyHotspot(hotspot);
-    },
-    [applyHotspot]
-  );
+  const applySelection = useCallback((hotspot: HotspotConfig, index: number) => {
+    setSelectedHotspot(hotspot);
+    setFocusIndex(index);
+  }, []);
 
   // Embedded instances can ask to open already focused on one part (e.g. a
-  // theory page's "Main Rotor" embed) — applied once, right after the
-  // model's meshes are registered for highlighting, so the highlight/dim
-  // pass actually has geometry to match against (registering happens on
-  // GLTF load, same effect that already runs for every model).
+  // theory page's "Main Rotor" embed) — applied once the model has loaded.
   const initialFocusAppliedRef = useRef(false);
   const handleModelLoaded = useCallback(
-    (scene: THREE.Group) => {
-      registerScene(scene);
+    (_scene: THREE.Group) => {
       if (mode === "embedded" && focusHotspotId && !initialFocusAppliedRef.current) {
         const index = config.hotspots.findIndex((h) => h.id === focusHotspotId);
         if (index !== -1) {
@@ -62,7 +53,7 @@ export default function ExplorerShell({ config, mode = "full", focusHotspotId }:
         }
       }
     },
-    [registerScene, mode, focusHotspotId, config.hotspots, applySelection]
+    [mode, focusHotspotId, config.hotspots, applySelection]
   );
 
   const tour = useGuidedTour({
@@ -82,8 +73,7 @@ export default function ExplorerShell({ config, mode = "full", focusHotspotId }:
   const closeSidebar = useCallback(() => {
     if (tour.isPlaying) tour.exit();
     setSelectedHotspot(null);
-    clearHighlight();
-  }, [tour, clearHighlight]);
+  }, [tour]);
 
   // A plain state change to selectedHotspot isn't enough to drive a reset
   // on its own: if the user free-rotated/zoomed without ever selecting a
@@ -95,9 +85,8 @@ export default function ExplorerShell({ config, mode = "full", focusHotspotId }:
   const resetView = useCallback(() => {
     if (tour.isPlaying) tour.exit();
     setSelectedHotspot(null);
-    clearHighlight();
     setResetSignal((n) => n + 1);
-  }, [tour, clearHighlight]);
+  }, [tour]);
 
   const registerMarkerRef = useCallback((index: number, el: HTMLButtonElement | null) => {
     markerRefs.current[index] = el;
@@ -135,23 +124,21 @@ export default function ExplorerShell({ config, mode = "full", focusHotspotId }:
 
   return (
     <div className={mode === "embedded" ? "explorer-shell explorer-shell--embedded" : "explorer-shell"}>
-      {mode === "full" && (
-        <div className="explorer-toolbar">
-          <button type="button" className="btn btn-secondary" onClick={resetView}>
-            Reset View
-          </button>
-          {tour.hasStops &&
-            (tour.isPlaying ? (
-              <button type="button" className="btn btn-secondary" onClick={tour.pause}>
-                Pause Guided Tour
-              </button>
-            ) : (
-              <button type="button" className="btn btn-primary" onClick={tour.play}>
-                Start Guided Tour
-              </button>
-            ))}
-        </div>
-      )}
+      <div className="explorer-toolbar">
+        <button type="button" className="btn btn-secondary" onClick={resetView}>
+          Reset View
+        </button>
+        {tour.hasStops &&
+          (tour.isPlaying ? (
+            <button type="button" className="btn btn-secondary" onClick={tour.pause}>
+              Pause Guided Tour
+            </button>
+          ) : (
+            <button type="button" className="btn btn-primary" onClick={tour.play}>
+              Start Guided Tour
+            </button>
+          ))}
+      </div>
 
       <div className="explorer-main">
         <div className="explorer-canvas-region" onKeyDown={handleMarkerKeydown}>
