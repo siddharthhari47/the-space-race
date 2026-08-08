@@ -43,6 +43,13 @@ export default function Scene({
   onSelectHotspot,
   registerMarkerRef,
 }: SceneProps) {
+  // Scales the whole rig at once — see types.ts's lightingIntensityScale
+  // comment. This rig was tuned against Boeing's flat matte, zero-texture
+  // materials; a model with real metallicRoughness textures (the Merlin
+  // helicopter) reflects it far more strongly and blows out to a
+  // washed-out look at the same intensities, confirmed live.
+  const lightScale = config.lightingIntensityScale ?? 1;
+
   return (
     <>
       {/* Lower turbidity + higher rayleigh than the initial pass: the first
@@ -52,16 +59,32 @@ export default function Scene({
       <Sky sunPosition={SUN_POSITION} turbidity={1.5} rayleigh={3} mieCoefficient={0.003} mieDirectionalG={0.8} distance={3000} />
 
       <Environment resolution={256} frames={1}>
-        <Lightformer intensity={2} position={[0, 40, 0]} scale={[90, 40, 1]} rotation-x={Math.PI / 2} />
-        <Lightformer intensity={1} position={[-45, 15, 30]} scale={[40, 22, 1]} rotation-y={Math.PI / 3} />
-        <Lightformer intensity={0.7} position={[45, 10, -30]} scale={[40, 20, 1]} rotation-y={-Math.PI / 3} />
-        <Lightformer intensity={0.3} color="#bcd7ff" position={[0, -25, 0]} scale={[80, 30, 1]} rotation-x={-Math.PI / 2} />
+        <Lightformer intensity={2 * lightScale} position={[0, 40, 0]} scale={[90, 40, 1]} rotation-x={Math.PI / 2} />
+        <Lightformer intensity={1 * lightScale} position={[-45, 15, 30]} scale={[40, 22, 1]} rotation-y={Math.PI / 3} />
+        <Lightformer intensity={0.7 * lightScale} position={[45, 10, -30]} scale={[40, 20, 1]} rotation-y={-Math.PI / 3} />
+        <Lightformer intensity={0.3 * lightScale} color="#bcd7ff" position={[0, -25, 0]} scale={[80, 30, 1]} rotation-x={-Math.PI / 2} />
       </Environment>
 
-      <directionalLight position={SUN_POSITION} intensity={1.4} castShadow shadow-mapSize={[2048, 2048]} />
-      <ambientLight intensity={0.4} />
+      <directionalLight position={SUN_POSITION} intensity={1.4 * lightScale} castShadow shadow-mapSize={[2048, 2048]} />
+      <ambientLight intensity={0.4 * lightScale} />
 
-      <Model url={config.modelUrl} onLoaded={onModelLoaded} forceZeroMetalness={config.forceZeroMetalness} />
+      <Model
+        url={config.modelUrl}
+        onLoaded={onModelLoaded}
+        forceZeroMetalness={config.forceZeroMetalness}
+        spinNodes={config.spinNodes}
+      />
+
+      {config.groundPad && (
+        <mesh
+          position={config.groundPad.center}
+          rotation-x={-Math.PI / 2}
+          receiveShadow
+        >
+          <circleGeometry args={[config.groundPad.radius, 48]} />
+          <meshStandardMaterial color="#2a3040" roughness={0.95} metalness={0} />
+        </mesh>
+      )}
 
       <HotspotMarkers
         hotspots={config.hotspots}

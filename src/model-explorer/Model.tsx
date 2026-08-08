@@ -1,6 +1,8 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import type { Vec3 } from "./types";
 
 // Self-hosted Draco decoder (copied from three/examples/jsm/libs/draco/gltf
 // into public/draco/) — keeps model loading free of any external CDN
@@ -12,9 +14,10 @@ interface ModelProps {
   url: string;
   onLoaded?: (scene: THREE.Group) => void;
   forceZeroMetalness?: boolean;
+  spinNodes?: Array<{ nodeName: string; axis: Vec3; radiansPerSecond: number }>;
 }
 
-export default function Model({ url, onLoaded, forceZeroMetalness }: ModelProps) {
+export default function Model({ url, onLoaded, forceZeroMetalness, spinNodes }: ModelProps) {
   const { scene } = useGLTF(url, true);
 
   // Break the shared-material graph on purpose: some source models reuse a
@@ -65,6 +68,38 @@ export default function Model({ url, onLoaded, forceZeroMetalness }: ModelProps)
     clonedScene.updateMatrixWorld(true);
     onLoaded?.(clonedScene);
   }, [clonedScene, onLoaded]);
+
+  // Resolved once per model/spin-config change, not per frame — findable by
+  // name since these are the same node names the hotspot configs already
+  // reference. rotateOnWorldAxis (not obj.rotation.y) is deliberate: some
+  // nodes carry their own small baked tilt/orientation from the source file
+  // (a rotor's coning angle, for one), and rotating around the node's own
+  // local axis would spin around that tilted axis instead of the intended
+  // world-space one.
+  const spinTargetsRef = useRef<Array<{ object: THREE.Object3D; axis: THREE.Vector3; speed: number }>>([]);
+  useEffect(() => {
+    spinTargetsRef.current = (spinNodes ?? [])
+      .map((spin) => {
+        const object = clonedScene.getObjectByName(spin.nodeName);
+        if (!object) return null;
+        return { object, axis: new THREE.Vector3(...spin.axis).normalize(), speed: spin.radiansPerSecond };
+      })
+      .filter((entry): entry is { object: THREE.Object3D; axis: THREE.Vector3; speed: number } => entry !== null);
+  }, [clonedScene, spinNodes]);
+
+  const reduceMotion = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    []
+  );
+
+  useFrame((_state, delta) => {
+    if (reduceMotion) return;
+    for (const { object, axis, speed } of spinTargetsRef.current) {
+      object.rotateOnWorldAxis(axis, speed * delta);
+    }
+  });
 
   return <primitive object={clonedScene} />;
 }

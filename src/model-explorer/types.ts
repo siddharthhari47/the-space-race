@@ -117,4 +117,19 @@ export interface ModelExplorerConfig {
   // opt-in — only meaningful relative to this model's own unit scale (see
   // useModelHighlight.ts). Omit to use the Boeing-calibrated default (20).
   largeMeshDiagonalThreshold?: number;
+  // Multiplies every light in Scene.tsx's shared rig (ambient, directional,
+  // every Lightformer). That rig was tuned against the Boeing model, whose
+  // materials are flat matte color with zero textures — a model with real
+  // metallicRoughness textures can pick up much stronger specular response
+  // from the same lights and blow out to a washed-out, low-contrast look
+  // (confirmed live on the Merlin helicopter). Default 1 (no change).
+  lightingIntensityScale?: number;
+  // Nodes to continuously rotate around a WORLD-space axis (not the node's
+  // own local axis, which may carry an arbitrary baked tilt/orientation
+  // from the source file) — e.g. a helicopter's main and tail rotors.
+  // Skipped entirely under prefers-reduced-motion.
+  spinNodes?: Array<{ nodeName: string; axis: Vec3; radiansPerSecond: number }>;
+  // A flat circular ground pad rendered beneath the model, for the models
+  // (like a parked helicopter) that read better grounded than mid-flight.
+  groundPad?: { radius: number; center: Vec3 };
 }

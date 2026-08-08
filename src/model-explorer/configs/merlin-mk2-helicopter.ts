@@ -277,6 +277,25 @@ export const merlinMk2Helicopter: ModelExplorerConfig = {
   },
   guidedTourDwellMs: 7000,
   largeMeshDiagonalThreshold: 1000,
+  // The shared lighting rig (Scene.tsx) was tuned against Boeing's flat
+  // matte, zero-texture materials. This model's real metallicRoughness
+  // textures reflect that same rig far more strongly and blew out to a
+  // washed-out, low-contrast look at full intensity — confirmed live.
+  lightingIntensityScale: 0.4,
+  // Real rotor RPM (300-400 for the main rotor) would just read as a blur
+  // and be genuinely uncomfortable to look at up close — these are a
+  // deliberately calm, legible "yes, this spins" rate instead. Axes are
+  // world-space (see Model.tsx): straight up for the main rotor, and the
+  // tail rotor's actual disc-normal direction (confirmed against its own
+  // world-space bounding box — thin along Z, so it spins around Z), not
+  // either node's own arbitrary local axis.
+  spinNodes: [
+    { nodeName: "Low-Prop", axis: [0, 1, 0], radiansPerSecond: 3 },
+    { nodeName: "Low-BackPropHolder", axis: [0, 0, 1], radiansPerSecond: 10 },
+  ],
+  // Grounded, not flying — unlike the Boeing page, a parked helicopter
+  // reads better sitting on something than floating in open sky.
+  groundPad: { radius: 900, center: [-196, -75, -12] },
   hotspots,
 };
 
