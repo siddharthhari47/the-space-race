@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atmosphere &amp; Altitude — Flight Lab — The Space Race</title>
+  <meta name="description" content="Why aircraft design leans on a hypothetical atmosphere, what 'altitude' actually means three different ways, and what your altimeter is really telling you." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+</head>
+<body>
+  <site-header current="flight-lab"></site-header>
+
+  <main class="container lab-page">
+    <a class="back-link" href="index.html">&larr; Flight Lab</a>
+    <h1 class="lab-title">Atmosphere &amp; Altitude</h1>
+    <p class="lab-intro">
+      Every aircraft on this site flies through air, and air is not the same thing twice — it
+      thins with height, cools and warms in bands that don't follow any simple pattern, and
+      changes with the weather and the latitude under you. Before any of the aerodynamics or
+      flight dynamics on the rest of this site makes sense, it helps to be precise about the
+      medium all of it is actually happening in.
+    </p>
+
+    <div class="stat-row">
+      <stat-card value="100 km" label="The Kármán line — the usual boundary of space" accent="flight"></stat-card>
+      <stat-card value="15°C" label="ISA standard sea-level temperature" accent="flight"></stat-card>
+      <stat-card value="11 km" label="Where the atmosphere stops cooling in a straight line" accent="flight"></stat-card>
+    </div>
+
+    <callout-box type="did-you-know">
+      <p>The coldest air temperature ever recorded on Earth's surface was about -89°C, at
+      Vostok Station in Antarctica. The thermosphere, more than a hundred kilometres up, regularly
+      runs hotter than 1,500°C — and yet an astronaut floating through it wouldn't feel warm at
+      all. The air up there is so thin that even though each molecule is moving fast (which is
+      literally what a high temperature means), there are far too few of them hitting you to
+      transfer any meaningful heat.</p>
+    </callout-box>
+
+    <div class="post-body">
+      <p>Aerospace vehicles split cleanly into two families depending on where they spend their
+      working life. Atmospheric vehicles — helicopters and airplanes — do their job below the
+      Kármán line, the altitude around 100 km that's conventionally treated as the edge of space.
+      In practice, aircraft stay well under that: even the highest-flying ones rarely cross 15-20
+      km, because that's roughly where the air gets too thin for a wing or a jet engine to keep
+      working properly. Above that line, air-breathing engines and aerodynamic lift stop being
+      useful concepts at all, and you're in spacecraft and satellite territory instead — a
+      different set of physics, covered in Space Lab.</p>
+
+      <h2>Why We Pretend the Atmosphere Holds Still</h2>
+      <p>Real air refuses to sit still for engineers. Temperature and pressure at a given altitude
+      change with the weather, the season, and the latitude — the air over the equator behaves
+      differently from the air over the poles on the same afternoon. That's a serious problem if
+      you're trying to compare a wind-tunnel result, a flight test, and a design calculation, all
+      of which might have been done on different days in different places. Aircraft performance
+      depends directly on the atmosphere it's flying through, so without a shared reference, none
+      of those three numbers could be honestly compared to each other.</p>
+      <p>The International Standard Atmosphere is the fix: a single, hypothetical, idealized
+      atmosphere — a fixed sea-level temperature and pressure, and a defined way temperature
+      changes with height — that has nothing to do with the actual weather outside on any given
+      day. Nobody claims the ISA is what the air is really doing. It's a common ruler, so that a
+      wing tested in Bangalore and a wing tested in Toronto can be compared on equal terms.</p>
+
+      <h2>Three Ways to Measure "Up"</h2>
+      <p>"Altitude" sounds like it should mean one simple number, but aerospace engineering uses
+      several, because "how high" turns out to depend on what you're measuring height relative to.
+      Geometric altitude is the straightforward one: physical height above mean sea level at your
+      current location, measured as if the Earth's surface directly below you were the zero point.
+      The catch is that "mean sea level" itself isn't one constant number — it varies by location,
+      since the Earth isn't a perfect sphere and sea level rises and falls with local geography and
+      gravity.</p>
+      <p>Absolute altitude accounts for the Earth's curvature explicitly, adding the planet's
+      radius to the geometric altitude — it matters more the further you get from the surface,
+      since the curvature is negligible for a cruising airliner but not for something in orbit.
+      Geopotential altitude is the odd one out: it's a height defined so that it directly accounts
+      for how gravity itself weakens as you climb, rather than treating gravity as constant the way
+      the other two do. For anything flying through the atmosphere, that difference barely
+      registers. It's really a space-vehicle concept, which is why atmospheric flight almost always
+      just uses geometric altitude in practice.</p>
+
+      <h2>The Layers Above You</h2>
+      <p>The atmosphere isn't one uniform blanket of air — it's stacked in bands, and each one
+      behaves differently with height. The troposphere is the one every aircraft on this site
+      actually lives in: the lowest layer, where temperature drops steadily as you climb (roughly
+      6.5°C for every kilometre) and the air is well-mixed by weather, which is exactly why weather
+      happens here and nowhere else. It ends around 11 km, at the tropopause, where the standard
+      atmosphere's sea-level temperature of 15°C has cooled to around -56.5°C.</p>
+      <p>Above that is the stratosphere, and it does something that surprises most people the first
+      time they hear it: temperature climbs back up with altitude instead of continuing to fall.
+      The reason is the ozone layer, sitting inside the stratosphere, absorbing incoming solar
+      ultraviolet radiation and re-radiating it as heat — a layer of gas acting as the atmosphere's
+      own sunscreen, and warming itself in the process. Higher still is the mesosphere, the coldest
+      layer of the entire atmosphere, dropping to roughly -90°C — and the layer where meteoroids
+      entering from space burn up, since it's thick enough to generate real friction but far above
+      anything an aircraft could reach. Above that is the thermosphere, genuinely strange in how it
+      behaves: temperatures there climb past 1,500°C, but because the air is so thin, a tiny amount
+      of absorbed solar energy is enough to swing that number dramatically — which is also why an
+      object entering the atmosphere from space starts heating up seriously once it reaches this
+      layer. The thermosphere overlaps with the ionosphere, the band where solar radiation strips
+      electrons from atoms and leaves the air electrically charged; the two aren't separate layers
+      stacked on top of each other so much as the same altitude range described by two different
+      properties, temperature and ionization, that happen to track each other as you climb.</p>
+
+      <h2>The Two Equations Everything Else Comes From</h2>
+      <p>Almost every altitude-versus-pressure or altitude-versus-density relationship used in
+      aerospace engineering traces back to two simple statements. The first is the hydrostatic
+      equation: pressure decreases with height because there's simply less air stacked above you
+      pressing down. The second is the ideal gas law, tying pressure, density, and temperature
+      together. Combine the two and you can work out how pressure and density fall off through each
+      atmospheric layer — a straightforward exponential decay in the isothermal layers, where
+      temperature holds constant, and a slightly different relationship in the layers where
+      temperature changes linearly with height instead. Even a property as unglamorous as air's own
+      viscosity has to be modeled this way — it changes with temperature too, and formulas like
+      Sutherland's law exist specifically to predict it at whatever altitude and temperature an
+      aircraft or a wind-tunnel test actually needs.</p>
+
+      <h2>What Your Altimeter Is Actually Telling You</h2>
+      <p>None of this is purely academic — pilots deal with a version of the "which altitude"
+      problem every single flight, through altimeter settings identified by Q-codes. QFE sets the
+      altimeter so it reads zero at a specific airfield's elevation, giving height above that
+      particular field — useful in the airfield's own circuit, meaningless anywhere else. QNH sets
+      it to read altitude above mean sea level instead, correcting for the local station pressure,
+      which is what's used for most of a flight below the transition altitude. QNE is different
+      again: it's the fixed international standard pressure setting, 1013.25 hectopascals, used by
+      every aircraft at high altitude regardless of what the actual sea-level pressure happens to be
+      underneath them that day. That shared, deliberately-not-locally-corrected reference is exactly
+      what lets air traffic control keep aircraft from different regions safely separated in
+      altitude — everyone is measuring "up" against the same fictional atmosphere, which is the ISA
+      idea from the start of this page, still doing its job at 35,000 feet.</p>
+    </div>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="aerodynamics.html">Aerodynamics</a></li>
+        <li><a href="aircraft-systems.html">Aircraft Systems</a></li>
+      </ul>
+
+      <h2>Next Steps</h2>
+      <ul>
+        <li><a href="index.html">Back to Flight Lab</a></li>
+        <li><a href="../references/index.html">References</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

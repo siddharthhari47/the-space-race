@@ -11,6 +11,7 @@ export const NAV_ITEMS = [
     href: "/flight-lab/index.html",
     children: [
       { label: "Overview", href: "/flight-lab/index.html" },
+      { label: "Atmosphere & Altitude", href: "/flight-lab/atmosphere-and-altitude.html" },
       { label: "Aerodynamics", href: "/flight-lab/aerodynamics.html" },
       { label: "Flight Dynamics", href: "/flight-lab/flight-dynamics.html" },
       { label: "Aircraft Systems", href: "/flight-lab/aircraft-systems.html" },
