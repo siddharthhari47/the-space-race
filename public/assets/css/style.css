@@ -500,6 +500,36 @@ mission-card p.excerpt {
   margin-top: 0.5rem;
 }
 
+.about-hero-text .eyebrow {
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.about-hero-text h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: var(--fs-h2);
+  margin: 0 0 0.75rem;
+}
+
+.about-hero-text .btn {
+  margin-top: 0.5rem;
+}
+
+/* The homepage's own About Me section — same .about-hero layout reused,
+   with its own top-of-page padding and a border to separate it from the
+   Mission Control hero that follows. It's meant to be the first thing a
+   visitor sees, not folded silently into the rest of the page. */
+.about-intro {
+  padding: 3rem 0 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 640px) {
+  .about-intro .about-hero {
+    margin-bottom: 0;
+  }
+}
+
 .about-section {
   margin: 2.75rem 0;
 }
