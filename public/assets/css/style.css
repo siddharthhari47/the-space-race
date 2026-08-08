@@ -491,6 +491,18 @@ mission-card p.excerpt {
   justify-content: center;
 }
 
+.about-photo {
+  flex: 0 0 200px;
+  width: 200px;
+  aspect-ratio: 3 / 4;
+  margin: 0;
+  display: block;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
 .about-hero-text {
   flex: 1 1 auto;
   padding-top: 0.25rem;
