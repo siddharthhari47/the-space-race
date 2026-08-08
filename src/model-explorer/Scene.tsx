@@ -91,7 +91,13 @@ export default function Scene({
           receiveShadow
         >
           <circleGeometry args={[config.groundPad.radius, 48]} />
-          <meshStandardMaterial color="#2a3040" roughness={0.95} metalness={0} />
+          {/* Same blue as the sky background fallback above, not a
+              contrasting grey — at the default zoomed-out camera distance
+              the pad reads as its own oddly-colored patch below the
+              model rather than a natural extension of the sky, confirmed
+              live. Matching the color keeps the "grounded, not floating"
+              framing without fighting the rest of the scene. */}
+          <meshStandardMaterial color="#8ec5ff" roughness={0.95} metalness={0} />
         </mesh>
       )}
 
