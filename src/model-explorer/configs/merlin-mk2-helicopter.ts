@@ -104,10 +104,10 @@ const hotspots: HotspotConfig[] = [
       purpose:
         "A helicopter's engines and rotor want to spin at very different speeds, and the transmission's whole job is reconciling that difference without losing the enormous torque the rotor needs.",
       howItWorks:
-        "Turboshaft engines like the ones on a Merlin run at somewhere around 20,000-25,000 RPM at their core — nowhere near a survivable speed for a rotor mast and blades that size. The main gearbox steps that down by a factor of roughly 100 to 1, so the rotor turns at a few hundred RPM instead. That gearbox is doing this continuously, under full engine power, for the entire flight, which is why it's one of the most heavily inspected components on any helicopter.",
+        "Turboshaft engines run at tens of thousands of RPM at their core, nowhere near a survivable speed for a rotor mast and blades that size. The main gearbox steps that down by something in the region of 80 to 100 to 1, so the rotor turns at a few hundred RPM instead. A Black Hawk's main transmission is a documented 81 to 1, taking an input of about 20,900 RPM. That gearbox is doing this continuously, under full engine power, for the entire flight, which is why it's one of the most heavily inspected components on any helicopter.",
       facts: [
         "Most twin-engine helicopters, including military Merlins, can lose one engine entirely and keep flying on the other — the gearbox combines both engines' output onto a single mast, so it doesn't care which engine the power came from.",
-        "A helicopter's main gearbox is typically rated to keep the rotor turning for a set period even after it loses all its oil — a certified safety margin, not a coincidence, meant to give the crew time to find somewhere to land.",
+        "A helicopter's main gearbox has to keep working after it loses all its oil. For Category A helicopters the certification requirement is 30 minutes of continued operation following a loss of lubrication, which is a deliberate safety margin meant to give the crew time to find somewhere to land.",
       ],
       role: "Without this reduction, the engines' speed would tear the rotor apart; without the engines, the transmission has nothing to reduce.",
     },
