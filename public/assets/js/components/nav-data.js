@@ -48,7 +48,11 @@ export const NAV_ITEMS = [
   // stays a plain link, like Playground/Blog, until real sub-pages exist
   // to link to.
   { id: "engineering-lab", label: "Engineering Lab", href: "/engineering-lab/index.html" },
-  { id: "timeline", label: "Timeline", href: "/timeline/index.html" },
+  // Timeline is deliberately NOT a top-level nav entry. It's reached from the
+  // homepage's "View full timeline" link and from contextual links on the lab
+  // and blog pages, which is where it actually fits the reading flow. Please
+  // don't "fix" this by adding it back: the page is intentionally a
+  // destination you arrive at from a story, not a primary section.
   { id: "playground", label: "Playground", href: "/playground/index.html" },
   { id: "blog", label: "Blog", href: "/blog/index.html" },
   { id: "about", label: "About", href: "/about/index.html" },
