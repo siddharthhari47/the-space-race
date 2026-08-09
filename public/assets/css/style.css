@@ -1480,6 +1480,25 @@ expandable-diagram {
   letter-spacing: 0.01em;
   white-space: nowrap;
   pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+/* Set by HotspotMarkers.tsx's screen-space collision pass when this label
+   would overlap one belonging to a hotspot nearer the camera. Hidden with
+   opacity rather than display/visibility on purpose: the collision test
+   measures offsetWidth/offsetHeight every pass, and both collapse to 0 for
+   an element that isn't laid out, which would make hidden labels register
+   as zero-size and immediately un-hide themselves. The dot stays fully
+   visible either way, so the hotspot is still findable and clickable. */
+.explorer-hotspot-label.is-crowded {
+  opacity: 0;
+}
+
+/* Reaching for a crowded marker brings its name back, so a label being
+   suppressed never means the part is unidentifiable. */
+.explorer-hotspot:hover .explorer-hotspot-label.is-crowded,
+.explorer-hotspot-marker:focus-visible ~ .explorer-hotspot-label.is-crowded {
+  opacity: 1;
 }
 
 .explorer-sidebar {
