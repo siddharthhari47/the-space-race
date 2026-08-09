@@ -3,8 +3,11 @@
 // mobile off-canvas accordion from the same data. All hrefs are root-relative
 // so the same data works no matter how deep the current page lives.
 
+// No "Home" entry: the brand logo on the left of the header already links
+// to /index.html (see site-header.js's brandHref), so a Home item was a
+// second control doing the same job. Removing it also stops the nav from
+// opening with the one destination every visitor can already find.
 export const NAV_ITEMS = [
-  { id: "home", label: "Home", href: "/index.html" },
   {
     id: "flight-lab",
     label: "Flight Lab",
