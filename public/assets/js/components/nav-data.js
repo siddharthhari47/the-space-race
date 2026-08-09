@@ -26,6 +26,7 @@ export const NAV_ITEMS = [
       // was meant to fix.
       { label: "Helicopter Aerodynamics", href: "/flight-lab/helicopter-aerodynamics.html" },
       { label: "What Makes a Fighter Different", href: "/flight-lab/fighter-aircraft.html" },
+      { label: "Interactive Cargo Aircraft", href: "/flight-lab/interactive-cargo-aircraft.html" },
     ],
   },
   {

@@ -243,3 +243,62 @@ Requires `KHR_draco_mesh_compression`, same as Boeing and the Merlin. Every
 material's `metallicFactor` was verified to still be `0` *after* the Draco
 pass, so this model must **not** set `config.forceZeroMetalness` — the Boeing
 compression artifact that flag exists for did not occur here.
+
+---
+
+## `cargo-aircraft.glb`
+
+> "cargo aircraft" (https://skfb.ly/6SqCp) by RizalHardi is licensed under
+> Creative Commons Attribution 4.0
+> (http://creativecommons.org/licenses/by/4.0/).
+>
+> **Modified for web use.** Geometry Draco-compressed; the single texture
+> re-encoded from PNG to JPEG.
+
+Used by `flight-lab/interactive-cargo-aircraft.html`.
+
+### Processing
+
+Same two-step pipeline as the Su-35 (textures first in Python, then Draco),
+for the same reason: `@gltf-transform/cli`'s texture stage refuses to run in
+this environment. This model only carries one texture, so the texture step
+does far less work here than it did there.
+
+```bash
+python tools/shrink_textures.py cargo_aircraft.glb cargo-tmp.glb 1024
+npx @gltf-transform/cli optimize cargo-tmp.glb cargo-aircraft.glb \
+  --compress draco --texture-compress false \
+  --simplify false --join false --flatten false --instance false
+```
+
+### Before / after
+
+| | Source | Optimized |
+|---|---|---|
+| File size | 3.23 MB | 416 KB |
+| Mesh primitives | 21 | 21 (unchanged — no merging) |
+| Materials | 5 | 5 (unchanged) |
+| Vertices | 48,437 | 48,437 |
+| Textures | 1 PNG (512×256, 154 KB) | 1 JPEG (512×256, 30 KB) |
+| Scene bounding box | -1837.216,-390.515,-1014.986 → 1837.217,518.198,1183.245 | identical |
+
+Smallest model on the site, and the geometry compressed unusually well
+(3.23 MB → 416 KB) because it's low-poly with a single small texture.
+
+### Scale note
+
+Unlike the Su-35, this model is **not** at real-world scale, and it is not a
+replica of a specific aircraft type. Its span-to-length ratio is roughly
+1.67, where real four-engine turboprop freighters sit closer to 1.2–1.4. Its
+config therefore describes how this *class* of aircraft works and quotes no
+real-world dimensions or performance figures, since there's no type to
+attribute them to. The hotspots are positioned from the model's own
+geometry, which is unambiguous: four propeller discs, four nacelles, a
+full-span high wing, a full-length fuselage, both stabilizers, and gear
+structures.
+
+### Runtime note
+
+Requires `KHR_draco_mesh_compression`, same as the other three. Materials
+carry genuine metalness values between 0.18 and 0.77, so this model must
+**not** set `config.forceZeroMetalness`.

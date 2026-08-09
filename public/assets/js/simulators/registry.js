@@ -68,6 +68,13 @@ export const SIMULATOR_REGISTRY = {
     status: "live",
     category: "flight",
   },
+  "cargo-explorer": {
+    title: "Interactive Cargo Aircraft Explorer",
+    description: "A four-engine turboprop freighter you can rotate and take apart — high wing, propellers, rear ramp, and why cargo aircraft look the way they do.",
+    page: "/flight-lab/interactive-cargo-aircraft.html",
+    status: "live",
+    category: "flight",
+  },
   "fighter-explorer": {
     title: "Interactive Fighter Aircraft Explorer",
     description: "A real 3D Su-35 you can rotate and zoom freely — click through the intakes, engines, thrust-vectoring nozzles, and control surfaces.",

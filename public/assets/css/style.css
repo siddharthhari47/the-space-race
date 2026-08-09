@@ -1480,24 +1480,17 @@ expandable-diagram {
   letter-spacing: 0.01em;
   white-space: nowrap;
   pointer-events: none;
+  /* Hidden until the viewer actually asks for it. Showing every part name
+     at once buried the model under its own labels, so the default state is
+     dots only; the name appears on hover, on keyboard focus, or once the
+     part is selected. */
+  opacity: 0;
   transition: opacity var(--duration-fast) var(--ease-standard);
 }
 
-/* Set by HotspotMarkers.tsx's screen-space collision pass when this label
-   would overlap one belonging to a hotspot nearer the camera. Hidden with
-   opacity rather than display/visibility on purpose: the collision test
-   measures offsetWidth/offsetHeight every pass, and both collapse to 0 for
-   an element that isn't laid out, which would make hidden labels register
-   as zero-size and immediately un-hide themselves. The dot stays fully
-   visible either way, so the hotspot is still findable and clickable. */
-.explorer-hotspot-label.is-crowded {
-  opacity: 0;
-}
-
-/* Reaching for a crowded marker brings its name back, so a label being
-   suppressed never means the part is unidentifiable. */
-.explorer-hotspot:hover .explorer-hotspot-label.is-crowded,
-.explorer-hotspot-marker:focus-visible ~ .explorer-hotspot-label.is-crowded {
+.explorer-hotspot:hover .explorer-hotspot-label,
+.explorer-hotspot.is-selected .explorer-hotspot-label,
+.explorer-hotspot-marker:focus-visible ~ .explorer-hotspot-label {
   opacity: 1;
 }
 

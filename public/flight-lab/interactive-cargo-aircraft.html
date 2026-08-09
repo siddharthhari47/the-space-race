@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Cargo Aircraft Explorer — The Space Race</title>
+  <meta name="description" content="A four-engine turboprop freighter you can rotate and take apart: high wing, propellers, rear ramp, and why cargo aircraft look the way they do." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/dist/model-explorer.js" defer></script>
+</head>
+<body>
+  <site-header current="flight-lab"></site-header>
+
+  <main class="container-wide lab-page">
+    <a class="back-link" href="index.html">&larr; Flight Lab</a>
+    <h1 class="lab-title">Interactive Cargo Aircraft Explorer</h1>
+    <p class="lab-intro">
+      Here's a question worth holding onto while you rotate this one. Why does a freighter look
+      so obviously different from an airliner, when both are just tubes with wings? Start with
+      where the wing meets the body, then look at the tail from the side. Neither of those is a
+      styling decision. They both come from the same thing: this aircraft was designed around a
+      box, and the airliner was designed around people.
+    </p>
+
+    <div
+      id="model-explorer-root"
+      data-model="cargo-aircraft"
+      role="img"
+      aria-label="Interactive 3D model of a four-engine turboprop cargo aircraft. Drag to rotate, scroll or pinch to zoom, click a marker to explore a part."
+    ></div>
+
+    <p class="lab-intro spaced">
+      Seven of the nine markers sit on parts this model gives as their own geometry, including
+      all four propeller discs, the full-span wing, both stabilizers, and the landing gear
+      structures. The flight deck and rear ramp don't have separate meshes, so those two are
+      positioned from where they have to be on an aircraft laid out like this, and carry an
+      "Estimated placement" badge to say so.
+    </p>
+
+    <p class="lab-intro spaced">
+      One thing this page deliberately doesn't do is tell you which aircraft this is. It's a
+      stylised model rather than a replica of a specific type, and its proportions don't match
+      any freighter in service closely enough to put a name on it. So everything here explains
+      how this class of aircraft works, without quoting performance figures that would belong to
+      some other, real aeroplane.
+    </p>
+
+    <div class="continue-explore">
+      <h2>Related Technologies</h2>
+      <ul>
+        <li><a href="interactive-aircraft.html">Interactive Aircraft Explorer</a></li>
+        <li><a href="commercial-aircraft.html">Flight Lab: Commercial Aircraft</a></li>
+        <li><a href="aircraft-systems.html">Flight Lab: Aircraft Systems</a></li>
+        <li><a href="index.html">Back to Flight Lab</a></li>
+      </ul>
+
+      <h2>Further Reading</h2>
+      <ul>
+        <li><a href="aerodynamics.html">Flight Lab: Aerodynamics</a></li>
+        <li><a href="../references/index.html">References</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>
