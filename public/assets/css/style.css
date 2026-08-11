@@ -1336,6 +1336,190 @@ timeline-event[side="right"] .timeline-dot {
   font-size: 0.88rem;
 }
 
+/* ---------- Timeline: linked events with footage preview ---------- */
+.timeline-card.is-linked {
+  position: relative;
+  display: block;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.timeline-card.is-linked:hover,
+.timeline-card.is-linked:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.timeline-cue {
+  display: block;
+  margin-top: 0.6rem;
+  color: var(--accent);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
+/* The footage preview. Hidden and non-interactive until the card is
+   hovered or keyboard-focused, so the timeline reads as a timeline first
+   and only offers video when someone reaches for it. */
+.timeline-preview {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: calc(100% + 0.9rem);
+  transform: translateY(-50%) scale(0.96);
+  width: 260px;
+  padding: 0.4rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-alt);
+  border: 1px solid var(--accent);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+/* Right-hand events would push their preview off the edge of the page,
+   so those open to the left instead. */
+timeline-event[side="right"] .timeline-preview {
+  left: auto;
+  right: calc(100% + 0.9rem);
+}
+
+.timeline-card.is-linked:hover .timeline-preview,
+.timeline-card.is-linked:focus-visible .timeline-preview {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.timeline-preview-thumb {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+}
+
+.timeline-preview-play {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(5, 7, 15, 0.72);
+  border: 2px solid var(--accent);
+}
+
+.timeline-preview-play::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 8px 0 8px 13px;
+  border-color: transparent transparent transparent var(--accent);
+}
+
+.timeline-preview-caption {
+  display: block;
+  margin-top: 0.4rem;
+  padding: 0 0.2rem 0.15rem;
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+/* Below the two-column breakpoint every card sits on the left rail, and
+   there isn't room beside it for a floating panel, so the preview drops
+   into the flow underneath instead of hovering. */
+@media (max-width: 760px) {
+  .timeline-preview {
+    position: static;
+    width: 100%;
+    margin-top: 0.7rem;
+    transform: none;
+    opacity: 1;
+    box-shadow: none;
+  }
+
+  .timeline-card.is-linked:hover .timeline-preview,
+  .timeline-card.is-linked:focus-visible .timeline-preview {
+    transform: none;
+  }
+}
+
+/* ---------- Timeline: single event page ---------- */
+.event-video {
+  margin: 2rem 0;
+}
+
+.event-video-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+}
+
+.event-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.event-video figcaption {
+  margin-top: 0.7rem;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.event-questions {
+  display: grid;
+  gap: 1.4rem;
+  margin: 2rem 0;
+}
+
+@media (min-width: 800px) {
+  .event-questions {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.6rem 2rem;
+  }
+}
+
+.event-q h3 {
+  margin: 0 0 0.4rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+}
+
+.event-q p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.event-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 2.5rem 0 1rem;
+}
+
+.event-nav .btn {
+  font-size: 0.85rem;
+}
+
 /* ---------- Expandable diagram ---------- */
 expandable-diagram {
   display: block;
