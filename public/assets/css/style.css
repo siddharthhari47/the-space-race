@@ -1362,12 +1362,13 @@ timeline-event[side="right"] .timeline-dot {
    hovered or keyboard-focused, so the timeline reads as a timeline first
    and only offers video when someone reaches for it. */
 .timeline-preview {
+  display: block;
   position: absolute;
   z-index: 5;
   top: 50%;
   left: calc(100% + 0.9rem);
   transform: translateY(-50%) scale(0.96);
-  width: 260px;
+  width: 280px;
   padding: 0.4rem;
   border-radius: var(--radius-md);
   background: var(--bg-alt);
@@ -1392,34 +1393,37 @@ timeline-event[side="right"] .timeline-preview {
   transform: translateY(-50%) scale(1);
 }
 
+/* The thumbnail is a poster only. It shows instantly so the panel never
+   opens as a black rectangle, and the player then covers it. Forced to
+   16:9 with object-fit because YouTube's hqdefault is 4:3 with letterbox
+   bars baked in, and those bars would otherwise peek out around the
+   player. */
 .timeline-preview-thumb {
   display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   border-radius: var(--radius-sm);
 }
 
-.timeline-preview-play {
+/* Holds the iframe, which timeline-event.js creates on hover and removes
+   on leave. Empty the rest of the time, which is why it can sit over the
+   poster without hiding it. */
+.timeline-preview-stage {
   position: absolute;
-  top: 40%;
-  left: 50%;
-  width: 44px;
-  height: 44px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: rgba(5, 7, 15, 0.72);
-  border: 2px solid var(--accent);
+  top: 0.4rem;
+  left: 0.4rem;
+  right: 0.4rem;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
 }
 
-.timeline-preview-play::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 54%;
-  transform: translate(-50%, -50%);
-  border-style: solid;
-  border-width: 8px 0 8px 13px;
-  border-color: transparent transparent transparent var(--accent);
+.timeline-preview-stage iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .timeline-preview-caption {
