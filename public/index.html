@@ -3,199 +3,285 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Space Race — Mission Control</title>
-  <meta name="description" content="An interactive aerospace education platform. The Space Race never ended — it evolved. Explore flight, space, and engineering through labs, simulations, and stories." />
+  <title>The Space Race</title>
+  <meta name="description" content="An interactive aerospace museum. Two wings — SPACE and AIRCRAFT — separated by one variable: altitude. Build a rocket, fly a wind tunnel, take an airliner apart." />
   <link rel="icon" href="assets/images/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/museum.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
-  <script type="module" src="/assets/js/pages/home.js" defer></script>
+  <script type="module" src="/assets/js/pages/atrium.js" defer></script>
 </head>
-<body>
+<body data-world="atrium">
   <site-header current="home" brand-href="/index.html"></site-header>
 
   <main>
-    <section class="hero container">
-      <span class="eyebrow">Mission Control</span>
-      <h1>The Space Race never ended. It evolved.</h1>
-      <p>
-        From a 10cm CubeSat to the aircraft overhead, this is where flight and space
-        exploration get explained — through interactive labs, simulations, and stories,
-        not a textbook.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="/space-lab/index.html">Enter the Labs</a>
-        <a class="btn btn-secondary" href="/playground/index.html">Open Playground</a>
-      </div>
-      <div class="hero-stats">
-        <stat-card value="3" label="Labs"></stat-card>
-        <stat-card data-stat="simulator-count" value="11" label="Planned Simulators" accent="engineering"></stat-card>
-        <stat-card value="1957" label="Where It Started" accent="flight"></stat-card>
-      </div>
-    </section>
+    <!-- ================= HERO: THE VERTICAL ================= -->
+    <section class="atrium-hero">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
 
-    <section class="about-intro container">
-      <div class="about-hero">
-        <img class="about-photo" src="assets/images/siddharth-about.webp" alt="Sid looking out over a misty mountain valley, holding a cup of tea" />
-        <div class="about-hero-text">
-          <span class="eyebrow">About Me</span>
-          <h2>Hi, I'm Sid.</h2>
-          <p class="lab-intro">
-            I'm an Electronics and Communication Engineering student at BITS Pilani, and,
-            unsurprisingly, I'm a little obsessed with figuring out how things work — how an
-            aircraft weighing hundreds of tonnes flies, how a satellite keeps working thousands
-            of kilometres from Earth, how a rocket throws itself off the planet and somehow
-            finds its way back. I wanted to understand how all of that actually works, and that
-            curiosity is what eventually led to The Space Race.
+      <div class="atrium-hero-inner frame">
+        <div class="atrium-title-block">
+          <p class="tag">Interactive aerospace</p>
+          <h1 class="atrium-title">The Space<br />Race</h1>
+          <p class="atrium-lede">
+            Everything that flies sits somewhere on one axis. Below about twenty kilometres
+            there is air to push against, so you build a wing. Above a hundred there is nothing
+            to push at all, so you carry your own reaction mass and go sideways fast enough to
+            keep missing the ground.
           </p>
-          <a class="btn btn-secondary" href="/about/index.html">Read the Full Story &rarr;</a>
+          <p class="atrium-lede-2">
+            One variable, two wings. Pick one.
+          </p>
+        </div>
+
+        <div class="gateways">
+          <a class="gateway" data-gateway="space" href="/space-lab/index.html">
+            <span class="gateway-index">01</span>
+            <span class="gateway-regime">100 km and above</span>
+            <span class="gateway-name">Space</span>
+            <span class="gateway-line">
+              Nothing to push against, and nothing to breathe. Orbit turns out to be a
+              sideways problem, not a height problem.
+            </span>
+            <span class="gateway-go">Enter <span aria-hidden="true">→</span></span>
+          </a>
+
+          <a class="gateway" data-gateway="aircraft" href="/flight-lab/index.html">
+            <span class="gateway-index">02</span>
+            <span class="gateway-regime">0 – 20 km</span>
+            <span class="gateway-name">Aircraft</span>
+            <span class="gateway-line">
+              Air to work with. Everything in this wing is an argument about how to use it,
+              and what happens as it thins out.
+            </span>
+            <span class="gateway-go">Enter <span aria-hidden="true">→</span></span>
+          </a>
+        </div>
+
+        <p class="atrium-axis-note">
+          <span class="tag tag-accent">Behind this text</span>
+          The curve on the left is air density, ρ(h) = ρ₀·e<sup>−h/H</sup>, scale height H ≈ 8.5 km,
+          plotted as width against a logarithmic altitude axis. It is the reason the airliner
+          cruises where it does and the reason the station does not.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= DIRECTORY ================= -->
+    <section class="exhibit frame" id="directory">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">01</span>
+        <div>
+          <h2 class="exhibit-title">Directory</h2>
+          <p class="exhibit-sub">
+            <span data-count-interactive>7</span> interactive exhibits and sixteen written rooms,
+            arranged by altitude. Anything marked <em>interactive</em> is something you operate,
+            not something you read.
+          </p>
+        </div>
+      </div>
+
+      <div class="directory reveal">
+        <div class="directory-col" data-col="space">
+          <h3 class="directory-head"><span>Space</span><span class="tag">100 km +</span></h3>
+          <ol class="directory-list">
+            <li>
+              <a href="/space-lab/rockets.html">
+                <span class="d-num">S·01</span>
+                <span class="d-name">Rockets</span>
+                <span class="d-kind">interactive</span>
+              </a>
+              <p class="d-note">Build a launch vehicle, then find out whether it reaches orbit.</p>
+            </li>
+            <li>
+              <a href="/space-lab/satellites.html">
+                <span class="d-num">S·02</span>
+                <span class="d-name">Satellites</span>
+                <span class="d-kind">interactive</span>
+              </a>
+              <p class="d-note">Change altitude and inclination; watch the ground track answer.</p>
+            </li>
+            <li>
+              <a href="/space-lab/cubesats.html">
+                <span class="d-num">S·03</span>
+                <span class="d-name">CubeSats</span>
+                <span class="d-kind">interactive</span>
+              </a>
+              <p class="d-note">Ten centimetres on a side, and a hard unit budget to fit inside.</p>
+            </li>
+            <li>
+              <a href="/space-lab/spacecraft.html">
+                <span class="d-num">S·04</span>
+                <span class="d-name">Spacecraft</span>
+                <span class="d-kind">written</span>
+              </a>
+              <p class="d-note">What it takes to keep hardware alive outside the atmosphere.</p>
+            </li>
+            <li>
+              <a href="/space-lab/space-stations.html">
+                <span class="d-num">S·05</span>
+                <span class="d-name">Space Stations</span>
+                <span class="d-kind">written</span>
+              </a>
+              <p class="d-note">Living in orbit for months, and the systems that allow it.</p>
+            </li>
+            <li>
+              <a href="/space-lab/planetary-missions.html">
+                <span class="d-num">S·06</span>
+                <span class="d-name">Planetary Missions</span>
+                <span class="d-kind">written</span>
+              </a>
+              <p class="d-note">Rovers, landers and probes, and why they take so long to arrive.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="directory-col" data-col="aircraft">
+          <h3 class="directory-head"><span>Aircraft</span><span class="tag">0 – 20 km</span></h3>
+          <ol class="directory-list">
+            <li>
+              <a href="/flight-lab/aerodynamics.html">
+                <span class="d-num">A·01</span>
+                <span class="d-name">Aerodynamics</span>
+                <span class="d-kind">interactive</span>
+              </a>
+              <p class="d-note">A wind tunnel. Set the angle of attack and stall it yourself.</p>
+            </li>
+            <li>
+              <a href="/flight-lab/atmosphere-and-altitude.html">
+                <span class="d-num">A·02</span>
+                <span class="d-name">Atmosphere &amp; Altitude</span>
+                <span class="d-kind">written</span>
+              </a>
+              <p class="d-note">Why thin air is both the problem and the whole point.</p>
+            </li>
+            <li>
+              <a href="/flight-lab/flight-dynamics.html">
+                <span class="d-num">A·03</span>
+                <span class="d-name">Flight Dynamics</span>
+                <span class="d-kind">written</span>
+              </a>
+              <p class="d-note">Pitch, roll and yaw, and the surfaces that command them.</p>
+            </li>
+            <li>
+              <a href="/flight-lab/aircraft-systems.html">
+                <span class="d-num">A·04</span>
+                <span class="d-name">Aircraft Systems</span>
+                <span class="d-kind">written</span>
+              </a>
+              <p class="d-note">Hydraulics, electrics, bleed air — the unglamorous half.</p>
+            </li>
+            <li>
+              <a href="/flight-lab/interactive-aircraft.html">
+                <span class="d-num">A·05</span>
+                <span class="d-name">Airliner, in 3D</span>
+                <span class="d-kind">interactive</span>
+              </a>
+              <p class="d-note">A 777-300ER you can rotate and take apart, part by part.</p>
+            </li>
+            <li>
+              <a href="/flight-lab/interactive-fighter-aircraft.html">
+                <span class="d-num">A·06</span>
+                <span class="d-name">Fighter, in 3D</span>
+                <span class="d-kind">interactive</span>
+              </a>
+              <p class="d-note">An Su-35, thrust-vectoring nozzles included.</p>
+            </li>
+            <li>
+              <a href="/flight-lab/interactive-helicopter.html">
+                <span class="d-num">A·07</span>
+                <span class="d-name">Helicopter, in 3D</span>
+                <span class="d-kind">interactive</span>
+              </a>
+              <p class="d-note">Rotor, swashplate, tail rotor, and why it needs all three.</p>
+            </li>
+            <li>
+              <a href="/flight-lab/index.html">
+                <span class="d-num">A·08</span>
+                <span class="d-name">Six more rooms</span>
+                <span class="d-kind">written</span>
+              </a>
+              <p class="d-note">Commercial, military, private, cargo, rotorcraft, fighters.</p>
+            </li>
+          </ol>
         </div>
       </div>
     </section>
 
-    <section class="mission-section">
-      <div class="container">
-        <section-header
-          eyebrow="Explore Flight"
-          title="Flight Lab"
-          link-href="/flight-lab/index.html"
-          link-text="View Flight Lab →"
-        ></section-header>
-        <feature-grid columns="3">
-          <info-card title="Commercial Aircraft" href="/flight-lab/commercial-aircraft.html">
-            The Airbus vs. Boeing rivalry that shaped modern air travel.
-          </info-card>
-          <info-card title="Aerodynamics" href="/flight-lab/aerodynamics.html">
-            How lift, drag, and airflow actually work.
-          </info-card>
-          <info-card title="Interactive Aircraft" href="/flight-lab/interactive-aircraft.html">
-            Click through a real aircraft, part by part.
-          </info-card>
-        </feature-grid>
+    <!-- ================= START HERE ================= -->
+    <section class="exhibit frame" id="start">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title">If you only do one thing</h2>
+          <p class="exhibit-sub">
+            Two of these are simulations with real physics underneath. The third is a
+            model you can pull apart with your hands.
+          </p>
+        </div>
+      </div>
+
+      <div class="routes reveal">
+        <a class="route registered" href="/space-lab/rockets.html">
+          <span class="route-tag tag">Space · flagship</span>
+          <h3 class="route-title">Build a rocket that reaches orbit</h3>
+          <p class="route-note">
+            Stack stages, pick engines, set the propellant load. Launch it. Most first
+            attempts fall back into the atmosphere, and the reason is always the same
+            number.
+          </p>
+          <span class="route-go">Open the pad <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a class="route registered" href="/flight-lab/aerodynamics.html">
+          <span class="route-tag tag">Aircraft · flagship</span>
+          <h3 class="route-title">Stall a wing on purpose</h3>
+          <p class="route-note">
+            A wind tunnel with a working section you control. Raise the angle of attack
+            and watch lift climb, then collapse — and see exactly where the airflow gives up.
+          </p>
+          <span class="route-go">Start the tunnel <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a class="route registered" href="/flight-lab/interactive-aircraft.html">
+          <span class="route-tag tag">Aircraft · 3D</span>
+          <h3 class="route-title">Take an airliner apart</h3>
+          <p class="route-note">
+            A Boeing 777-300ER in three dimensions, with eighteen components you can
+            select, orbit and inspect from any angle.
+          </p>
+          <span class="route-go">Open the model <span aria-hidden="true">→</span></span>
+        </a>
       </div>
     </section>
 
-    <section class="mission-section alt">
-      <div class="container">
-        <section-header
-          eyebrow="Explore Space"
-          title="Space Lab"
-          link-href="/space-lab/index.html"
-          link-text="View Space Lab →"
-        ></section-header>
-        <feature-grid columns="3">
-          <info-card title="CubeSats" href="/space-lab/cubesats.html">
-            The 10cm standard that let almost anyone build a spacecraft.
-          </info-card>
-          <info-card title="Rockets" href="/space-lab/rockets.html">
-            Stages, engines, and how a launch vehicle reaches orbit.
-          </info-card>
-          <info-card title="Satellite Orbit Simulator" href="/space-lab/satellites.html">
-            Adjust altitude and inclination and watch the orbit change.
-          </info-card>
-        </feature-grid>
+    <!-- ================= HISTORY ================= -->
+    <section class="exhibit frame" id="history">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">03</span>
+        <div>
+          <h2 class="exhibit-title">How we got here</h2>
+          <p class="exhibit-sub">
+            Fourteen moments, thirteen of them with archive footage attached. Hover one and
+            it starts playing.
+          </p>
+        </div>
       </div>
-    </section>
 
-    <section class="mission-section">
-      <div class="container">
-        <section-header
-          eyebrow="Under the Hood"
-          title="Engineering Lab"
-          link-href="/engineering-lab/index.html"
-          link-text="View Engineering Lab →"
-        ></section-header>
-        <feature-grid columns="3">
-          <info-card title="Power Systems" status="coming-soon">
-            Solar panels, batteries, and keeping the lights on.
-          </info-card>
-          <info-card title="Communications" status="coming-soon">
-            Getting data to and from a vehicle in flight or in orbit.
-          </info-card>
-          <info-card title="AI in Aerospace" status="coming-soon">
-            Where machine learning is already flying today.
-          </info-card>
-        </feature-grid>
-      </div>
-    </section>
-
-    <section class="mission-section alt">
-      <div class="container">
-        <section-header
-          eyebrow="Latest Mission"
-          title="Fresh from the blog"
-          link-href="/blog/index.html"
-          link-text="View all posts →"
-        ></section-header>
-        <feature-grid columns="1">
-          <mission-card
-            image="assets/images/cubesat.svg"
-            eyebrow="Aug 5, 2026 · 2 min read"
-            title="What about CubeSats?"
-            href="/blog/cubesats.html"
-          >
-            The Space Race never ended, it evolved. Here's how a 10cm cube let
-            universities, startups and small nations join the race to space.
-          </mission-card>
-        </feature-grid>
-      </div>
-    </section>
-
-    <section class="mission-section">
-      <div class="container">
-        <section-header
-          eyebrow="History, In Order"
-          title="How we got here"
-          link-href="/timeline/index.html"
-          link-text="View full timeline →"
-        ></section-header>
+      <div class="exhibit-body reveal">
         <div class="timeline">
-          <timeline-event date="1957" title="Sputnik 1" side="left">
-            The first artificial satellite reaches orbit, and the Space Race begins.
-          </timeline-event>
-          <timeline-event date="1969" title="Apollo 11" side="right">
-            Neil Armstrong becomes the first person to walk on the Moon.
-          </timeline-event>
-          <timeline-event date="2003" title="First CubeSats reach orbit" side="left">
-            The 10cm standard invented in 1999 flies for the first time — the start
-            of a more distributed Space Race.
-          </timeline-event>
+          <timeline-event event-id="sputnik-1" side="left"></timeline-event>
+          <timeline-event event-id="apollo-11" side="right"></timeline-event>
+          <timeline-event event-id="first-cubesats" side="left"></timeline-event>
         </div>
-      </div>
-    </section>
-
-    <section class="mission-section alt">
-      <div class="container">
-        <section-header
-          eyebrow="Featured Learning Paths"
-          title="Not sure where to start?"
-        ></section-header>
-        <feature-grid columns="3">
-          <interactive-card
-            title="The Space Race, Then and Now"
-            teaser="From Gagarin's first orbit to today's CubeSats."
-          >
-            <p><a href="/blog/the-space-race.html">The Space Race: What is it and who is leading?</a></p>
-            <p><a href="/blog/where-are-we-now.html">Where are we now?</a></p>
-            <p><a href="/blog/cubesats.html">What about CubeSats?</a></p>
-          </interactive-card>
-          <interactive-card
-            title="Rivalry in the Skies"
-            teaser="Two companies, one rivalry, six decades of one-upmanship in the sky."
-          >
-            <p><a href="/blog/what-about-the-aviation.html">What about the Aviation?</a></p>
-            <p><a href="/flight-lab/index.html">Visit Flight Lab</a></p>
-          </interactive-card>
-          <interactive-card
-            title="Learn by Building"
-            teaser="Skip the reading and jump into the interactive tools."
-          >
-            <p><a href="/playground/index.html">Open Playground</a></p>
-            <p><a href="/space-lab/index.html">Visit Space Lab</a></p>
-          </interactive-card>
-        </feature-grid>
+        <p class="ctrl-row" style="margin-top: 2rem">
+          <a class="ctrl" href="/timeline/index.html">Full timeline</a>
+          <a class="ctrl" href="/blog/index.html">Writing</a>
+          <a class="ctrl" href="/about/index.html">About</a>
+        </p>
       </div>
     </section>
   </main>

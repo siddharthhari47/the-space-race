@@ -3,53 +3,192 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Space Lab — The Space Race</title>
-  <meta name="description" content="CubeSats, rockets, satellites, spacecraft, and the missions taking us across the solar system." />
+  <title>Space — The Space Race</title>
+  <meta name="description" content="Orbits drawn to scale and moving at their true relative rates. Set an altitude and watch speed and period follow, then explore rockets, satellites, CubeSats and missions." />
   <link rel="icon" href="../assets/images/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/systems/instruments.js"></script>
+  <script type="module" src="/assets/js/pages/space-world.js" defer></script>
 </head>
-<body>
+<body data-world="space">
   <site-header current="space-lab"></site-header>
 
-  <main class="container lab-page">
-    <section-header
-      eyebrow="Explore Space"
-      title="Space Lab"
-    ></section-header>
-    <p class="lab-intro">
-      A CubeSat is 10 centimeters on a side. A crewed Mars mission is, roughly speaking,
-      everything humans have ever learned about keeping people alive off-planet, stacked on top
-      of a rocket. Both count as spacecraft. This is where the modern Space Race gets explained,
-      one of them at a time.
-    </p>
+  <main>
+    <!-- ================= WORLD HEADER ================= -->
+    <section class="world-head frame">
+      <p class="tag tag-accent">Wing 01 · 100 km and above</p>
+      <h1 class="world-title">Space</h1>
+      <p class="world-lede">
+        The hard part was never getting up there. A hundred kilometres is about an hour in a
+        fast car, if you could drive straight up. The hard part is going sideways fast enough
+        that when you fall, you keep missing.
+      </p>
+    </section>
 
-    <feature-grid>
-      <info-card title="CubeSats" href="cubesats.html">
-        The standard that let almost anyone build a spacecraft.
-      </info-card>
-      <info-card title="Rockets" href="rockets.html">
-        Stages, engines, and how a launch vehicle reaches orbit.
-      </info-card>
-      <info-card title="Satellites" href="satellites.html">
-        What keeps something useful in orbit around Earth.
-      </info-card>
-      <info-card title="Spacecraft" href="spacecraft.html">
-        Crewed and uncrewed vehicles built to survive deep space.
-      </info-card>
-      <info-card title="Space Stations" href="space-stations.html">
-        Living and working in orbit, long-term.
-      </info-card>
-      <info-card title="Planetary Missions" href="planetary-missions.html">
-        Rovers, landers, and probes exploring other worlds.
-      </info-card>
-      <info-card title="Interactive Spacecraft" status="coming-soon">
-        Click through a real spacecraft, part by part.
-      </info-card>
-    </feature-grid>
+    <!-- ================= EXHIBIT 01: ORBITS ================= -->
+    <section class="exhibit frame" id="orbits">
+      <div class="exhibit-head">
+        <span class="exhibit-index">01</span>
+        <div>
+          <h2 class="exhibit-title">Orbits, actually to scale</h2>
+          <p class="exhibit-sub">
+            Nearly every diagram of Earth orbit exaggerates the heights, which is why people
+            picture the space station as being somewhere near the Moon. This one does not.
+            Set an altitude and watch what it costs you.
+          </p>
+        </div>
+      </div>
+
+      <div class="orbit-lab">
+        <div class="stage orbit-stage">
+          <canvas id="orbit-canvas"></canvas>
+        </div>
+
+        <div class="panel orbit-panel">
+          <div class="panel-head">
+            <span>Orbit</span>
+            <span data-regime>Low Earth orbit</span>
+          </div>
+          <div class="panel-body">
+            <lab-control
+              name="altitude"
+              label="Altitude"
+              unit="km"
+              min="160"
+              max="42000"
+              step="1"
+              value="408"
+            ></lab-control>
+
+            <div class="readout-row">
+              <lab-readout data-out="alt" label="Altitude" unit="km" decimals="0" value="408" data-state="live"></lab-readout>
+              <lab-readout data-out="speed" label="Speed" unit="km/s" decimals="2" value="7.67"></lab-readout>
+              <lab-readout data-out="period" label="Period" unit="min" decimals="1" value="92.6"></lab-readout>
+              <lab-readout data-out="per-day" label="Orbits / day" decimals="2" value="15.5"></lab-readout>
+            </div>
+
+            <p class="panel-note" data-orbit-detail>
+              Drag still matters here. Uncorrected, orbits below roughly 400 km decay within years.
+            </p>
+
+            <div class="ctrl-row">
+              <button class="ctrl" type="button" data-preset="leo">ISS</button>
+              <button class="ctrl" type="button" data-preset="sso">Sun-sync</button>
+              <button class="ctrl" type="button" data-preset="meo">GPS</button>
+              <button class="ctrl" type="button" data-preset="geo">Geostationary</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-caption">
+        <span><strong>Scale</strong> Earth and every orbit radius drawn to one linear scale. Satellite dots are not.</span>
+        <span><strong>Motion</strong> true relative angular rates, time-compressed equally</span>
+      </div>
+
+      <p class="finding">
+        Watch it for a few seconds and Kepler's third law does the explaining. The station
+        laps the planet while geostationary barely moves, because period grows as
+        <em>r<sup>3/2</sup></em> — and the further out you go, the slower you travel as well
+        as the further you have to go.
+      </p>
+
+      <p class="note">
+        Both numbers come from the same place. Orbital speed is <strong>v = √(μ/r)</strong> and
+        period is <strong>T = 2π√(r³/μ)</strong>, with μ = 398,600 km³/s² for Earth. Everything
+        on that panel is those two lines of arithmetic, which is why the readouts agree with a
+        reference book at every altitude and not just the famous ones.
+      </p>
+    </section>
+
+    <!-- ================= EXHIBIT 02: ROOMS ================= -->
+    <section class="exhibit frame" id="rooms">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title">Rooms in this wing</h2>
+          <p class="exhibit-sub">
+            Getting to orbit, staying there, and going further than orbit — in roughly that
+            order.
+          </p>
+        </div>
+      </div>
+
+      <div class="rooms reveal">
+        <a class="room room-flagship" href="rockets.html">
+          <span class="room-num">S·01</span>
+          <h3 class="room-name">Rockets</h3>
+          <p class="room-note">
+            Build a launch vehicle from stages and engines, then launch it and find out whether
+            it makes orbit. Most first attempts do not, and the reason is always the same
+            number.
+          </p>
+          <span class="room-kind">Interactive · flagship</span>
+        </a>
+
+        <a class="room" href="satellites.html">
+          <span class="room-num">S·02</span>
+          <h3 class="room-name">Satellites</h3>
+          <p class="room-note">Altitude, inclination, and the ground track that falls out of them.</p>
+          <span class="room-kind">Interactive</span>
+        </a>
+
+        <a class="room" href="cubesats.html">
+          <span class="room-num">S·03</span>
+          <h3 class="room-name">CubeSats</h3>
+          <p class="room-note">Ten centimetres on a side, and a unit budget that refuses to negotiate.</p>
+          <span class="room-kind">Interactive</span>
+        </a>
+
+        <a class="room" href="spacecraft.html">
+          <span class="room-num">S·04</span>
+          <h3 class="room-name">Spacecraft</h3>
+          <p class="room-note">Power, thermal, attitude control — what it takes to stay alive out there.</p>
+          <span class="room-kind">Written</span>
+        </a>
+
+        <a class="room" href="space-stations.html">
+          <span class="room-num">S·05</span>
+          <h3 class="room-name">Space Stations</h3>
+          <p class="room-note">Living in orbit for months at a time, and the systems that allow it.</p>
+          <span class="room-kind">Written</span>
+        </a>
+
+        <a class="room" href="planetary-missions.html">
+          <span class="room-num">S·06</span>
+          <h3 class="room-name">Planetary Missions</h3>
+          <p class="room-note">Rovers, landers and probes, and why the travel times are what they are.</p>
+          <span class="room-kind">Written</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= CROSS-WING ================= -->
+    <section class="exhibit frame">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">03</span>
+        <div>
+          <h2 class="exhibit-title">The other wing</h2>
+          <p class="exhibit-sub">
+            Everything above needed something to get it off the ground. Everything below never
+            leaves the air.
+          </p>
+        </div>
+      </div>
+      <div class="exhibit-body reveal">
+        <p class="ctrl-row">
+          <a class="ctrl ctrl-primary" href="/flight-lab/index.html">Enter Aircraft</a>
+          <a class="ctrl" href="/timeline/index.html">Timeline</a>
+          <a class="ctrl" href="/playground/index.html">Playground</a>
+          <a class="ctrl" href="/references/index.html">References</a>
+        </p>
+      </div>
+    </section>
   </main>
 
   <site-footer></site-footer>

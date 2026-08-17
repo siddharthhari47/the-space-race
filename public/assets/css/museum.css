@@ -1,0 +1,1309 @@
+/* =========================================================================
+   THE SPACE RACE — exhibition layer
+   =========================================================================
+
+   Loaded *after* style.css, and only on pages that have been rebuilt as
+   exhibits. Everything here is additive: no existing selector is
+   redefined, so the thirty-odd reference pages still render exactly as
+   they did. That is deliberate. A redesign that silently changes every
+   page it doesn't touch is a redesign you can't verify.
+
+   Three ideas hold the whole thing together.
+
+   1. ALTITUDE IS THE ORGANISING PRINCIPLE.
+      Aircraft and spacecraft aren't two topics, they're two altitude
+      regimes, and the difference between them is physical: one flies by
+      pushing air, the other has no air to push. The site's structure says
+      that out loud. SPACE is up, AIRCRAFT is down, and the homepage draws
+      the axis they sit on.
+
+   2. DECORATION HAS TO CARRY DATA.
+      No element exists to look technical. The corner marks are registration
+      marks and they sit at panel corners because that's where registration
+      marks go. The grid is a measurement grid with a stated scale. The
+      monospace numbers are monospace because they change at 60fps and
+      proportional digits would make the whole row breathe.
+
+   3. TWO WORLDS, ONE BUILDING.
+      SPACE and AIRCRAFT get different palettes, different grids, different
+      environments — but identical structure, spacing and type. You should
+      be able to tell which wing you're in with the text blurred, and still
+      never doubt it's the same institution.
+   ========================================================================= */
+
+/* ---------- Type: one addition, for a reason ----------
+
+   JetBrains Mono is here because this site displays a lot of numbers that
+   change while you watch them. Proportional digits shift width as they
+   count — a readout ticking 9 -> 10 jumps, and a row of them ripples. It's
+   the single most obvious tell that a "telemetry" panel isn't telemetry.
+   Everything numeric on the site is monospaced and tabular. */
+
+:root {
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Mono",
+    "Roboto Mono", Menlo, Consolas, monospace;
+
+  /* Structural neutrals, shared by both worlds. Deliberately cool and
+     desaturated so each world's accent is the only real colour on screen. */
+  --ink-void: #04060c;
+  --ink-deep: #070a13;
+  --ink-panel: #0b0f1a;
+  --ink-raised: #111726;
+  --rule: #1a2334;
+  --rule-bright: #2a3852;
+  --type-hi: #eef2f8;
+  --type: #c3ccdb;
+  --type-dim: #8592a8;
+  --type-faint: #5a6679;
+
+  /* Motion. Aerospace hardware doesn't bounce, so nothing here overshoots.
+     The long curve is for camera-like moves, the short one for UI state. */
+  --ease-instrument: cubic-bezier(0.32, 0.08, 0.24, 1);
+  --ease-camera: cubic-bezier(0.65, 0, 0.2, 1);
+  --t-tap: 120ms;
+  --t-ui: 260ms;
+  --t-move: 620ms;
+
+  /* Measure. Prose stays narrow even when the exhibit around it is full
+     bleed — the reading column is a constant across the site. */
+  --measure: 68ch;
+  --frame: min(1440px, 100vw - 4rem);
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* ---------- World palettes ----------
+
+   SPACE is what a vacuum looks like: no scattering, so no haze, no warm
+   light, brutal contrast between lit and unlit. The accent is instrument
+   blue, the alert colour is sodium amber.
+
+   AIRCRAFT is what an atmosphere looks like: scattering, haze, a horizon,
+   sunlight through air. Warmer, lighter, lower contrast. The accent is the
+   amber of runway and flight-test lighting.
+
+   They never mix. A page is one or the other. */
+
+[data-world="space"] {
+  --w-bg: #04060c;
+  --w-bg-2: #070b16;
+  --w-panel: rgba(11, 16, 28, 0.72);
+  --w-accent: #6ea8ff;
+  --w-accent-soft: rgba(110, 168, 255, 0.14);
+  --w-accent-line: rgba(110, 168, 255, 0.32);
+  --w-warm: #ffab5e;
+  --w-grid: rgba(110, 168, 255, 0.07);
+  --w-glow: 0 0 28px rgba(110, 168, 255, 0.18);
+}
+
+[data-world="aircraft"] {
+  --w-bg: #070910;
+  --w-bg-2: #0d1220;
+  --w-panel: rgba(15, 19, 30, 0.72);
+  --w-accent: #ffab40;
+  --w-accent-soft: rgba(255, 171, 64, 0.12);
+  --w-accent-line: rgba(255, 171, 64, 0.3);
+  --w-warm: #7fd4ff;
+  --w-grid: rgba(200, 214, 232, 0.06);
+  --w-glow: 0 0 28px rgba(255, 171, 64, 0.16);
+}
+
+/* The homepage belongs to neither wing, so it takes the neutral set and
+   borrows each world's accent only where that world is being named. */
+[data-world="atrium"] {
+  --w-bg: #04060c;
+  --w-bg-2: #080b14;
+  --w-panel: rgba(11, 15, 26, 0.7);
+  --w-accent: #9fb4d0;
+  --w-accent-soft: rgba(159, 180, 208, 0.1);
+  --w-accent-line: rgba(159, 180, 208, 0.24);
+  --w-warm: #ffab40;
+  --w-grid: rgba(159, 180, 208, 0.05);
+  --w-glow: none;
+  --space-accent: #6ea8ff;
+  --aircraft-accent: #ffab40;
+}
+
+/* ---------- Page ground ---------- */
+
+body[data-world] {
+  background: var(--w-bg);
+  background-image: none;
+  color: var(--type);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+body[data-world] a {
+  color: var(--w-accent);
+}
+
+/* The site header sits over live canvases on these pages, so it loses its
+   solid fill and keeps only the hairline. */
+body[data-world] header.site-header {
+  background: linear-gradient(180deg, rgba(4, 6, 12, 0.92), rgba(4, 6, 12, 0));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+
+body[data-world] .nav-inner {
+  max-width: var(--frame);
+}
+
+/* ---------- Shared primitives ---------- */
+
+.frame {
+  width: var(--frame);
+  margin-inline: auto;
+}
+
+.measure {
+  max-width: var(--measure);
+}
+
+/* Small caps technical label. Used for anything that names a thing rather
+   than saying something about it: axis labels, panel titles, units. */
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.tag-accent {
+  color: var(--w-accent);
+}
+
+/* Registration marks. Four corner brackets on a panel, the way a drawing
+   or a camera frame gets registered. They mark the panel's true bounds,
+   which is why they're at the corners and nowhere else. */
+.registered {
+  position: relative;
+}
+
+.registered::before,
+.registered::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--w-accent-line);
+  pointer-events: none;
+}
+
+.registered::before {
+  top: -1px;
+  left: -1px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.registered::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: 0;
+  border-top: 0;
+}
+
+/* ---------- Numbered exhibit sections ----------
+
+   Museum rooms are numbered. So are these. The number is not decoration:
+   it's the reading order, and on a long page it tells you how far through
+   the argument you are. */
+
+.exhibit {
+  position: relative;
+  padding: clamp(4rem, 9vw, 7.5rem) 0;
+  border-top: 1px solid var(--rule);
+}
+
+.exhibit:first-of-type {
+  border-top: 0;
+}
+
+.exhibit-head {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: 0 clamp(1rem, 3vw, 2rem);
+  align-items: start;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.exhibit-index {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--w-accent);
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--w-accent-line);
+  letter-spacing: 0.08em;
+}
+
+.exhibit-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 3.4vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--type-hi);
+  margin: 0;
+}
+
+.exhibit-sub {
+  grid-column: 2;
+  margin: 0.9rem 0 0;
+  max-width: var(--measure);
+  color: var(--type-dim);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.exhibit-body {
+  grid-column: 2;
+}
+
+@media (max-width: 720px) {
+  .exhibit-head {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .exhibit-index {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .exhibit-sub,
+  .exhibit-body {
+    grid-column: 1;
+  }
+}
+
+/* ---------- Canvas stages ----------
+
+   Every simulation lives in one of these. The frame is a hairline box with
+   a corner-marked interior, a caption bar underneath, and a fixed aspect
+   ratio so the page doesn't reflow when the canvas sizes itself. */
+
+.stage {
+  position: relative;
+  border: 1px solid var(--rule);
+  background:
+    linear-gradient(180deg, var(--w-bg-2), var(--w-bg));
+  overflow: hidden;
+}
+
+.stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.stage-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--w-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--w-grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.stage-caption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--rule);
+  border-top: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--type-faint);
+  letter-spacing: 0.04em;
+}
+
+.stage-caption strong {
+  color: var(--type-dim);
+  font-weight: 500;
+}
+
+/* ---------- Instrument panel ---------- */
+
+.panel {
+  border: 1px solid var(--rule);
+  background: var(--w-panel);
+  backdrop-filter: blur(6px);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.panel-body {
+  padding: 1rem 0.9rem;
+  display: grid;
+  gap: 1.15rem;
+}
+
+/* ---------- lab-control ---------- */
+
+lab-control {
+  display: block;
+}
+
+lab-control[data-disabled] {
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+.lab-control-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.45rem;
+}
+
+.lab-control-label {
+  font-size: 0.85rem;
+  color: var(--type);
+  cursor: pointer;
+}
+
+.lab-control-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+  color: var(--type-hi);
+  white-space: nowrap;
+}
+
+.lab-control-unit {
+  color: var(--type-faint);
+  font-size: 0.72rem;
+  margin-left: 0.25rem;
+}
+
+/* A machined track: recessed groove, filled to the thumb, square ends. The
+   fill is what makes the value legible at a glance from across the panel. */
+.lab-control-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: grab;
+  display: block;
+  margin: 0;
+}
+
+.lab-control-slider:active {
+  cursor: grabbing;
+}
+
+.lab-control-slider::-webkit-slider-runnable-track {
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--w-accent) 0 var(--fill, 0%),
+    var(--rule) var(--fill, 0%) 100%
+  );
+  border-radius: 0;
+}
+
+.lab-control-slider::-moz-range-track {
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--w-accent) 0 var(--fill, 0%),
+    var(--rule) var(--fill, 0%) 100%
+  );
+}
+
+.lab-control-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 4px;
+  height: 20px;
+  margin-top: -8px;
+  background: var(--type-hi);
+  border: 0;
+  border-radius: 1px;
+  box-shadow: 0 0 0 3px var(--w-bg), 0 0 12px var(--w-accent-soft);
+  transition: background var(--t-tap) var(--ease-instrument);
+}
+
+.lab-control-slider::-moz-range-thumb {
+  width: 4px;
+  height: 20px;
+  background: var(--type-hi);
+  border: 0;
+  border-radius: 1px;
+  box-shadow: 0 0 0 3px var(--w-bg);
+}
+
+.lab-control-slider:hover::-webkit-slider-thumb,
+.lab-control-slider:focus-visible::-webkit-slider-thumb {
+  background: var(--w-accent);
+}
+
+.lab-control-scale {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--type-faint);
+  margin-top: 0.1rem;
+}
+
+/* ---------- lab-readout ---------- */
+
+lab-readout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.5rem 0.7rem;
+  border-left: 2px solid var(--rule);
+  transition: border-color var(--t-ui) var(--ease-instrument);
+}
+
+.lab-readout-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.lab-readout-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: var(--type-hi);
+  line-height: 1.15;
+}
+
+.lab-readout-unit {
+  font-size: 0.66rem;
+  color: var(--type-faint);
+  margin-left: 0.3rem;
+}
+
+lab-readout[data-state="good"] {
+  border-left-color: #58d6a0;
+}
+lab-readout[data-state="good"] .lab-readout-value {
+  color: #7cf0be;
+}
+
+lab-readout[data-state="warn"] {
+  border-left-color: var(--w-warm);
+}
+lab-readout[data-state="warn"] .lab-readout-value {
+  color: var(--w-warm);
+}
+
+lab-readout[data-state="bad"] {
+  border-left-color: #ff6b6b;
+}
+lab-readout[data-state="bad"] .lab-readout-value {
+  color: #ff8f8f;
+}
+
+lab-readout[data-state="live"] {
+  border-left-color: var(--w-accent);
+}
+
+.readout-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+/* ---------- Buttons in exhibit context ---------- */
+
+.ctrl {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--type);
+  background: transparent;
+  border: 1px solid var(--rule-bright);
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+  transition: all var(--t-tap) var(--ease-instrument);
+}
+
+.ctrl:hover:not(:disabled) {
+  border-color: var(--w-accent);
+  color: var(--type-hi);
+  background: var(--w-accent-soft);
+  text-decoration: none;
+}
+
+.ctrl:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.ctrl-primary {
+  border-color: var(--w-accent);
+  color: var(--w-accent);
+}
+
+.ctrl-primary:hover:not(:disabled) {
+  background: var(--w-accent);
+  color: var(--ink-void);
+}
+
+.ctrl-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* ---------- Prose inside exhibits ----------
+
+   Short by design. Anything longer than this wants to be an interaction. */
+
+.note {
+  max-width: var(--measure);
+  color: var(--type-dim);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.note + .note {
+  margin-top: 1rem;
+}
+
+.note strong {
+  color: var(--type-hi);
+  font-weight: 600;
+}
+
+/* A finding: the one-line takeaway an interaction is meant to produce.
+   Deliberately styled as a marginal annotation rather than a callout box,
+   because it's a conclusion you reached, not an aside. */
+.finding {
+  border-left: 2px solid var(--w-accent);
+  padding: 0.15rem 0 0.15rem 1rem;
+  margin: 1.75rem 0;
+  max-width: var(--measure);
+  color: var(--type);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.finding em {
+  color: var(--w-accent);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* ---------- Data tables ---------- */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.data-table th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+  font-weight: 500;
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  border-bottom: 1px solid var(--rule-bright);
+}
+
+.data-table td {
+  padding: 0.6rem 0.75rem 0.6rem 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--type);
+}
+
+.data-table td.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--type-hi);
+  padding-right: 0;
+}
+
+/* ---------- Reduced motion ----------
+
+   The blanket rule in style.css kills transition *duration*, which is right
+   for UI but would also freeze the scroll-driven reveals below at opacity 0
+   and leave content invisible. Force them to their finished state instead. */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--t-move) var(--ease-camera),
+    transform var(--t-move) var(--ease-camera);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* =========================================================================
+   ATRIUM — the homepage
+   =========================================================================
+
+   Composition rule: the environment owns the left half of the hero, the
+   content owns the right. That isn't a style choice, it's a collision fix —
+   the altitude axis and its labels are drawn down the left of the canvas,
+   and text laid over them would be unreadable at every viewport width. The
+   split gives the axis room to be read as a diagram, which is the only
+   reason it is there.
+   ========================================================================= */
+
+.atrium-hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  isolation: isolate;
+}
+
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Scrim across the lower half only. The top of the frame is vacuum and
+   already black, so darkening it would just flatten the star field; the
+   bottom holds the gateways over the brightest part of the atmosphere and
+   genuinely needs the contrast. */
+.atrium-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 6, 12, 0) 0%,
+    rgba(4, 6, 12, 0) 38%,
+    rgba(4, 6, 12, 0.55) 68%,
+    rgba(4, 6, 12, 0.92) 100%
+  );
+}
+
+.atrium-hero-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: clamp(1.25rem, 3vh, 2.75rem);
+  width: var(--frame);
+  margin-inline: auto;
+  padding: clamp(4rem, 10vh, 6.5rem) 0 clamp(1.25rem, 3vh, 2.25rem);
+}
+
+.atrium-title-block {
+  align-self: center;
+  justify-self: end;
+  max-width: 34rem;
+}
+
+/* Sized against viewport *height* as well as width. A wide, short window —
+   a laptop in a browser with three toolbars — would otherwise get a title
+   so tall it pushes the gateways off the bottom of the screen, which is
+   the one thing the hero must not do. */
+.atrium-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.6rem, min(8vw, 12vh), 5.75rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: var(--type-hi);
+  margin: 0.4rem 0 1rem;
+  text-wrap: balance;
+}
+
+.atrium-lede {
+  font-size: clamp(0.98rem, 1.25vw, 1.08rem);
+  line-height: 1.6;
+  color: var(--type);
+  margin: 0 0 0.75rem;
+}
+
+.atrium-lede-2 {
+  font-size: 0.98rem;
+  color: var(--type-dim);
+  margin: 0;
+}
+
+/* ---------- Gateways ----------
+
+   Two doors. Each states the altitude regime it covers, because that is the
+   actual thing that separates them, and hovering one biases the environment
+   toward it rather than swapping the scene out. */
+
+.gateways {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+
+.gateway {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  gap: 0.3rem;
+  padding: clamp(1.1rem, 2vw, 1.7rem);
+  background: rgba(6, 9, 16, 0.82);
+  backdrop-filter: blur(10px);
+  color: var(--type);
+  text-decoration: none;
+  overflow: hidden;
+  transition: background var(--t-ui) var(--ease-instrument);
+}
+
+.gateway:hover,
+.gateway:focus-visible {
+  text-decoration: none;
+  background: rgba(10, 15, 26, 0.9);
+}
+
+/* The accent bar is the door's own colour, and it grows on approach.
+   Left-to-right on SPACE, right-to-left on AIRCRAFT, so the pair reads as
+   two halves of one control rather than two copies of the same one. */
+.gateway::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t-move) var(--ease-camera);
+}
+
+.gateway[data-gateway="space"]::before {
+  background: var(--space-accent);
+}
+
+.gateway[data-gateway="aircraft"]::before {
+  background: var(--aircraft-accent);
+  transform-origin: right;
+}
+
+.gateway:hover::before,
+.gateway:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.gateway-index {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--type-faint);
+  letter-spacing: 0.1em;
+}
+
+.gateway-regime {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+  transition: color var(--t-ui) var(--ease-instrument);
+}
+
+.gateway-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.7rem, min(3.4vw, 5vh), 2.7rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--type-hi);
+  margin: 0.1rem 0 0.35rem;
+}
+
+.gateway-line {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--type-dim);
+  max-width: 34ch;
+}
+
+.gateway-go {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+  margin-top: 0.85rem;
+  transition: color var(--t-ui) var(--ease-instrument);
+}
+
+.gateway[data-gateway="space"]:hover .gateway-go,
+.gateway[data-gateway="space"]:focus-visible .gateway-go,
+.gateway[data-gateway="space"]:hover .gateway-regime {
+  color: var(--space-accent);
+}
+
+.gateway[data-gateway="aircraft"]:hover .gateway-go,
+.gateway[data-gateway="aircraft"]:focus-visible .gateway-go,
+.gateway[data-gateway="aircraft"]:hover .gateway-regime {
+  color: var(--aircraft-accent);
+}
+
+.atrium-axis-note {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--type-faint);
+  max-width: 62ch;
+  margin: 0;
+}
+
+.atrium-axis-note .tag {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+@media (max-width: 900px) {
+  .atrium-hero-inner {
+    padding-top: clamp(3.5rem, 10vh, 6rem);
+  }
+
+  .atrium-title-block {
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .gateways {
+    grid-template-columns: 1fr;
+  }
+
+  .gateway {
+    grid-template-rows: auto auto auto auto auto;
+  }
+
+  .gateway-line {
+    max-width: none;
+  }
+}
+
+/* The environment is the point on desktop, but on a phone the text has to
+   win. Fade the canvas rather than removing it — the axis still reads as a
+   background diagram, just quietly. */
+@media (max-width: 620px) {
+  #hero-canvas {
+    opacity: 0.42;
+  }
+
+  .atrium-hero::after {
+    background: linear-gradient(
+      180deg,
+      rgba(4, 6, 12, 0.4) 0%,
+      rgba(4, 6, 12, 0.6) 50%,
+      rgba(4, 6, 12, 0.95) 100%
+    );
+  }
+}
+
+/* ---------- Directory ----------
+
+   A floor directory, not a card grid. Numbered, ruled, two columns that
+   name themselves by wing. The number prefix (S-01, A-04) is the shelf mark:
+   it tells you which wing a room is in before you have read its name. */
+
+.directory {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+
+.directory-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--type-hi);
+  margin: 0 0 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--rule-bright);
+}
+
+.directory-col[data-col="space"] .directory-head {
+  border-bottom-color: rgba(110, 168, 255, 0.4);
+}
+
+.directory-col[data-col="aircraft"] .directory-head {
+  border-bottom-color: rgba(255, 171, 64, 0.4);
+}
+
+.directory-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.directory-list li {
+  border-bottom: 1px solid var(--rule);
+  padding: 0.85rem 0;
+}
+
+.directory-list a {
+  display: grid;
+  grid-template-columns: 3.4rem 1fr auto;
+  align-items: baseline;
+  gap: 0.75rem;
+  color: var(--type-hi);
+  text-decoration: none;
+}
+
+.directory-list a:hover {
+  text-decoration: none;
+}
+
+.d-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--type-faint);
+  letter-spacing: 0.06em;
+}
+
+.d-name {
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color var(--t-tap) var(--ease-instrument);
+}
+
+.directory-col[data-col="space"] a:hover .d-name {
+  color: #6ea8ff;
+}
+
+.directory-col[data-col="aircraft"] a:hover .d-name {
+  color: #ffab40;
+}
+
+.d-kind {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+  border: 1px solid var(--rule-bright);
+  padding: 0.15rem 0.4rem;
+  white-space: nowrap;
+}
+
+.d-note {
+  margin: 0.3rem 0 0 4.15rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--type-faint);
+}
+
+@media (max-width: 780px) {
+  .directory {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .directory-list a {
+    grid-template-columns: 3.2rem 1fr;
+  }
+
+  .d-kind {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 0.25rem;
+  }
+
+  .d-note {
+    margin-left: 3.95rem;
+  }
+}
+
+/* ---------- Routes ---------- */
+
+.routes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+
+.route {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: clamp(1.4rem, 2.5vw, 2rem);
+  background: var(--ink-deep);
+  color: var(--type);
+  text-decoration: none;
+  transition: background var(--t-ui) var(--ease-instrument);
+}
+
+.route:hover,
+.route:focus-visible {
+  background: var(--ink-raised);
+  text-decoration: none;
+}
+
+.route-title {
+  font-family: var(--font-display);
+  font-size: 1.28rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--type-hi);
+  margin: 0.2rem 0 0;
+}
+
+.route-note {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--type-dim);
+  margin: 0;
+  flex: 1;
+}
+
+.route-go {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+  margin-top: 0.8rem;
+}
+
+/* =========================================================================
+   WORLD PAGES — shared chrome for both wings
+   ========================================================================= */
+
+.world-head {
+  padding: clamp(3.5rem, 9vh, 6rem) 0 clamp(2rem, 5vh, 3.5rem);
+}
+
+.world-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--type-hi);
+  margin: 0.5rem 0 1.2rem;
+}
+
+.world-lede {
+  max-width: 54ch;
+  font-size: clamp(1rem, 1.3vw, 1.14rem);
+  line-height: 1.65;
+  color: var(--type);
+  margin: 0;
+}
+
+/* ---------- Instrument + stage pairing ----------
+
+   The standard layout for a working exhibit: the picture takes the space,
+   the controls sit beside it on desktop and underneath on narrow screens.
+   Deliberately not a floating overlay — controls that sit on top of the
+   thing they control cover exactly the part you're trying to watch. */
+
+.orbit-lab,
+.tunnel-lab {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 21rem);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+
+.orbit-stage {
+  border: 0;
+  aspect-ratio: 1 / 1;
+  max-height: 70vh;
+}
+
+.orbit-panel,
+.tunnel-panel {
+  border: 0;
+  background: var(--ink-panel);
+}
+
+.panel-note {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--type-dim);
+  margin: 0;
+  padding-left: 0.7rem;
+  border-left: 1px solid var(--rule-bright);
+}
+
+@media (max-width: 880px) {
+  .orbit-lab,
+  .tunnel-lab {
+    grid-template-columns: 1fr;
+  }
+
+  .orbit-stage {
+    aspect-ratio: 1 / 1;
+    max-height: none;
+  }
+}
+
+/* ---------- Rooms ----------
+
+   Not cards: ruled blocks in a grid with no rounding and no shadow, so the
+   grid reads as a plan rather than a set of tiles. The flagship gets width,
+   not decoration. */
+
+.rooms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+
+.room {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: clamp(1.3rem, 2.4vw, 1.9rem);
+  background: var(--ink-deep);
+  color: var(--type);
+  text-decoration: none;
+  position: relative;
+  transition: background var(--t-ui) var(--ease-instrument);
+}
+
+.room::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--w-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--t-ui) var(--ease-camera);
+}
+
+.room:hover,
+.room:focus-visible {
+  background: var(--ink-raised);
+  text-decoration: none;
+}
+
+.room:hover::after,
+.room:focus-visible::after {
+  transform: scaleY(1);
+}
+
+.room-flagship {
+  grid-column: span 2;
+}
+
+@media (max-width: 700px) {
+  .room-flagship {
+    grid-column: span 1;
+  }
+}
+
+.room-num {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--type-faint);
+}
+
+.room-name {
+  font-family: var(--font-display);
+  font-size: 1.22rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--type-hi);
+  margin: 0;
+}
+
+.room-note {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--type-dim);
+  margin: 0;
+  flex: 1;
+}
+
+.room-kind {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+  margin-top: 0.7rem;
+}
+
+.room-flagship .room-kind {
+  color: var(--w-accent);
+}
+
+/* The envelope chart is a plot, so it wants a plot's proportions rather
+   than the square the orbit field needs. */
+.envelope-stage {
+  border: 0;
+  aspect-ratio: 4 / 3;
+  min-height: 320px;
+}
+
+@media (max-width: 880px) {
+  .envelope-stage {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+.ctrl-row-tight .ctrl {
+  padding: 0.4rem 0.65rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+}
+
+.ac-detail {
+  display: grid;
+  gap: 0.4rem;
+}

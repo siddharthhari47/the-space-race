@@ -3,82 +3,269 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flight Lab — The Space Race</title>
-  <meta name="description" content="Aerodynamics, flight dynamics, aircraft systems, and the aircraft that shaped modern aviation." />
+  <title>Aircraft — The Space Race</title>
+  <meta name="description" content="The flight envelope, computed from the standard atmosphere: how high and how fast, and why every aircraft is really an argument about which part of that chart to live in." />
   <link rel="icon" href="../assets/images/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/systems/instruments.js"></script>
+  <script type="module" src="/assets/js/pages/aircraft-world.js" defer></script>
 </head>
-<body>
+<body data-world="aircraft">
   <site-header current="flight-lab"></site-header>
 
-  <main class="container lab-page">
-    <section-header
-      eyebrow="Explore Flight"
-      title="Flight Lab"
-    ></section-header>
-    <p class="lab-intro">
-      Two ways of staying up: a fixed wing moving fast enough to generate lift on its own,
-      or a rotor spinning fast enough to generate it while everything underneath stays still.
-      Pick a side below.
-    </p>
+  <main>
+    <!-- ================= WORLD HEADER ================= -->
+    <section class="world-head frame">
+      <p class="tag tag-accent">Wing 02 · 0 – 20 km</p>
+      <h1 class="world-title">Aircraft</h1>
+      <p class="world-lede">
+        An aeroplane is an argument about air. How much of it you have, how fast you move
+        through it, and what it does to you when you run short. Every aircraft ever built is a
+        different answer, and they all fit on one chart.
+      </p>
+    </section>
 
-    <section-header eyebrow="Fixed-Wing" title="Fixed-Wing Aircraft"></section-header>
-    <p class="lab-intro">The theory, the systems, and the aircraft that put it all to use.</p>
-    <feature-grid>
-      <info-card title="Atmosphere &amp; Altitude" href="atmosphere-and-altitude.html">
-        Why aircraft design leans on a hypothetical atmosphere, and what "altitude" really means.
-      </info-card>
-      <info-card title="Aerodynamics" href="aerodynamics.html">
-        How lift, drag, and airflow actually work.
-      </info-card>
-      <info-card title="Flight Dynamics" href="flight-dynamics.html">
-        Pitch, roll, and yaw — how aircraft move through three axes.
-      </info-card>
-      <info-card title="Aircraft Systems" href="aircraft-systems.html">
-        Fuel, hydraulics, avionics, and everything else that keeps a plane flying.
-      </info-card>
-      <info-card title="Commercial Aircraft" href="commercial-aircraft.html">
-        The airliners that shaped modern air travel.
-      </info-card>
-      <info-card title="Military Aircraft" href="military-aircraft.html">
-        Fighters, bombers, and the technology that drives them.
-      </info-card>
-      <info-card title="Private Aviation" href="private-aviation.html">
-        General aviation, business jets, and personal flight.
-      </info-card>
-      <info-card title="Interactive Aircraft Explorer" href="interactive-aircraft.html">
-        Rotate a real 777-300ER and click through all eighteen parts.
-      </info-card>
-      <info-card title="Interactive Cargo Aircraft Explorer" href="interactive-cargo-aircraft.html">
-        A four-engine turboprop freighter, and why it's shaped nothing like an airliner.
-      </info-card>
-    </feature-grid>
+    <!-- ================= EXHIBIT 01: THE ENVELOPE ================= -->
+    <section class="exhibit frame" id="envelope">
+      <div class="exhibit-head">
+        <span class="exhibit-index">01</span>
+        <div>
+          <h2 class="exhibit-title">Where an aircraft is allowed to be</h2>
+          <p class="exhibit-sub">
+            Altitude up, Mach across. The shaded region is where a large jet transport can hold
+            level flight. Move the pointer over it to sample the air at that height, and notice
+            how narrow the region gets near the top.
+          </p>
+        </div>
+      </div>
 
-    <section-header eyebrow="Rotorcraft" title="Helicopters"></section-header>
-    <p class="lab-intro">Aircraft that don't need a runway to take off, land, or change direction.</p>
-    <feature-grid columns="2">
-      <info-card title="Helicopter Aerodynamics" href="helicopter-aerodynamics.html">
-        How a rotor makes lift without ever needing forward speed.
-      </info-card>
-      <info-card title="Interactive Helicopter Explorer" href="interactive-helicopter.html">
-        Rotate a Merlin MK2 and click through rotor, swashplate, and more.
-      </info-card>
-    </feature-grid>
+      <div class="tunnel-lab">
+        <div class="stage envelope-stage">
+          <canvas id="envelope-canvas"></canvas>
+        </div>
 
-    <section-header eyebrow="Fast Jets" title="Fighter Aircraft"></section-header>
-    <p class="lab-intro">Built to control energy quickly rather than carry people cheaply.</p>
-    <feature-grid columns="2">
-      <info-card title="What Makes a Fighter Different" href="fighter-aircraft.html">
-        Thrust-to-weight, afterburners, and pointing the exhaust sideways.
-      </info-card>
-      <info-card title="Interactive Fighter Aircraft Explorer" href="interactive-fighter-aircraft.html">
-        Rotate a Su-35 and click through intakes, nozzles, and control surfaces.
-      </info-card>
-    </feature-grid>
+        <div class="panel tunnel-panel">
+          <div class="panel-head">
+            <span>Air at this point</span>
+            <span data-status>Hover the chart</span>
+          </div>
+          <div class="panel-body">
+            <div class="readout-row">
+              <lab-readout data-out="alt" label="Altitude" unit="km" decimals="1"></lab-readout>
+              <lab-readout data-out="mach" label="Mach" decimals="2"></lab-readout>
+              <lab-readout data-out="tas" label="True airspeed" unit="kt" decimals="0"></lab-readout>
+              <lab-readout data-out="temp" label="Temperature" unit="°C" decimals="1"></lab-readout>
+              <lab-readout data-out="rho" label="Density" unit="kg/m³" decimals="3"></lab-readout>
+            </div>
+
+            <div class="ac-detail">
+              <span class="tag" data-ac-name>Pick an aircraft</span>
+              <p class="panel-note" data-ac-detail>
+                Click any marker on the chart, or one of the names below.
+              </p>
+            </div>
+
+            <div class="ctrl-row ctrl-row-tight">
+              <button class="ctrl" type="button" data-ac="c172">Cessna 172</button>
+              <button class="ctrl" type="button" data-ac="b777">777</button>
+              <button class="ctrl" type="button" data-ac="u2">U-2</button>
+              <button class="ctrl" type="button" data-ac="concorde">Concorde</button>
+              <button class="ctrl" type="button" data-ac="sr71">SR-71</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-caption">
+        <span><strong>Envelope</strong> computed live from the ISA — stall from W/S = 6,200 N/m², CL<sub>max</sub> 1.35; upper edge min(VMO 330 kt, MMO 0.89)</span>
+        <span><strong>Markers</strong> typical cruise, approximate</span>
+      </div>
+
+      <p class="finding">
+        The two edges lean toward each other. Low down there is a wide band of usable speed;
+        by 50,000 ft the slowest you may fly and the fastest you may fly have nearly converged.
+        Run out of gap entirely and you are at the <em>coffin corner</em>, where slowing down
+        stalls you and speeding up puts shockwaves on the wing.
+      </p>
+
+      <p class="note">
+        The hollow markers are aircraft this envelope has no room for, and they miss it in both
+        directions. Concorde, the MiG-25 and the SR-71 are off the right-hand edge — too fast.
+        The Cessna and the Black Hawk are off the left, and that is the less obvious half:
+        a loaded 777 would stall long before it slowed to their cruise speed. The U-2 is the
+        interesting one. It is subsonic, and it gets to 70,000 ft by having an enormous wing
+        carrying almost no weight, which drags its own stall boundary far enough left that
+        there is still a gap up there for it to fly in.
+      </p>
+
+      <p class="note">
+        One caveat worth drawing rather than hiding: this envelope only asks whether the
+        <strong>wing</strong> can do it. It closes at about 57,000 ft, but a real 777 stops at
+        43,100 ft, and that lower line is on the chart too. The difference is engines — up there
+        the air is too thin to make enough thrust, long before the aerodynamics give up.
+      </p>
+    </section>
+
+    <!-- ================= EXHIBIT 02: FIXED WING ================= -->
+    <section class="exhibit frame" id="rooms">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title">Fixed wing</h2>
+          <p class="exhibit-sub">
+            The theory first, then the machines that put it to use.
+          </p>
+        </div>
+      </div>
+
+      <div class="rooms reveal">
+        <a class="room room-flagship" href="aerodynamics.html">
+          <span class="room-num">A·01</span>
+          <h3 class="room-name">Aerodynamics</h3>
+          <p class="room-note">
+            A wind tunnel with a working section you control. Raise the angle of attack, watch
+            lift build and then collapse, and see where the flow gives up.
+          </p>
+          <span class="room-kind">Interactive · flagship</span>
+        </a>
+
+        <a class="room" href="atmosphere-and-altitude.html">
+          <span class="room-num">A·02</span>
+          <h3 class="room-name">Atmosphere &amp; Altitude</h3>
+          <p class="room-note">Why the whole industry designs against an atmosphere that does not exist.</p>
+          <span class="room-kind">Written</span>
+        </a>
+
+        <a class="room" href="flight-dynamics.html">
+          <span class="room-num">A·03</span>
+          <h3 class="room-name">Flight Dynamics</h3>
+          <p class="room-note">Pitch, roll and yaw, and the surfaces that command them.</p>
+          <span class="room-kind">Written</span>
+        </a>
+
+        <a class="room" href="aircraft-systems.html">
+          <span class="room-num">A·04</span>
+          <h3 class="room-name">Aircraft Systems</h3>
+          <p class="room-note">Fuel, hydraulics, electrics, bleed air — the unglamorous half.</p>
+          <span class="room-kind">Written</span>
+        </a>
+
+        <a class="room" href="interactive-aircraft.html">
+          <span class="room-num">A·05</span>
+          <h3 class="room-name">Airliner, in 3D</h3>
+          <p class="room-note">A 777-300ER you can rotate and take apart, eighteen components deep.</p>
+          <span class="room-kind">Interactive · 3D</span>
+        </a>
+
+        <a class="room" href="commercial-aircraft.html">
+          <span class="room-num">A·06</span>
+          <h3 class="room-name">Commercial Aircraft</h3>
+          <p class="room-note">The Airbus and Boeing rivalry, and what it did to the aeroplanes.</p>
+          <span class="room-kind">Written</span>
+        </a>
+
+        <a class="room" href="interactive-cargo-aircraft.html">
+          <span class="room-num">A·07</span>
+          <h3 class="room-name">Freighter, in 3D</h3>
+          <p class="room-note">High wing, rear ramp, four turboprops — and why cargo looks like this.</p>
+          <span class="room-kind">Interactive · 3D</span>
+        </a>
+
+        <a class="room" href="private-aviation.html">
+          <span class="room-num">A·08</span>
+          <h3 class="room-name">Private Aviation</h3>
+          <p class="room-note">General aviation and business jets, flying above the airline traffic.</p>
+          <span class="room-kind">Written</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= EXHIBIT 03: ROTORCRAFT ================= -->
+    <section class="exhibit frame" id="rotorcraft">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">03</span>
+        <div>
+          <h2 class="exhibit-title">Rotorcraft</h2>
+          <p class="exhibit-sub">
+            Everything above needs a runway and a hundred knots before the wing works. A rotor
+            makes its own airspeed, which buys hover and costs almost everything else.
+          </p>
+        </div>
+      </div>
+
+      <div class="rooms reveal">
+        <a class="room" href="helicopter-aerodynamics.html">
+          <span class="room-num">R·01</span>
+          <h3 class="room-name">Helicopter Aerodynamics</h3>
+          <p class="room-note">Collective, cyclic, and how a rotor makes lift with the aircraft standing still.</p>
+          <span class="room-kind">Interactive</span>
+        </a>
+
+        <a class="room" href="interactive-helicopter.html">
+          <span class="room-num">R·02</span>
+          <h3 class="room-name">Helicopter, in 3D</h3>
+          <p class="room-note">A Merlin MK2 — rotor head, swashplate, tail rotor, and why it needs all three.</p>
+          <span class="room-kind">Interactive · 3D</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= EXHIBIT 04: FAST JETS ================= -->
+    <section class="exhibit frame" id="fighters">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">04</span>
+        <div>
+          <h2 class="exhibit-title">Fast jets</h2>
+          <p class="exhibit-sub">
+            Built to change energy state quickly rather than carry people cheaply. The far right
+            of that chart, where the rules change.
+          </p>
+        </div>
+      </div>
+
+      <div class="rooms reveal">
+        <a class="room" href="fighter-aircraft.html">
+          <span class="room-num">F·01</span>
+          <h3 class="room-name">What Makes a Fighter Different</h3>
+          <p class="room-note">Thrust-to-weight above one, afterburners, and pointing the exhaust sideways.</p>
+          <span class="room-kind">Written</span>
+        </a>
+
+        <a class="room" href="interactive-fighter-aircraft.html">
+          <span class="room-num">F·02</span>
+          <h3 class="room-name">Fighter, in 3D</h3>
+          <p class="room-note">An Su-35 — intakes, thrust-vectoring nozzles, and every control surface.</p>
+          <span class="room-kind">Interactive · 3D</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= CROSS-WING ================= -->
+    <section class="exhibit frame">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">05</span>
+        <div>
+          <h2 class="exhibit-title">The other wing</h2>
+          <p class="exhibit-sub">
+            Keep climbing past the top of that chart and the air stops being useful. That is
+            where the other half of this place begins.
+          </p>
+        </div>
+      </div>
+      <div class="exhibit-body reveal">
+        <p class="ctrl-row">
+          <a class="ctrl ctrl-primary" href="/space-lab/index.html">Enter Space</a>
+          <a class="ctrl" href="/timeline/index.html">Timeline</a>
+          <a class="ctrl" href="/playground/index.html">Playground</a>
+          <a class="ctrl" href="/references/index.html">References</a>
+        </p>
+      </div>
+    </section>
   </main>
 
   <site-footer></site-footer>
