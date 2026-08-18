@@ -113,6 +113,22 @@ export const SIMULATOR_REGISTRY = {
     status: "live",
     category: "space",
   },
+  "ground-track": {
+    title: "Ground Track",
+    description:
+      "Set an altitude and an inclination and watch where the satellite actually passes overhead — the westward march, the coverage band, and why sun-synchronous orbits fly backwards.",
+    page: "/space-lab/satellites.html",
+    status: "live",
+    category: "space",
+  },
+  "atmosphere-column": {
+    title: "Standard Atmosphere",
+    description:
+      "Scrub altitude through the ISA and watch temperature, pressure and density come apart — then see indicated airspeed stop matching true airspeed.",
+    page: "/flight-lab/atmosphere-and-altitude.html",
+    status: "live",
+    category: "flight",
+  },
   "flight-envelope": {
     title: "Flight Envelope",
     description:

@@ -170,7 +170,16 @@ export class Stage {
     // mis-sized no matter which observer failed to tell us.
     if (this.width === 0) this.resize();
 
-    const dt = Math.min((now - this._last) / 1000, MAX_DT);
+    // Clamped at both ends, and the lower clamp is not paranoia. The
+    // timestamp rAF passes in is the time the *frame* began, which can
+    // legitimately predate the performance.now() captured when the frame
+    // was requested — so the first dt after starting the loop is sometimes
+    // slightly negative. Left alone that runs every simulation on the site
+    // backwards for one frame, which is mostly invisible and occasionally
+    // catastrophic: a phase accumulator goes negative, Math.floor takes it
+    // to -1, and JavaScript's % keeps the sign, so an array index of -1
+    // reaches straight past the start of the array.
+    const dt = Math.min(Math.max(now - this._last, 0) / 1000, MAX_DT);
     this._last = now;
     this.time += dt;
     this.frame++;

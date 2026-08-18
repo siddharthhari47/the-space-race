@@ -3,91 +3,201 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Satellites — Space Lab — The Space Race</title>
-  <meta name="description" content="LEO, MEO, and GEO — what keeps a satellite useful in orbit, and why the orbit you pick depends entirely on the job." />
+  <title>Satellites — The Space Race</title>
+  <meta name="description" content="Set an altitude and an inclination and watch the ground track answer. Real orbital mechanics, the westward march, the coverage band, and why every sun-synchronous orbit flies backwards." />
   <link rel="icon" href="../assets/images/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/systems/instruments.js"></script>
+  <script type="module" src="/assets/js/pages/satellites.js" defer></script>
 </head>
-<body>
+<body data-world="space">
   <site-header current="space-lab"></site-header>
 
-  <main class="container lab-page">
-    <a class="back-link" href="index.html">&larr; Space Lab</a>
-    <h1 class="lab-title">Satellites</h1>
-    <p class="lab-intro">
-      A satellite is just an object that's falling around something else instead of into it.
-      Which orbit you put one in (how high, how fast, how tilted) depends entirely on what
-      you need it to actually do.
-    </p>
+  <main>
+    <section class="world-head frame">
+      <a class="back-link" href="index.html">&larr; Space</a>
+      <p class="tag tag-accent">S·02</p>
+      <h1 class="world-title">Satellites</h1>
+      <p class="world-lede">
+        A satellite is an object falling around the Earth instead of into it. Where you put it
+        decides what it can see, how often it can see it, and who on the ground is ever allowed
+        to talk to it.
+      </p>
+    </section>
 
-    <div class="stat-row">
-      <stat-card value="35,786 km" label="Altitude of a geostationary orbit" accent="space"></stat-card>
-      <stat-card value="~90 min" label="Typical orbital period in low Earth orbit" accent="space"></stat-card>
-      <stat-card value="1957" label="Year the first satellite reached orbit" accent="space"></stat-card>
-    </div>
+    <!-- ================= EXHIBIT 01: GROUND TRACK ================= -->
+    <section class="exhibit frame" id="track">
+      <div class="exhibit-head">
+        <span class="exhibit-index">01</span>
+        <div>
+          <h2 class="exhibit-title">Where it actually goes</h2>
+          <p class="exhibit-sub">
+            The orbit stays put; the planet turns underneath it. That one fact explains the whole
+            shape below — the sine wave, the westward march, and why geostationary is a dot.
+          </p>
+        </div>
+      </div>
 
-    <callout-box type="did-you-know">
-      <p>The geostationary orbit wasn't discovered by an engineer. It was proposed by a
-      science fiction writer. In a 1945 magazine article, Arthur C. Clarke worked out that a
-      satellite at the right altitude above the equator would orbit at exactly the speed the
-      Earth rotates, appearing to hang motionless in the sky. Communications satellites still
-      use that orbit today.</p>
-    </callout-box>
+      <div class="orbit-lab">
+        <div class="stage track-stage">
+          <canvas id="track-canvas"></canvas>
+        </div>
 
-    <div class="post-body">
-      <p>Every satellite orbit is a trade-off between altitude, speed, and coverage, and
-      engineers group the useful ones into three broad families. Low Earth orbit, roughly 160
-      to 2,000 km up, is where the ISS, most Earth-observation satellites, and nearly every
-      CubeSat fly: close enough for sharp imagery and short communication delays, but moving
-      fast enough that a single satellite only sees any given point on the ground for a few
-      minutes at a time.</p>
+        <div class="panel orbit-panel">
+          <div class="panel-head">
+            <span>Orbit</span>
+            <span data-track-status>Prograde</span>
+          </div>
+          <div class="panel-body">
+            <lab-control name="alt" label="Altitude" unit="km" min="160" max="36000" step="1" value="408"></lab-control>
+            <lab-control name="inc" label="Inclination" unit="°" min="0" max="120" step="0.1" value="51.6"></lab-control>
 
-      <p>Medium Earth orbit, a band centered around 20,000 km, is where GPS and similar
-      navigation constellations live, high enough that a modest number of satellites can cover
-      the whole planet between them. Geostationary orbit sits much higher still, at exactly the
-      altitude where a satellite's orbital period matches Earth's rotation: 35,786 km. A
-      satellite there appears fixed in the sky from the ground, which is exactly why
-      geostationary orbit is where most television and weather satellites are parked: a
-      ground antenna can point at one spot and never have to move.</p>
+            <div class="readout-row">
+              <lab-readout data-out="period" label="Period" unit="min" decimals="1"></lab-readout>
+              <lab-readout data-out="speed" label="Speed" unit="km/s" decimals="2"></lab-readout>
+              <lab-readout data-out="shift" label="West / orbit" unit="°" decimals="1"></lab-readout>
+              <lab-readout data-out="maxlat" label="Max latitude" unit="°" decimals="1"></lab-readout>
+              <lab-readout data-out="footprint" label="Footprint" unit="km" decimals="0"></lab-readout>
+              <lab-readout data-out="inc" label="Inclination" unit="°" decimals="1" data-state="live"></lab-readout>
+            </div>
 
-      <p>What all three orbits share is physics, not engineering choice: how fast a satellite
-      has to move to stay up, and how long it takes to go around, are both determined entirely
-      by altitude. Lower orbits move faster and circle the planet quickly; higher orbits move
-      slower and take longer. Drag the altitude slider from LEO to geostationary and watch the
-      period stretch from ninety minutes to a full day.</p>
+            <p class="panel-note" data-reach></p>
 
-      <h2>Satellite Orbit Simulator</h2>
-      <p>Adjust altitude and inclination and watch the orbit (and its orbital period) change
-      in real time.</p>
-      <simulation-container type="orbit-simulator"></simulation-container>
-      <p>If you pushed the altitude higher, the period should have grown faster than the
-      altitude did. That's Kepler's third law showing up directly, and it's the same
-      relationship deciding how long everything in this section, from the ISS to a
-      geostationary weather satellite, takes to circle the Earth.</p>
-    </div>
+            <div class="ctrl-row ctrl-row-tight">
+              <button class="ctrl" type="button" data-orbit-preset="iss">ISS</button>
+              <button class="ctrl" type="button" data-orbit-preset="sso">Sun-sync</button>
+              <button class="ctrl" type="button" data-orbit-preset="polar">Polar</button>
+              <button class="ctrl" type="button" data-orbit-preset="geo">Geostationary</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <div class="continue-explore">
-      <h2>Related Technologies</h2>
-      <ul>
-        <li><a href="cubesats.html">Space Lab: CubeSats</a></li>
-        <li><a href="rockets.html">Space Lab: Rockets</a></li>
-      </ul>
+      <div class="stage-caption">
+        <span><strong>Projection</strong> equirectangular graticule — a grid, not a map, because a coastline drawn from memory would be wrong</span>
+        <span><strong>Footprint</strong> true great-circle horizon, acos(R/(R+h))</span>
+      </div>
 
-      <h2>Next Steps</h2>
-      <ul>
-        <li><a href="index.html">Back to Space Lab</a></li>
-        <li><a href="../playground/orbit-simulator.html">Open the Orbit Simulator in Playground</a></li>
-      </ul>
+      <p class="finding">
+        Take the inclination to zero and watch the track flatten onto the equator. Take it to
+        90° and it sweeps the poles. <em>The highest latitude a satellite ever reaches is
+        exactly its inclination</em> — so anything shaded above the dashed line is territory
+        that orbit simply never flies over, no matter how long you wait.
+      </p>
 
-      <h2>Further Reading</h2>
-      <ul>
-        <li><a href="../blog/where-are-we-now.html">Where are we now?</a></li>
-        <li><a href="../references/index.html">References</a></li>
-      </ul>
+      <p class="note">
+        Set it to the geostationary preset and the track collapses to a single point. Nothing in
+        the code special-cases that; it falls out of the arithmetic, because at 35,786 km the
+        orbital period matches one rotation of the Earth and the two motions cancel exactly.
+      </p>
+    </section>
+
+    <!-- ================= EXHIBIT 02: SUN-SYNC ================= -->
+    <section class="exhibit frame" id="sunsync">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title">The orbit that flies backwards on purpose</h2>
+          <p class="exhibit-sub">
+            Press Sun-sync above and look at the inclination: it is over 90°, which means the
+            satellite is going round the wrong way. That is deliberate, and it is one of the
+            neatest tricks in orbital mechanics.
+          </p>
+        </div>
+      </div>
+
+      <div class="exhibit-body reveal">
+        <p class="note">
+          Earth is not a sphere. It bulges at the equator, and that extra mass tugs at any
+          orbit that is not exactly equatorial, slowly dragging the whole orbital plane around.
+          For most missions this is a nuisance to be corrected.
+        </p>
+
+        <p class="finding">
+          Unless you choose an inclination that makes the drift come out at
+          <em>exactly one revolution per year</em>. Then the orbit plane keeps a fixed angle to
+          the Sun, and the satellite crosses every latitude at the same local time on every
+          single pass — so today's image and last month's image have identical lighting and
+          identical shadows. The nuisance becomes the instrument.
+        </p>
+
+        <p class="note" data-sso></p>
+
+        <p class="note">
+          Solving that condition gives a negative cosine, which means an inclination above 90°.
+          Every sun-synchronous satellite in existence is flying slightly retrograde because
+          that is the only way the sum works out.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= EXHIBIT 03: LAUNCH SITES ================= -->
+    <section class="exhibit frame" id="sites">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">03</span>
+        <div>
+          <h2 class="exhibit-title">Why the launch site decides the orbit</h2>
+          <p class="exhibit-sub">
+            Drag the inclination below 28.5° and watch Cape Canaveral drop off the list of
+            places you could have launched from.
+          </p>
+        </div>
+      </div>
+
+      <div class="exhibit-body reveal">
+        <p class="note">
+          An orbital plane has to pass through the point you launched from. A plane through a
+          site at latitude L is tilted at least L from the equator — so
+          <strong>you cannot reach an inclination lower than your own latitude</strong>, not
+          without a plane change, which is among the most expensive manoeuvres in spaceflight.
+          Launching east also collects free speed from Earth's rotation, and that bonus is
+          largest at the equator.
+        </p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Site</th><th>Latitude</th><th>Consequence</th></tr>
+            </thead>
+            <tbody data-sites></tbody>
+          </table>
+        </div>
+
+        <p class="note">
+          This is the real reason the ISS sits at 51.6°. It is not an optimum for science or
+          coverage — it is the lowest inclination reachable from Baikonur, and the station had
+          to be somewhere Soyuz could get to.
+        </p>
+
+        <callout-box type="did-you-know">
+          <p>Geostationary orbit was not proposed by an engineer. In a 1945 magazine article,
+          the science fiction writer Arthur C. Clarke worked out that a satellite at the right
+          altitude above the equator would circle at exactly the rate Earth turns, and appear
+          to hang motionless. Television and weather satellites still park there.</p>
+        </callout-box>
+      </div>
+    </section>
+
+    <div class="frame">
+      <div class="continue-explore">
+        <h2>Related</h2>
+        <ul>
+          <li><a href="index.html">Orbits, to scale</a></li>
+          <li><a href="rockets.html">Getting there: the launch bench</a></li>
+          <li><a href="cubesats.html">CubeSats</a></li>
+        </ul>
+
+        <h2>Next Steps</h2>
+        <ul>
+          <li><a href="../playground/orbit-simulator.html">Orbit Simulator</a></li>
+          <li><a href="../references/index.html">References</a></li>
+        </ul>
+      </div>
     </div>
   </main>
 

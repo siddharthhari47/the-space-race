@@ -1481,3 +1481,247 @@ lab-readout[data-state="live"] {
     min-height: 0;
   }
 }
+
+/* ---------- Ground track ----------
+
+   Wider than it is tall, because the thing being displayed is a 360-by-180
+   graticule and any other proportion distorts it for no reason. */
+
+.track-stage {
+  border: 0;
+  aspect-ratio: 2 / 1;
+}
+
+/* ---------- Atmosphere column ----------
+
+   Taller than wide: the axis being read is altitude, and a landscape box
+   would waste the dimension that carries the meaning. */
+
+.atmo-stage {
+  border: 0;
+  aspect-ratio: 3 / 4;
+  min-height: 340px;
+}
+
+@media (max-width: 880px) {
+  .atmo-stage {
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+  }
+}
+
+/* =========================================================================
+   RETROFIT — the written rooms
+   =========================================================================
+
+   The reference pages already have a perfectly good structure: .lab-page
+   wrapping a .lab-title, a .lab-intro and a .post-body. Rewriting fifteen
+   of them by hand to use .world-head and .exhibit would have been fifteen
+   chances to break a working page for no gain, so instead the exhibition
+   layer learns to style what is already there.
+
+   Every rule below is scoped under body[data-world], so a page opts in by
+   adding one attribute and one stylesheet link. Nothing here can affect a
+   page that has not opted in.
+   ========================================================================= */
+
+/* The reading measure applies to prose rooms only. Pages that opt into
+   .container-wide do so because they hold a 3D viewer that needs the room —
+   narrowing those would undo the reason they were made wide. */
+body[data-world] .lab-page:not(.container-wide) {
+  max-width: min(74ch, calc(100vw - 3rem));
+}
+
+body[data-world] .lab-page {
+  padding-top: clamp(2.5rem, 7vh, 4.5rem);
+  padding-bottom: clamp(3rem, 8vh, 5rem);
+}
+
+body[data-world] .back-link {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+body[data-world] .back-link:hover {
+  color: var(--w-accent);
+  text-decoration: none;
+}
+
+body[data-world] .lab-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 5.5vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: var(--type-hi);
+  margin: 0 0 1.1rem;
+}
+
+body[data-world] .lab-intro {
+  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  line-height: 1.68;
+  color: var(--type);
+  max-width: var(--measure);
+}
+
+body[data-world] .post-body {
+  color: var(--type-dim);
+  line-height: 1.72;
+}
+
+body[data-world] .post-body p {
+  max-width: var(--measure);
+}
+
+body[data-world] .post-body strong {
+  color: var(--type-hi);
+}
+
+/* Section headings inside a written room get the same numbered-rule
+   treatment the exhibits use, minus the number — there is nothing to
+   number, but the hairline keeps the rhythm consistent between the two
+   kinds of page. */
+body[data-world] .post-body h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.3rem, 2.6vw, 1.75rem);
+  letter-spacing: -0.02em;
+  color: var(--type-hi);
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+}
+
+body[data-world] .post-body h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--type-hi);
+  letter-spacing: -0.01em;
+}
+
+/* Stat cards become a ruled instrument strip rather than floating tiles. */
+body[data-world] .stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin: 2rem 0 2.5rem;
+}
+
+body[data-world] stat-card {
+  background: var(--ink-deep);
+  border: 0;
+  border-radius: 0;
+  padding: 1rem 1.1rem;
+  box-shadow: none;
+}
+
+body[data-world] stat-card .stat-value,
+body[data-world] .stat-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--w-accent);
+  letter-spacing: -0.01em;
+}
+
+body[data-world] stat-card .stat-label,
+body[data-world] .stat-label {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--type-faint);
+}
+
+/* Callouts lose the rounded card and become a marginal note, matching
+   .finding on the exhibit pages. */
+body[data-world] callout-box {
+  display: block;
+  margin: 2rem 0;
+}
+
+body[data-world] .callout {
+  background: transparent;
+  border: 0;
+  border-left: 2px solid var(--w-accent);
+  border-radius: 0;
+  padding: 0.2rem 0 0.2rem 1.1rem;
+  max-width: var(--measure);
+  box-shadow: none;
+}
+
+body[data-world] .callout-title,
+body[data-world] .callout h4 {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+}
+
+body[data-world] .callout p {
+  color: var(--type);
+  font-size: 0.98rem;
+}
+
+/* Feature grids on retrofitted index pages read as ruled blocks. */
+body[data-world] feature-grid {
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+
+body[data-world] info-card,
+body[data-world] interactive-card {
+  background: var(--ink-deep);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body[data-world] info-card:hover {
+  background: var(--ink-raised);
+}
+
+/* The continue-exploring footer becomes a plain ruled index. */
+body[data-world] .continue-explore {
+  border-top: 1px solid var(--rule-bright);
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding-top: 2rem;
+  background: transparent;
+  border-radius: 0;
+}
+
+body[data-world] .continue-explore h2 {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+  border: 0;
+  padding: 0;
+  margin: 1.5rem 0 0.6rem;
+}
+
+body[data-world] .continue-explore h2:first-child {
+  margin-top: 0;
+}
+
+body[data-world] .continue-explore ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+body[data-world] .continue-explore li {
+  border-bottom: 1px solid var(--rule);
+  padding: 0.5rem 0;
+}
+
+body[data-world] .data-table-wrap {
+  overflow-x: auto;
+}

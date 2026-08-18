@@ -251,6 +251,38 @@ async function run() {
       module: "../public/assets/js/experiences/rocket-lab.js",
       mount: (m, canvas) => m.mountRocketLab(canvas, { getState: () => ({ result: null, index: 0, phase: "idle" }) }).stage,
     },
+    {
+      name: "ground-track (ISS)",
+      module: "../public/assets/js/experiences/ground-track.js",
+      mount: (m, canvas) => m.mountGroundTrack(canvas, { getState: () => ({ altKm: 408, incDeg: 51.6 }) }).stage,
+    },
+    {
+      // Geostationary is the degenerate case: the track collapses to one
+      // point and the footprint covers nearly a third of the planet, which
+      // stresses the date-line wrapping in both directions at once.
+      name: "ground-track (GEO)",
+      module: "../public/assets/js/experiences/ground-track.js",
+      mount: (m, canvas) => m.mountGroundTrack(canvas, { getState: () => ({ altKm: 35786, incDeg: 0 }) }).stage,
+    },
+    {
+      name: "atmosphere-column (sea level)",
+      module: "../public/assets/js/experiences/atmosphere-column.js",
+      mount: (m, canvas) => m.mountAtmosphereColumn(canvas, { getAltitude: () => 0 }).stage,
+    },
+    {
+      // The top of the modelled range, where the clamp inside atmosphere()
+      // is the only thing standing between the plot and a NaN.
+      name: "atmosphere-column (32 km)",
+      module: "../public/assets/js/experiences/atmosphere-column.js",
+      mount: (m, canvas) => m.mountAtmosphereColumn(canvas, { getAltitude: () => 32000 }).stage,
+    },
+    {
+      // Polar, where the footprint outline wraps over the pole and the
+      // equirectangular projection is at its worst.
+      name: "ground-track (polar)",
+      module: "../public/assets/js/experiences/ground-track.js",
+      mount: (m, canvas) => m.mountGroundTrack(canvas, { getState: () => ({ altKm: 800, incDeg: 90 }) }).stage,
+    },
   ];
 
   const sizes = [
@@ -317,6 +349,36 @@ async function run() {
       }
       stage?.destroy?.();
     }
+  }
+
+  /* ---------- Regression: dt must never go negative ----------
+
+     rAF hands the callback the time the frame began, which can predate the
+     performance.now() captured when the frame was requested. That produced a
+     negative dt, a phase accumulator that dipped below zero, and an array
+     index of -1 — which in JavaScript reads past the start of the array
+     rather than throwing, so the symptom was an undefined lookup three call
+     frames away. Cheap to assert, expensive to rediscover. */
+  {
+    const dom = installDom({ width: 800, height: 400, dpr: 1 });
+    const canvas = dom.makeCanvas(800, 400);
+    const { Stage } = await import("../public/assets/js/systems/stage.js?dt=" + Math.random());
+    const seen = [];
+    const stage = new Stage(canvas, { update: (dt) => seen.push(dt), draw: () => {} });
+    stage.start();
+    stage._last = 1000;
+    stage._tick(900); // frame timestamp 100 ms BEFORE the loop was primed
+    stage._tick(916);
+    const negative = seen.filter((d) => d < 0);
+    if (negative.length) {
+      console.log(`
+FAIL  Stage produced a negative dt: ${negative.join(", ")}`);
+      failures++;
+    } else {
+      console.log(`
+ok    Stage clamps a backwards frame timestamp (dt = ${seen.map((d) => d.toFixed(4)).join(", ")})`);
+    }
+    stage.destroy();
   }
 
   console.log(failures === 0 ? "\nAll scenes clean." : `\n${failures} failing scene/size combinations.`);
