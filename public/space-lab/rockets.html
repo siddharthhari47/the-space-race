@@ -3,134 +3,273 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rockets — Space Lab — The Space Race</title>
-  <meta name="description" content="Staging, delta-v, and how Falcon 9's reusability rewrote the economics of getting to orbit." />
+  <title>Rockets — The Space Race</title>
+  <meta name="description" content="Build a two-stage launch vehicle and fly it. Real engines, the rocket equation, an RK4 ascent through the standard atmosphere, and an orbit computed from the state vector at cutoff." />
   <link rel="icon" href="../assets/images/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/systems/instruments.js"></script>
+  <script type="module" src="/assets/js/pages/rocket-lab.js" defer></script>
 </head>
-<body>
+<body data-world="space">
   <site-header current="space-lab"></site-header>
 
-  <main class="container lab-page">
-    <a class="back-link" href="index.html">&larr; Space Lab</a>
-    <h1 class="lab-title">Rockets</h1>
-    <p class="lab-intro">
-      Every spacecraft on this site, from a 10cm CubeSat to a crewed capsule, has to get to
-      orbit the same way: strapped to a controlled explosion, built to throw away most of
-      itself along the way.
-    </p>
+  <main>
+    <section class="world-head frame">
+      <a class="back-link" href="index.html">&larr; Space</a>
+      <p class="tag tag-accent">S·01 · flagship</p>
+      <h1 class="world-title">Rockets</h1>
+      <p class="world-lede">
+        Getting to space is easy. A hundred kilometres straight up is a big firework. Getting
+        to <em>orbit</em> means arriving with about 7.8 kilometres per second of sideways speed,
+        and that is where nearly all the difficulty and nearly all the propellant goes.
+      </p>
+    </section>
 
-    <div class="stat-row">
-      <stat-card value="~9.4 km/s" label="Delta-v needed to reach low Earth orbit" accent="space"></stat-card>
-      <stat-card value="2015" label="Falcon 9's first successful booster landing" accent="space"></stat-card>
-      <stat-card value="3" label="Stages in the Saturn V" accent="space"></stat-card>
-      <stat-card value="2017" label="First reflight of an orbital-class booster" accent="space"></stat-card>
-    </div>
-
-    <callout-box type="did-you-know">
-      <p>The math behind every rocket ever flown was worked out in 1903 — the same year the
-      Wright brothers first flew. Konstantin Tsiolkovsky, a Russian schoolteacher, derived the
-      rocket equation describing exactly how much velocity a rocket can gain from its fuel,
-      decades before anyone built one that reached orbit.</p>
-    </callout-box>
-
-    <div class="post-body">
-      <p>Once a rocket leaves the atmosphere, there's no air left to burn against. So it has to
-      carry its own oxidizer right alongside its own fuel, and that's most of what a rocket
-      actually is: tanks. The engines, payload, and everything else make up a small fraction of
-      the total mass at launch — the rest burns off getting there.</p>
-
-      <p>That's also why almost every orbital rocket is built in stages. Once a stage's fuel is
-      spent, its empty tanks and engines are just dead weight, so the rocket drops them and
-      keeps accelerating on a lighter, smaller stage. The Saturn V that sent Apollo to the Moon
-      used three stages. Most rockets flying today use two.</p>
-
-      <p>For decades, none of that hardware was reused — every stage burned up, fell into the
-      ocean, or was discarded after a single flight. That changed in December 2015, when
-      SpaceX landed a Falcon 9 first stage back on solid ground after it had already delivered
-      its payload toward orbit. That particular booster never flew again, as it happens. It was
-      retired and put on display outside SpaceX's headquarters. The first actual reflight came in
-      March 2017, using a different booster recovered from a mission the year before, and that's
-      the moment reusability stopped being a demonstration. Reusability changed launch costs roughly the
-      same way the CubeSat standard changed spacecraft costs. Getting to space stopped being
-      something only a handful of national programs could afford.</p>
-
-      <p>Put the fully-expendable era next to what's flying today, and the shift in scale is
-      obvious:</p>
-
-      <div class="data-table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Rocket</th>
-              <th>First Flight</th>
-              <th>Stages</th>
-              <th>Reusable</th>
-              <th>Payload to LEO</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Saturn V</td>
-              <td>1967</td>
-              <td>3</td>
-              <td>No</td>
-              <td>~140,000 kg</td>
-            </tr>
-            <tr>
-              <td>Falcon 9</td>
-              <td>2010</td>
-              <td>2</td>
-              <td>First stage</td>
-              <td>~22,800 kg</td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- ================= EXHIBIT 01: THE PAD ================= -->
+    <section class="exhibit frame" id="pad">
+      <div class="exhibit-head">
+        <span class="exhibit-index">01</span>
+        <div>
+          <h2 class="exhibit-title">Build one, then fly it</h2>
+          <p class="exhibit-sub">
+            Pick engines, set the propellant load, decide how much payload to carry. The panel
+            evaluates the vehicle as you build it. When you launch, it is flown for real — the
+            trajectory is integrated before a single pixel moves, and the orbit at the end comes
+            from the state vector at cutoff, not from a script.
+          </p>
+        </div>
       </div>
 
-      <p>The Saturn V still moved far more mass — it had to, to send a crewed spacecraft all the
-      way to the Moon and back. But it flew thirteen times, ever, and every single launch used
-      entirely new hardware. Falcon 9 boosters now fly dozens of missions each.</p>
+      <div class="pad-lab">
+        <div class="stage pad-stage">
+          <canvas id="launch-canvas"></canvas>
+          <div class="pad-hud">
+            <lab-readout data-out="ft" label="T+" unit="s" decimals="0"></lab-readout>
+            <lab-readout data-out="falt" label="Altitude" unit="km" decimals="1"></lab-readout>
+            <lab-readout data-out="fspeed" label="Speed" unit="km/s" decimals="2"></lab-readout>
+            <lab-readout data-out="fmass" label="Mass" unit="t" decimals="1"></lab-readout>
+            <lab-readout data-out="fq" label="Dyn. pressure" unit="kPa" decimals="0"></lab-readout>
+          </div>
+        </div>
 
-      <h2>Build Your Rocket</h2>
-      <p>Two tools for building your own rockets are on the way. In one, you stack stages, choose
-      engines, and pile on payload mass to see whether your numbers actually get you to orbit —
-      or whether you've built something that never clears the pad. In the other, you can explore
-      a rocket stage by stage, from the engines at the base up to the payload fairing at the tip.
-      Both are still in development.</p>
-      <feature-grid columns="2">
-        <simulation-container type="rocket-builder"></simulation-container>
-        <simulation-container type="interactive-rocket"></simulation-container>
-      </feature-grid>
+        <div class="panel pad-panel">
+          <div class="panel-head">
+            <span>Vehicle</span>
+            <span data-design-status>Looks flyable</span>
+          </div>
+          <div class="panel-body">
+            <div class="ctrl-row ctrl-row-tight">
+              <button class="ctrl" type="button" data-preset="falcon9">Falcon 9</button>
+              <button class="ctrl" type="button" data-preset="saturnv">Saturn V</button>
+              <button class="ctrl" type="button" data-preset="atlas">Atlas V</button>
+            </div>
+            <p class="engine-note">
+              Real stage masses and real engines. This bench only models two stages, so the
+              Saturn V preset is its S-IC and S-II — the pair that did the work of reaching
+              orbit. The S-IVB that pushed Apollo on to the Moon is not here.
+            </p>
 
-      <p>Reusability is still new, in the scheme of things. It's only been proven at scale for
-      about a decade, and most of the rocket industry hasn't caught up yet. So the question isn't
-      really settled: which part of a rocket do you think should be the next thing engineers
-      stop throwing away?</p>
-    </div>
+            <div class="engine-pick">
+              <label class="lab-control-label" for="eng1">First-stage engine</label>
+              <select class="lab-select" id="eng1" data-engine-slot="1">
+                <option value="merlin1d">Merlin 1D</option>
+                <option value="rd180">RD-180</option>
+                <option value="f1">F-1</option>
+              </select>
+              <p class="engine-note" data-engine-note="1"></p>
+            </div>
 
-    <div class="continue-explore">
-      <h2>Related Technologies</h2>
-      <ul>
-        <li><a href="cubesats.html">Space Lab: CubeSats</a></li>
-      </ul>
+            <lab-control name="engines1" label="First-stage engines" min="1" max="9" step="1" value="9"></lab-control>
+            <lab-control name="prop1" label="Stage 1 propellant" unit="t" min="50" max="2500" step="5" value="411"></lab-control>
 
-      <h2>Next Steps</h2>
-      <ul>
-        <li><a href="satellites.html">Explore Satellites</a></li>
-        <li><a href="../timeline/index.html">See the full Timeline</a></li>
-        <li><a href="index.html">Back to Space Lab</a></li>
-      </ul>
+            <div class="engine-pick">
+              <label class="lab-control-label" for="eng2">Second-stage engine</label>
+              <select class="lab-select" id="eng2" data-engine-slot="2">
+                <option value="mvac">Merlin Vacuum</option>
+                <option value="j2">J-2</option>
+                <option value="rl10">RL10B-2</option>
+              </select>
+              <p class="engine-note" data-engine-note="2"></p>
+            </div>
 
-      <h2>Further Reading</h2>
-      <ul>
-        <li><a href="../blog/the-space-race.html">The Space Race: What is it and who is leading?</a></li>
-        <li><a href="../references/index.html">References</a></li>
-      </ul>
+            <lab-control name="prop2" label="Stage 2 propellant" unit="t" min="10" max="600" step="2.5" value="107.5"></lab-control>
+            <lab-control name="payload" label="Payload" unit="t" min="0" max="60" step="0.5" value="12"></lab-control>
+            <lab-control name="target" label="Target orbit" unit="km" min="150" max="600" step="10" value="250"></lab-control>
+
+            <div class="readout-row">
+              <lab-readout data-out="liftoff" label="Liftoff mass" unit="t" decimals="0"></lab-readout>
+              <lab-readout data-out="twr" label="Liftoff TWR" decimals="2"></lab-readout>
+              <lab-readout data-out="burn1" label="Stage 1 burn" unit="s" decimals="0"></lab-readout>
+              <lab-readout data-out="dv1" label="&Delta;v stage 1" unit="km/s" decimals="2"></lab-readout>
+              <lab-readout data-out="dv2" label="&Delta;v stage 2" unit="km/s" decimals="2"></lab-readout>
+              <lab-readout data-out="dvtotal" label="Ideal &Delta;v" unit="km/s" decimals="2"></lab-readout>
+            </div>
+
+            <div class="ctrl-row">
+              <button class="ctrl ctrl-primary" type="button" data-launch>Launch</button>
+              <button class="ctrl" type="button" data-abort disabled>Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-caption">
+        <span><strong>Model</strong> RK4 at 0.1 s · inverse-square gravity · ISA to 32 km · Mach-dependent C<sub>d</sub> · pressure-corrected thrust and Isp</span>
+        <span><strong>Simplified</strong> planar, non-rotating Earth — no free 400 m/s from the launch site</span>
+      </div>
+
+      <div class="result-panel" data-result hidden>
+        <h3 class="result-verdict" data-verdict></h3>
+        <p class="note" data-verdict-detail></p>
+        <table class="data-table result-table">
+          <tbody data-result-rows></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= EXHIBIT 02: WHY STAGING ================= -->
+    <section class="exhibit frame" id="staging">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title">Why it throws most of itself away</h2>
+          <p class="exhibit-sub">
+            Try it in the panel above. Push the stage-1 propellant right up and leave stage 2
+            tiny, then do the opposite. The second arrangement wins, and it is not close.
+          </p>
+        </div>
+      </div>
+
+      <div class="exhibit-body reveal">
+        <p class="note">
+          Once a rocket is above the atmosphere there is no air to burn, so it carries its own
+          oxidiser alongside its own fuel. That is most of what a rocket is: tanks. And the
+          moment a tank is empty it stops being a fuel tank and becomes luggage.
+        </p>
+
+        <p class="finding">
+          The rocket equation only cares about the <em>ratio</em> of full mass to empty mass.
+          Dry structure sits in the denominator forever, so every kilogram of spent tank you
+          keep carrying is a kilogram permanently taxing everything you do next. Dropping it
+          resets the ratio for the stage that follows — which is why this vehicle gets about
+          three kilometres per second more out of the same propellant than a single stage would.
+        </p>
+
+        <p class="note">
+          This exhibit holds structure at a fixed fraction of propellant —
+          <strong data-struct-1>5.5%</strong> for the first stage,
+          <strong data-struct-2>4.5%</strong> for the second — so the propellant sliders move a
+          real mass ratio rather than a free parameter. Those are close to Falcon 9's actual
+          numbers: about 22 tonnes of dry stage on 411 tonnes of propellant.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= EXHIBIT 03: HEIGHT ISN'T THE PROBLEM ================= -->
+    <section class="exhibit frame" id="sideways">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">03</span>
+        <div>
+          <h2 class="exhibit-title">Height was never the problem</h2>
+          <p class="exhibit-sub">
+            Load the vehicle up until it fails, and read what the failure actually says.
+          </p>
+        </div>
+      </div>
+
+      <div class="exhibit-body reveal">
+        <p class="note">
+          An overloaded rocket still gets to space. It will happily sail through a hundred
+          kilometres, past the Kármán line, comfortably into vacuum — and then fall back down,
+          because it never got going sideways fast enough. Orbit is not an altitude you reach.
+          It is a horizontal speed you survive long enough to acquire.
+        </p>
+
+        <p class="note">
+          Roughly 7.8 km/s of that is the orbit itself. The rest — about 1.5 to 2 km/s on a real
+          launch, and the simulation above reports its own figure every flight — is lost to
+          gravity while the vehicle is still climbing, and to dragging a fuselage through thick
+          air on the way out. Add them up and low orbit costs somewhere near 9.4 km/s of ideal
+          delta-v. That number is the whole design brief.
+        </p>
+
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Rocket</th><th>First flight</th><th>Stages</th><th>Reusable</th><th>Payload to LEO</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Saturn V</td><td class="num">1967</td><td class="num">3</td><td>No</td><td class="num">~140,000 kg</td></tr>
+              <tr><td>Falcon 9</td><td class="num">2010</td><td class="num">2</td><td>First stage</td><td class="num">~22,800 kg</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="note">
+          The Saturn V moved far more mass, because it had to send a crewed spacecraft to the
+          Moon and back. But it flew thirteen times ever, and every launch used entirely new
+          hardware. Falcon 9 boosters now fly dozens of missions each.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= EXHIBIT 04: REUSABILITY ================= -->
+    <section class="exhibit frame" id="reuse">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">04</span>
+        <div>
+          <h2 class="exhibit-title">And then they stopped throwing it away</h2>
+        </div>
+      </div>
+
+      <div class="exhibit-body reveal">
+        <p class="note">
+          For decades none of that hardware came back. Every stage burned up, fell into the
+          ocean, or was written off after one flight. That changed in December 2015, when SpaceX
+          landed a Falcon 9 first stage on solid ground after it had already delivered its
+          payload toward orbit.
+        </p>
+
+        <p class="note">
+          That particular booster never flew again, as it happens — it was retired and put on
+          display outside SpaceX's headquarters in Hawthorne. The first actual reflight came in
+          March 2017, using a different booster recovered from a mission the year before. That
+          is the moment reusability stopped being a demonstration.
+        </p>
+
+        <callout-box type="did-you-know">
+          <p>
+            The maths behind every rocket ever flown was worked out in 1903, the same year the
+            Wright brothers first flew. Konstantin Tsiolkovsky, a Russian schoolteacher, derived
+            the relationship between propellant mass and achievable velocity decades before
+            anyone built a machine that could reach orbit. The panel at the top of this page is
+            still solving his equation.
+          </p>
+        </callout-box>
+      </div>
+    </section>
+
+    <div class="frame">
+      <div class="continue-explore">
+        <h2>Related</h2>
+        <ul>
+          <li><a href="index.html">Orbits, to scale</a></li>
+          <li><a href="cubesats.html">CubeSats</a></li>
+          <li><a href="satellites.html">Satellites</a></li>
+        </ul>
+
+        <h2>Next Steps</h2>
+        <ul>
+          <li><a href="../timeline/index.html">See the full Timeline</a></li>
+          <li><a href="../blog/the-space-race.html">The Space Race: what is it and who is leading?</a></li>
+          <li><a href="../references/index.html">References</a></li>
+        </ul>
+      </div>
     </div>
   </main>
 

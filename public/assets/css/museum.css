@@ -1307,3 +1307,127 @@ lab-readout[data-state="live"] {
   display: grid;
   gap: 0.4rem;
 }
+
+/* =========================================================================
+   LAUNCH PAD — the rockets exhibit
+   ========================================================================= */
+
+.pad-lab {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 23rem);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+
+.pad-stage {
+  position: relative;
+  border: 0;
+  aspect-ratio: 1 / 1;
+  min-height: 340px;
+}
+
+/* Flight telemetry overlays the view rather than sitting beside it, because
+   during a launch these five numbers and the picture are one thing. The
+   design controls stay in the side panel where they belong — you set those
+   before you fly, not while you are watching. */
+.pad-hud {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+  gap: 1px;
+  background: rgba(20, 28, 44, 0.5);
+  border-top: 1px solid var(--rule);
+  pointer-events: none;
+}
+
+.pad-hud lab-readout {
+  border-left: 0;
+  background: rgba(4, 7, 14, 0.82);
+  backdrop-filter: blur(4px);
+  padding: 0.45rem 0.6rem;
+}
+
+.pad-panel {
+  border: 0;
+  background: var(--ink-panel);
+}
+
+@media (max-width: 900px) {
+  .pad-lab {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Engine picker ---------- */
+
+.engine-pick {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.lab-select {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--type-hi);
+  background: var(--ink-void);
+  border: 1px solid var(--rule-bright);
+  border-radius: 0;
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--type-faint) 50%),
+    linear-gradient(135deg, var(--type-faint) 50%, transparent 50%);
+  background-position: calc(100% - 14px) 52%, calc(100% - 9px) 52%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.lab-select:hover,
+.lab-select:focus-visible {
+  border-color: var(--w-accent);
+}
+
+.engine-note {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--type-faint);
+}
+
+/* ---------- Result ---------- */
+
+.result-panel {
+  margin-top: 2rem;
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--w-accent);
+  padding: clamp(1.2rem, 2.5vw, 1.8rem);
+  background: var(--ink-deep);
+}
+
+.result-verdict {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6rem;
+  color: var(--type-hi);
+}
+
+.result-verdict[data-state="good"] { color: #7cf0be; }
+.result-verdict[data-state="warn"] { color: var(--w-warm); }
+.result-verdict[data-state="bad"]  { color: #ff8f8f; }
+
+.result-table {
+  margin-top: 1.4rem;
+  max-width: 30rem;
+}
+
+.data-table-wrap {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
