@@ -20,8 +20,14 @@ const KARMAN = 100000;
 export function mountRocketLab(canvas, options = {}) {
   const getState = options.getState || (() => ({ result: null, index: 0, phase: "idle" }));
 
-  let viewScale = 1; // px per metre
-  let targetScale = 1;
+  // Deliberately starts at zero rather than one. The real scale is on the
+  // order of 1e-5 px per metre — Earth is 6,371 km across and has to fit in
+  // a few hundred pixels — so seeding this at 1 and easing toward the true
+  // value spends the first couple of seconds drawing an Earth the size of a
+  // continent and a trajectory somewhere off in the next county. Zero is a
+  // sentinel meaning "not yet measured", and layout() sets it properly.
+  let viewScale = 0;
+  let targetScale = 0;
   let cx = 0;
   let cy = 0;
   let flameFlicker = 0;
@@ -29,6 +35,9 @@ export function mountRocketLab(canvas, options = {}) {
   function layout(stage) {
     cx = stage.width * 0.5;
     cy = stage.height * 0.62;
+    if (viewScale === 0) {
+      viewScale = targetScale = computeScale(stage, null, 0);
+    }
   }
 
   // Fit Earth's limb plus the flown path. Padding is generous because a
@@ -215,8 +224,9 @@ export function mountRocketLab(canvas, options = {}) {
       targetScale = computeScale(stage, result, index);
       // Ease the zoom rather than snapping it. The camera pulling back is
       // part of how the climb reads, and a jump-cut every frame would
-      // destroy that entirely.
-      viewScale = approach(viewScale, targetScale, 0.02, dt);
+      // destroy that entirely. The one exception is the very first frame,
+      // where there is nothing to ease from.
+      viewScale = viewScale === 0 ? targetScale : approach(viewScale, targetScale, 0.02, dt);
       flameFlicker += dt * 3;
     },
     draw(ctx, st) {
@@ -250,7 +260,7 @@ export function mountRocketLab(canvas, options = {}) {
   return {
     stage,
     resetView() {
-      viewScale = computeScale(stage, null, 0);
+      viewScale = targetScale = computeScale(stage, null, 0);
     },
     destroy() {
       stage.destroy();

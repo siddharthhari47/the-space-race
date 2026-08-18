@@ -210,6 +210,47 @@ async function run() {
       module: "../public/assets/js/experiences/flight-envelope.js",
       mount: (m, canvas) => m.mountFlightEnvelope(canvas).stage,
     },
+    {
+      name: "wind-tunnel (attached)",
+      module: "../public/assets/js/experiences/wind-tunnel.js",
+      mount: (m, canvas) =>
+        m.mountWindTunnel(canvas, {
+          getState: () => ({ alpha: 4, wing: { camber: 0.02, camberPos: 0.4, thickness: 0.12, aspectRatio: 8, oswald: 0.8 } }),
+        }).stage,
+    },
+    {
+      // Post-stall exercises the separation path, which is the branch most
+      // likely to produce a stray NaN because it mutates traced points.
+      name: "wind-tunnel (stalled)",
+      module: "../public/assets/js/experiences/wind-tunnel.js",
+      mount: (m, canvas) =>
+        m.mountWindTunnel(canvas, {
+          getState: () => ({ alpha: 20, wing: { camber: 0.02, camberPos: 0.4, thickness: 0.12, aspectRatio: 8, oswald: 0.8 } }),
+        }).stage,
+    },
+    {
+      // Zero camber with the thinnest allowed section: the geometry
+      // generator's degenerate case.
+      name: "wind-tunnel (symmetric, thin)",
+      module: "../public/assets/js/experiences/wind-tunnel.js",
+      mount: (m, canvas) =>
+        m.mountWindTunnel(canvas, {
+          getState: () => ({ alpha: -6, wing: { camber: 0, camberPos: 0.4, thickness: 0.06, aspectRatio: 3, oswald: 0.7 } }),
+        }).stage,
+    },
+    {
+      name: "polar plot",
+      module: "../public/assets/js/experiences/wind-tunnel.js",
+      mount: (m, canvas) =>
+        m.mountPolar(canvas, {
+          getState: () => ({ alpha: 12, wing: { camber: 0.02, camberPos: 0.4, thickness: 0.12, aspectRatio: 8, oswald: 0.8 } }),
+        }).stage,
+    },
+    {
+      name: "rocket-lab (idle)",
+      module: "../public/assets/js/experiences/rocket-lab.js",
+      mount: (m, canvas) => m.mountRocketLab(canvas, { getState: () => ({ result: null, index: 0, phase: "idle" }) }).stage,
+    },
   ];
 
   const sizes = [

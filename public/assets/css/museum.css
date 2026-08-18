@@ -301,6 +301,18 @@ body[data-world] .nav-inner {
   touch-action: none;
 }
 
+/* Width comes from the grid column, height then follows from the aspect
+   ratio. Stating width explicitly matters more than it looks: combining
+   `aspect-ratio` with a `min-height` lets the browser resolve the box the
+   other way round — height first, width from the ratio — so a stage with a
+   300px min-height and a 4:3 ratio insists on being 400px wide however
+   narrow the column is. On a phone that silently clips the canvas off the
+   right-hand edge. Width is stated here, and min-height is lifted at the
+   narrow breakpoints where it would otherwise win the argument. */
+.stage {
+  width: 100%;
+}
+
 .stage-grid {
   position: absolute;
   inset: 0;
@@ -1294,6 +1306,7 @@ lab-readout[data-state="live"] {
 @media (max-width: 880px) {
   .envelope-stage {
     aspect-ratio: 1 / 1;
+    min-height: 0;
   }
 }
 
@@ -1359,6 +1372,10 @@ lab-readout[data-state="live"] {
 @media (max-width: 900px) {
   .pad-lab {
     grid-template-columns: 1fr;
+  }
+
+  .pad-stage {
+    min-height: 0;
   }
 }
 
@@ -1430,4 +1447,37 @@ lab-readout[data-state="live"] {
 .data-table-wrap {
   overflow-x: auto;
   margin: 1.5rem 0;
+}
+
+/* ---------- Wind tunnel ---------- */
+
+.tunnel-stage {
+  border: 0;
+  aspect-ratio: 16 / 10;
+  min-height: 300px;
+}
+
+/* The lift curve lives inside the control panel rather than beside the
+   tunnel. It is a reference you glance at while moving the angle-of-attack
+   slider, so it belongs next to the slider — and keeping it small stops it
+   competing with the working section for attention. */
+.polar-wrap {
+  display: grid;
+  gap: 0.35rem;
+  border: 1px solid var(--rule);
+  padding: 0.55rem;
+  background: var(--ink-void);
+}
+
+#polar-canvas {
+  width: 100%;
+  height: 132px;
+  display: block;
+}
+
+@media (max-width: 880px) {
+  .tunnel-stage {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+  }
 }

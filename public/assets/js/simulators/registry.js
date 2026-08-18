@@ -90,11 +90,36 @@ export const SIMULATOR_REGISTRY = {
     category: "flight",
   },
   "rocket-builder": {
-    title: "Build Your Rocket",
-    description: "Stack stages, engines, and payload and see if your rocket can reach orbit.",
-    module: "/assets/js/simulators/rocket-builder.js",
-    status: "coming-soon",
+    title: "Launch Bench",
+    description:
+      "Build a two-stage vehicle from real engines and fly it. RK4 ascent through the standard atmosphere, staging, and an orbit computed from the state vector at cutoff.",
+    page: "/space-lab/rockets.html",
+    status: "live",
     category: "space",
+  },
+  "wind-tunnel": {
+    title: "Wind Tunnel",
+    description:
+      "A NACA section in a working section you control. Take the angle of attack past the stall and watch the flow separate and the lift collapse.",
+    page: "/flight-lab/aerodynamics.html",
+    status: "live",
+    category: "flight",
+  },
+  "orbit-field": {
+    title: "Orbits, to Scale",
+    description:
+      "Every orbit drawn at true scale with satellites moving at their real relative rates. Set an altitude and watch speed and period follow.",
+    page: "/space-lab/index.html",
+    status: "live",
+    category: "space",
+  },
+  "flight-envelope": {
+    title: "Flight Envelope",
+    description:
+      "Altitude against Mach, with both edges computed from the standard atmosphere. Find the coffin corner where the two limits meet.",
+    page: "/flight-lab/index.html",
+    status: "live",
+    category: "flight",
   },
   "interactive-rocket": {
     title: "Interactive Rocket",

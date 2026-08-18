@@ -3,95 +3,209 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aerodynamics — Flight Lab — The Space Race</title>
-  <meta name="description" content="How lift, drag, and angle of attack actually work — and why a wing stalls." />
+  <title>Aerodynamics — The Space Race</title>
+  <meta name="description" content="A working wind tunnel. Set the angle of attack on a real NACA section and watch the potential-flow streamlines, the lift curve, and the stall — then find out why gliders have long wings." />
   <link rel="icon" href="../assets/images/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/systems/instruments.js"></script>
+  <script type="module" src="/assets/js/pages/wind-tunnel.js" defer></script>
 </head>
-<body>
+<body data-world="aircraft">
   <site-header current="flight-lab"></site-header>
 
-  <main class="container lab-page">
-    <a class="back-link" href="index.html">&larr; Flight Lab</a>
-    <h1 class="lab-title">Aerodynamics</h1>
-    <p class="lab-intro">
-      Everything on this site that flies through air rather than vacuum — an airliner, a
-      fighter jet, a rocket in its first few seconds — answers to the same handful of rules.
-      This is where those rules actually come from.
-    </p>
+  <main>
+    <section class="world-head frame">
+      <a class="back-link" href="index.html">&larr; Aircraft</a>
+      <p class="tag tag-accent">A·01 · flagship</p>
+      <h1 class="world-title">Aerodynamics</h1>
+      <p class="world-lede">
+        A wing is a machine for throwing air downwards. Everything else — the curve, the angle,
+        the span, the stall — is detail about how well it does that, and what it costs.
+      </p>
+    </section>
 
-    <div class="stat-row">
-      <stat-card value="4" label="Forces balanced in steady, level flight" accent="flight"></stat-card>
-      <stat-card value="1738" label="Year Bernoulli described the pressure principle behind lift" accent="flight"></stat-card>
-      <stat-card value="15–20°" label="Typical critical angle of attack before a stall" accent="flight"></stat-card>
-    </div>
+    <!-- ================= EXHIBIT 01: THE TUNNEL ================= -->
+    <section class="exhibit frame" id="tunnel">
+      <div class="exhibit-head">
+        <span class="exhibit-index">01</span>
+        <div>
+          <h2 class="exhibit-title">Stall it yourself</h2>
+          <p class="exhibit-sub">
+            Take the angle of attack up slowly. Lift climbs in a straight line, exactly as the
+            theory says it should — and then, somewhere past fourteen degrees, it stops climbing
+            and falls off a cliff. Watch the streamlines when it happens.
+          </p>
+        </div>
+      </div>
 
-    <callout-box type="engineering-insight">
-      <p>The upturned wingtips on modern airliners aren't styling — they're winglets, and they
-      exist to fight a specific loss. High pressure air under the wing spills around the tip to
-      the low-pressure air on top, rolling into a vortex that drags the aircraft back. A
-      winglet blocks part of that spillage, cutting fuel burn by a few percent for very little
-      added weight. See one up close on the
-      <a href="interactive-aircraft.html">Interactive Aircraft Explorer</a>, one of eighteen
-      parts you can click through on a real 777-300ER.</p>
-    </callout-box>
+      <div class="tunnel-lab">
+        <div class="stage tunnel-stage">
+          <canvas id="tunnel-canvas"></canvas>
+        </div>
 
-    <div class="post-body">
-      <p>Every aircraft in steady, level flight is holding still in a four-way tug-of-war. Lift
-      pulls up, weight pulls down, thrust pulls forward, drag pulls back, and as long as all
-      four stay balanced, nothing changes. Nudge just one of them and the balance breaks: more
-      thrust than drag and the aircraft speeds up, more lift than weight and it climbs.</p>
+        <div class="panel tunnel-panel">
+          <div class="panel-head">
+            <span>Working section</span>
+            <span data-tunnel-status>Attached flow</span>
+          </div>
+          <div class="panel-body">
+            <lab-control name="alpha" label="Angle of attack" unit="°" min="-6" max="22" step="0.5" value="4"></lab-control>
+            <lab-control name="speed" label="Airspeed" unit="m/s" min="15" max="120" step="1" value="60"></lab-control>
+            <lab-control name="aspect" label="Aspect ratio" min="3" max="30" step="0.5" value="8"></lab-control>
+            <lab-control name="camber" label="Camber" unit="% chord" min="0" max="6" step="0.5" value="2"></lab-control>
+            <lab-control name="thickness" label="Thickness" unit="% chord" min="6" max="20" step="0.5" value="12"></lab-control>
 
-      <p>Most people get taught that a wing's curved top makes air travel farther, so it speeds
-      up to "catch up" with the air underneath, and faster air means lower pressure, pulling the
-      wing up. It sounds neat. It's also wrong: the air on top doesn't actually arrive at the
-      trailing edge at the same moment as the air below, so there's nothing to catch up to. What
-      actually happens is closer to Newton's third law. A wing angled into the airflow shoves
-      air downward and slightly forward, and the air shoves back, up, exactly as hard. Daniel
-      Bernoulli had already worked out the pressure side of this in 1738, over a century before
-      anyone built a working wing, and that pressure difference and the downward deflection
-      aren't competing explanations. They're the same event, described two different ways.</p>
+            <div class="polar-wrap">
+              <span class="tag">Lift curve</span>
+              <canvas id="polar-canvas"></canvas>
+            </div>
 
-      <p>How much lift a wing generates depends heavily on its angle of attack, the angle
-      between the wing and the oncoming air, not the angle between the wing and the ground.
-      Increase that angle and lift increases, up to a point. Push past a critical angle,
-      typically somewhere around 15 to 20 degrees depending on the wing's design, and airflow
-      over the top separates from the surface instead of following it. Lift collapses almost
-      immediately. That's a stall, and it's a function of angle of attack alone. It can happen
-      at any speed, in any attitude, nose up or nose down.</p>
+            <div class="readout-row">
+              <lab-readout data-out="cl" label="C&#8343;" decimals="3"></lab-readout>
+              <lab-readout data-out="cd" label="C&#7492;" decimals="4"></lab-readout>
+              <lab-readout data-out="ld" label="L / D" decimals="1"></lab-readout>
+              <lab-readout data-out="lift" label="Lift" unit="kN" decimals="1"></lab-readout>
+              <lab-readout data-out="drag" label="Drag" unit="kN" decimals="2"></lab-readout>
+              <lab-readout data-out="re" label="Reynolds" unit="×10⁶" decimals="1"></lab-readout>
+            </div>
 
-      <p>Not all drag comes from the same place. Push anything through air fast enough and
-      friction and shape resistance start eating energy, worse the faster you go. But some drag
-      is a direct side effect of making lift in the first place: induced drag, and it works
-      backwards from the friction kind, getting worse at low speed and high angle of attack
-      instead of high speed. That's exactly why an aircraft feels most sluggish and vulnerable
-      right after takeoff and just before landing, the two moments it's flying slowest and
-      making the most lift at once.</p>
+            <p class="panel-note" data-margin></p>
 
-      <p>So next time you're watching a plane climb out after takeoff, see if you can spot
-      which force just won.</p>
-    </div>
+            <div class="ctrl-row ctrl-row-tight">
+              <button class="ctrl" type="button" data-wing-preset="airliner">Airliner</button>
+              <button class="ctrl" type="button" data-wing-preset="glider">Glider</button>
+              <button class="ctrl" type="button" data-wing-preset="fighter">Fighter</button>
+              <button class="ctrl" type="button" data-wing-preset="stall">Stall it</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <div class="continue-explore">
-      <h2>Interactive Modules</h2>
-      <ul>
-        <li><a href="interactive-aircraft.html">Interactive Aircraft Explorer</a></li>
-      </ul>
+      <div class="stage-caption">
+        <span><strong>Section</strong> NACA four-digit, generated from the published equations</span>
+        <span><strong>Streamlines</strong> potential flow: uniform stream + bound vortex (Γ = C&#8343;/2) + thickness doublet</span>
+        <span><strong>Forces</strong> at sea level, 16 m² wing</span>
+      </div>
 
-      <h2>Related Technologies</h2>
-      <ul>
-        <li><a href="flight-dynamics.html">Flight Dynamics</a></li>
-        <li><a href="index.html">Back to Flight Lab</a></li>
-      </ul>
+      <p class="finding">
+        The colour of each streamline is its speed. Look at the top surface versus the bottom
+        at any positive angle: the upper flow is genuinely faster, and the gap widens as lift
+        grows. <em>That is the lift</em> — faster flow, lower pressure, and an equal and
+        opposite shove of air downwards behind the wing.
+      </p>
 
-      <h2>Next Steps</h2>
-      <ul>
-        <li><a href="commercial-aircraft.html">Commercial Aircraft</a></li>
-      </ul>
+      <p class="note">
+        Past the stall the streamlines stop following the surface and the wake goes to pieces.
+        The lift arrow shrinks even though the wing is pointed further up than ever, which is
+        the whole counter-intuitive heart of a stall: <strong>it is caused by angle, not by
+        speed.</strong> It can happen at any airspeed, in any attitude, nose up or nose down.
+      </p>
+    </section>
+
+    <!-- ================= EXHIBIT 02: WHY LONG WINGS ================= -->
+    <section class="exhibit frame" id="span">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title">Why a glider's wings are so long</h2>
+          <p class="exhibit-sub">
+            Go back up and drag the aspect ratio from 3 to 30, watching only the L/D readout.
+            Nothing else on that panel changes it nearly as much.
+          </p>
+        </div>
+      </div>
+
+      <div class="exhibit-body reveal">
+        <p class="note">
+          Making lift has an unavoidable cost. High pressure under the wing spills round the tip
+          into the low pressure on top, rolls into a trailing vortex, and drags the aircraft
+          backwards. That is induced drag, and it scales as
+          <strong>C&#7492;&#7522; = C&#8343;² / (π · e · AR)</strong> — so a longer, narrower wing of the
+          same area pays less of it.
+        </p>
+
+        <p class="finding" data-best-ld></p>
+
+        <p class="note">
+          It also runs backwards from the drag you would expect. Friction drag gets worse the
+          faster you go; induced drag gets worse the <em>slower</em> you go, because a slow wing
+          needs a big lift coefficient to hold the aircraft up. That is precisely why an
+          aeroplane feels most sluggish just after takeoff and just before landing — the two
+          moments it is flying slowest while asking the most of its wing.
+        </p>
+
+        <callout-box type="engineering-insight">
+          <p>The upturned wingtips on modern airliners are not styling. A winglet blocks part of
+          that spillage round the tip, cutting fuel burn by a few percent for very little added
+          weight. You can see one up close on the
+          <a href="interactive-aircraft.html">777-300ER model</a>, one of eighteen parts you can
+          click through.</p>
+        </callout-box>
+      </div>
+    </section>
+
+    <!-- ================= EXHIBIT 03: THE MYTH ================= -->
+    <section class="exhibit frame" id="myth">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">03</span>
+        <div>
+          <h2 class="exhibit-title">The explanation you were probably taught</h2>
+        </div>
+      </div>
+
+      <div class="exhibit-body reveal">
+        <p class="note">
+          Most of us are told that a wing's curved top makes the air travel further, so it has to
+          speed up to "catch up" with the air underneath, and faster air means lower pressure,
+          which pulls the wing up. It is neat, it is memorable, and it is wrong. The air going
+          over the top does not arrive at the trailing edge at the same moment as the air
+          underneath — it arrives <em>earlier</em>. There is nothing to catch up to.
+        </p>
+
+        <p class="note">
+          Set the camber to zero in the tunnel above. The section becomes symmetric, with
+          identical path lengths top and bottom, and it still makes lift the moment you give it
+          an angle. Whatever is happening, it is not about the distance the air travels.
+        </p>
+
+        <p class="finding">
+          What is actually happening is closer to Newton. A wing angled into the airflow shoves
+          air downwards, and the air shoves back, upwards, exactly as hard. Bernoulli had the
+          pressure side of it in 1738, more than a century before anyone built a working wing —
+          and <em>the pressure difference and the downward deflection are not competing
+          explanations.</em> They are one event described two ways.
+        </p>
+
+        <p class="note">
+          Every aircraft in steady, level flight is holding still in a four-way tug of war: lift
+          up, weight down, thrust forward, drag back. Nudge one and the balance breaks. More
+          thrust than drag and it accelerates; more lift than weight and it climbs. Next time you
+          watch one climb out after takeoff, see if you can spot which force just won.
+        </p>
+      </div>
+    </section>
+
+    <div class="frame">
+      <div class="continue-explore">
+        <h2>Related</h2>
+        <ul>
+          <li><a href="index.html">The flight envelope</a></li>
+          <li><a href="flight-dynamics.html">Flight Dynamics</a></li>
+          <li><a href="atmosphere-and-altitude.html">Atmosphere &amp; Altitude</a></li>
+          <li><a href="helicopter-aerodynamics.html">Helicopter Aerodynamics</a></li>
+        </ul>
+
+        <h2>Next Steps</h2>
+        <ul>
+          <li><a href="interactive-aircraft.html">Take an airliner apart</a></li>
+          <li><a href="../references/index.html">References</a></li>
+        </ul>
+      </div>
     </div>
   </main>
 
