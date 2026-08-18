@@ -252,6 +252,26 @@ async function run() {
       mount: (m, canvas) => m.mountRocketLab(canvas, { getState: () => ({ result: null, index: 0, phase: "idle" }) }).stage,
     },
     {
+      name: "vn-diagram (transport)",
+      module: "../public/assets/js/experiences/vn-diagram.js",
+      mount: (m, canvas) =>
+        m.mountVnDiagram(canvas, {
+          getState: () => ({ wingLoading: 3500, clMax: 1.3, clMaxNeg: 0.7, nPos: 3.7, nNeg: -1.4, vC: 250, vD: 325 }),
+        }).stage,
+    },
+    {
+      // The HF-24 Marut example: high positive limit, deeply negative limit,
+      // and a corner speed well out past where the transport case sits —
+      // exercises a different part of the plotted range.
+      name: "vn-diagram (fighter, HF-24 Marut)",
+      module: "../public/assets/js/experiences/vn-diagram.js",
+      mount: (m, canvas) =>
+        m.mountVnDiagram(canvas, {
+          getState: () => ({ wingLoading: 3500, clMax: 1.3, clMaxNeg: 0.7, nPos: 9.34, nNeg: -5, vC: 250, vD: 325 }),
+        }).stage,
+    },
+
+    {
       name: "ground-track (ISS)",
       module: "../public/assets/js/experiences/ground-track.js",
       mount: (m, canvas) => m.mountGroundTrack(canvas, { getState: () => ({ altKm: 408, incDeg: 51.6 }) }).stage,

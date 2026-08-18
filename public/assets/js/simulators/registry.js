@@ -83,10 +83,11 @@ export const SIMULATOR_REGISTRY = {
     category: "flight",
   },
   "flight-dynamics-simulator": {
-    title: "Flight Dynamics",
-    description: "Explore pitch, roll, and yaw and how control surfaces move an aircraft through the air.",
-    module: "/assets/js/simulators/flight-dynamics-simulator.js",
-    status: "coming-soon",
+    title: "V-n Diagram",
+    description:
+      "The FAR-23 load-factor envelope, plotted live against wing loading and CLmax. Try the HF-24 Marut preset — a real fighter's numbers, corner speed included.",
+    page: "/flight-lab/flight-dynamics.html",
+    status: "live",
     category: "flight",
   },
   "rocket-builder": {

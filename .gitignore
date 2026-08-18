@@ -3,3 +3,9 @@
 Thumbs.db
 node_modules
 dist
+
+# NPTEL lecture PDFs — source material read locally for fact-checking and
+# citation. Copyrighted course content, never redistributed; only the
+# facts extracted from them (with citations) go into the site itself.
+.nptel-src/
+Lecture *.pdf

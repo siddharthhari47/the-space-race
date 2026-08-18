@@ -1725,3 +1725,27 @@ body[data-world] .continue-explore li {
 body[data-world] .data-table-wrap {
   overflow-x: auto;
 }
+
+/* ---------- V-n diagram ----------
+
+   Wider than tall: the two axes are speed and load factor, and neither
+   benefits from a square frame the way the orbit field's map does. */
+
+.vn-stage {
+  border: 0;
+  aspect-ratio: 3 / 2;
+  min-height: 300px;
+}
+
+@media (max-width: 880px) {
+  .vn-stage {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+  }
+}
+
+.ctrl-active {
+  border-color: var(--w-accent) !important;
+  color: var(--w-accent) !important;
+  background: var(--w-accent-soft) !important;
+}
