@@ -5,38 +5,27 @@
 // content — with JavaScript off the page is still a complete, readable
 // directory, which is the standard a homepage should meet.
 
-import { mountHeroVertical } from "../experiences/hero-vertical.js";
+import { mountScrollLaunch } from "../experiences/scroll-launch.js";
 import { SIMULATOR_REGISTRY } from "../simulators/registry.js";
 
-/* ---------- Hero environment ---------- */
+/* ---------- Scroll-driven flagship ---------- */
 
-let focus = "none";
+const launchSequence = document.querySelector("[data-launch-sequence]");
+const launchCanvas = document.getElementById("launch-canvas");
+const launchReadout = document.querySelector("[data-launch-readout]");
+const launchProgress = document.querySelector("[data-launch-progress]");
 
-const canvas = document.getElementById("hero-canvas");
-if (canvas) {
-  mountHeroVertical(canvas, { getFocus: () => focus });
-}
-
-// Gateways bias the scene rather than switching it. Pointer and keyboard
-// focus both count, so tabbing through the page drives the same behaviour
-// a mouse does.
-const gateways = Array.from(document.querySelectorAll("[data-gateway]"));
-for (const gw of gateways) {
-  const world = gw.dataset.gateway;
-  const enter = () => {
-    focus = world;
-    document.body.dataset.heroFocus = world;
-  };
-  const leave = () => {
-    if (focus === world) {
-      focus = "none";
-      delete document.body.dataset.heroFocus;
-    }
-  };
-  gw.addEventListener("mouseenter", enter);
-  gw.addEventListener("mouseleave", leave);
-  gw.addEventListener("focusin", enter);
-  gw.addEventListener("focusout", leave);
+if (launchSequence && launchCanvas) {
+  mountScrollLaunch(launchCanvas, launchSequence, {
+    onProgress(progress, phase) {
+      launchSequence.dataset.launchPhase = phase.key;
+      launchSequence.style.setProperty("--launch-progress", progress.toFixed(4));
+      if (launchReadout) {
+        launchReadout.textContent = `${String(Math.round(progress * 100)).padStart(2, "0")}% / ${phase.label}`;
+      }
+      if (launchProgress) launchProgress.style.transform = `scaleX(${progress})`;
+    },
+  });
 }
 
 /* ---------- Scroll reveals ---------- */

@@ -132,7 +132,7 @@ body[data-world] {
   background-image: none;
   color: var(--type);
   font-family: var(--font-body);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body[data-world] a {
@@ -947,6 +947,390 @@ lab-readout[data-state="live"] {
       rgba(4, 6, 12, 0.6) 50%,
       rgba(4, 6, 12, 0.95) 100%
     );
+  }
+}
+
+/* =========================================================================
+   FLAGSHIP 01 — SCROLL-DRIVEN LAUNCH
+   =========================================================================
+
+   This is intentionally one long instrument, not five stacked hero panels.
+   The sticky viewport holds the camera; the scroll length is the timeline.
+   Copy sits in the quiet left margin so the rocket remains the protagonist.
+   ========================================================================= */
+
+.launch-sequence {
+  --launch-progress: 0;
+  position: relative;
+  height: 460svh;
+  min-height: 3000px;
+  background: #040914;
+}
+
+.launch-viewport {
+  position: sticky;
+  top: 4.2rem;
+  height: calc(100svh - 4.2rem);
+  min-height: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+#launch-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.launch-viewport::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(3, 7, 14, 0.78), rgba(3, 7, 14, 0.2) 39%, transparent 65%),
+    linear-gradient(180deg, rgba(3, 7, 14, 0.3), transparent 22%, rgba(3, 7, 14, 0.45));
+}
+
+.launch-chrome,
+.launch-copy,
+.launch-footer {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  width: var(--frame);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.launch-chrome {
+  top: clamp(4.1rem, 11vh, 7rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.launch-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.launch-slash {
+  color: var(--type-faint);
+  font-family: var(--font-mono);
+}
+
+.launch-readout {
+  color: var(--type);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.launch-copy {
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: clamp(6rem, 12vh, 8rem);
+  padding-bottom: clamp(6.2rem, 12vh, 8rem);
+}
+
+.launch-title-block {
+  max-width: 25rem;
+  transition: opacity 420ms var(--ease-camera), transform 620ms var(--ease-camera);
+}
+
+.launch-eyebrow {
+  color: var(--type-dim);
+}
+
+.launch-title {
+  max-width: 7ch;
+  margin: 0.5rem 0 1.1rem;
+  color: var(--type-hi);
+  font-family: var(--font-display);
+  font-size: clamp(3.25rem, 6vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: -0.065em;
+  line-height: 0.88;
+  text-wrap: balance;
+}
+
+.launch-lede {
+  max-width: 31ch;
+  margin: 0;
+  color: var(--type);
+  font-size: clamp(0.94rem, 1.2vw, 1.06rem);
+  line-height: 1.6;
+}
+
+.launch-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 2.3rem;
+  color: var(--type-hi);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: opacity 320ms ease, transform 420ms var(--ease-camera);
+}
+
+.launch-cue-line {
+  display: inline-block;
+  width: 2.8rem;
+  height: 1px;
+  background: var(--aircraft-accent);
+  box-shadow: 0 0 12px rgba(255, 171, 64, 0.52);
+}
+
+.launch-cue-arrow {
+  color: var(--aircraft-accent);
+  font-size: 1rem;
+  animation: launch-cue-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes launch-cue-pulse {
+  0%,
+  100% {
+    transform: translateY(-2px);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+}
+
+.launch-narrative {
+  position: absolute;
+  left: 0;
+  bottom: clamp(4.6rem, 10vh, 6.5rem);
+  width: min(22rem, 38vw);
+  min-height: 9.5rem;
+  pointer-events: none;
+}
+
+.launch-step {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  max-width: 22rem;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 440ms var(--ease-camera), transform 620ms var(--ease-camera), visibility 0s linear 440ms;
+}
+
+.launch-step-index {
+  display: block;
+  margin-bottom: 0.7rem;
+  color: var(--aircraft-accent);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+}
+
+.launch-step h2 {
+  max-width: 15ch;
+  margin: 0 0 0.55rem;
+  color: var(--type-hi);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2.3rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.launch-step p {
+  max-width: 32ch;
+  margin: 0;
+  color: var(--type-dim);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.launch-sequence[data-launch-phase="pad"] [data-launch-step="pad"],
+.launch-sequence[data-launch-phase="ignition"] [data-launch-step="ignition"],
+.launch-sequence[data-launch-phase="liftoff"] [data-launch-step="liftoff"],
+.launch-sequence[data-launch-phase="ascent"] [data-launch-step="ascent"],
+.launch-sequence[data-launch-phase="orbit"] [data-launch-step="orbit"] {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.launch-sequence[data-launch-phase="ignition"] .launch-title-block,
+.launch-sequence[data-launch-phase="liftoff"] .launch-title-block,
+.launch-sequence[data-launch-phase="ascent"] .launch-title-block,
+.launch-sequence[data-launch-phase="orbit"] .launch-title-block {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.launch-sequence[data-launch-phase="ignition"] .launch-cue,
+.launch-sequence[data-launch-phase="liftoff"] .launch-cue,
+.launch-sequence[data-launch-phase="ascent"] .launch-cue,
+.launch-sequence[data-launch-phase="orbit"] .launch-cue {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.launch-footer {
+  bottom: clamp(1.4rem, 4vh, 2.8rem);
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.launch-source {
+  max-width: 38rem;
+  color: var(--type-faint);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+.launch-source a {
+  color: var(--type-dim);
+  pointer-events: auto;
+}
+
+.launch-progress-track {
+  display: block;
+  width: clamp(9rem, 19vw, 16rem);
+  height: 1px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background: rgba(155, 184, 214, 0.22);
+}
+
+.launch-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--aircraft-accent);
+  box-shadow: 0 0 10px rgba(255, 171, 64, 0.6);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@media (max-width: 900px) {
+  .launch-copy {
+    padding-top: clamp(8rem, 17vh, 10rem);
+  }
+
+  .launch-title {
+    font-size: clamp(3.1rem, 9vw, 5rem);
+  }
+}
+
+@media (max-width: 620px) {
+  html:has(body[data-world="atrium"]) {
+    overflow-x: clip;
+  }
+
+  .launch-sequence {
+    height: 560svh;
+    min-height: 3300px;
+  }
+
+  .launch-viewport {
+    min-height: 560px;
+  }
+
+  .launch-viewport::after {
+    background:
+      linear-gradient(180deg, rgba(3, 7, 14, 0.28), transparent 30%, rgba(3, 7, 14, 0.62)),
+      linear-gradient(90deg, rgba(3, 7, 14, 0.36), transparent 72%);
+  }
+
+  .launch-chrome,
+  .launch-copy,
+  .launch-footer {
+    width: calc(100% - 2.4rem);
+  }
+
+  .launch-chrome {
+    top: 4.2rem;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .launch-brand .launch-slash,
+  .launch-brand .tag:last-child {
+    display: none;
+  }
+
+  .launch-copy {
+    padding-top: 8.5rem;
+    padding-bottom: 6.8rem;
+  }
+
+  .launch-title-block {
+    max-width: 18rem;
+  }
+
+  .launch-title {
+    font-size: clamp(3.2rem, 15vw, 4.7rem);
+  }
+
+  .launch-lede {
+    max-width: 27ch;
+    font-size: 0.9rem;
+  }
+
+  .launch-narrative {
+    width: 100%;
+    min-height: 9.4rem;
+    padding: 0.85rem 0.95rem;
+    background: rgba(5, 10, 19, 0.58);
+    border: 1px solid rgba(151, 181, 214, 0.17);
+    backdrop-filter: blur(8px);
+  }
+
+  .launch-step h2 {
+    font-size: 1.45rem;
+  }
+
+  .launch-step p {
+    font-size: 0.82rem;
+  }
+
+  .launch-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .launch-progress-track {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .launch-cue-arrow {
+    animation: none;
+  }
+
+  .launch-step,
+  .launch-title-block,
+  .launch-cue {
+    transition-duration: 1ms;
   }
 }
 

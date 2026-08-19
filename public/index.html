@@ -18,55 +18,88 @@
   <site-header current="home" brand-href="/index.html"></site-header>
 
   <main>
-    <!-- ================= HERO: THE VERTICAL ================= -->
-    <section class="atrium-hero">
-      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <!-- ================= FLAGSHIP 01: SCROLL TO LAUNCH ================= -->
+    <section class="launch-sequence" data-launch-sequence data-launch-phase="pad">
+      <div class="launch-viewport">
+        <canvas id="launch-canvas" aria-hidden="true"></canvas>
 
-      <div class="atrium-hero-inner frame">
-        <div class="atrium-title-block">
-          <p class="tag">Interactive aerospace</p>
-          <h1 class="atrium-title">The Space<br />Race</h1>
-          <p class="atrium-lede">
-            Everything that flies sits somewhere on one axis. Below about twenty kilometres
-            there is air to push against, so you build a wing. Above a hundred there is nothing
-            to push at all, so you carry your own reaction mass and go sideways fast enough to
-            keep missing the ground.
-          </p>
-          <p class="atrium-lede-2">
-            One variable, two wings. Pick one.
-          </p>
+        <div class="launch-chrome frame" aria-hidden="true">
+          <div class="launch-brand">
+            <span class="tag">Interactive aerospace</span>
+            <span class="launch-slash">/</span>
+            <span class="tag">Flagship 01 · rocketry</span>
+          </div>
+          <div class="launch-readout" data-launch-readout>00% / LAUNCH PAD</div>
         </div>
 
-        <div class="gateways">
-          <a class="gateway" data-gateway="space" href="/space-lab/index.html">
-            <span class="gateway-index">01</span>
-            <span class="gateway-regime">100 km and above</span>
-            <span class="gateway-name">Space</span>
-            <span class="gateway-line">
-              Nothing to push against, and nothing to breathe. Orbit turns out to be a
-              sideways problem, not a height problem.
-            </span>
-            <span class="gateway-go">Enter <span aria-hidden="true">→</span></span>
-          </a>
+        <div class="launch-copy frame">
+          <div class="launch-title-block">
+            <p class="tag launch-eyebrow">The Space Race</p>
+            <h1 class="launch-title">Scroll to launch.</h1>
+            <p class="launch-lede">
+              A rocket is a sequence of decisions. Move through the opening and watch the
+              vehicle trade a quiet pad for a dark sky.
+            </p>
+            <div class="launch-cue" aria-hidden="true">
+              <span class="launch-cue-line"></span>
+              <span>Keep scrolling</span>
+              <span class="launch-cue-arrow">↓</span>
+            </div>
+          </div>
 
-          <a class="gateway" data-gateway="aircraft" href="/flight-lab/index.html">
-            <span class="gateway-index">02</span>
-            <span class="gateway-regime">0 – 20 km</span>
-            <span class="gateway-name">Aircraft</span>
-            <span class="gateway-line">
-              Air to work with. Everything in this wing is an argument about how to use it,
-              and what happens as it thins out.
-            </span>
-            <span class="gateway-go">Enter <span aria-hidden="true">→</span></span>
-          </a>
+          <div class="launch-narrative" aria-live="polite">
+            <article class="launch-step" data-launch-step="pad">
+              <span class="launch-step-index">01 / 05</span>
+              <h2>Everything starts on the pad.</h2>
+              <p>
+                The vehicle is mostly decisions waiting to become motion. For now, the only
+                thing winning is gravity.
+              </p>
+            </article>
+            <article class="launch-step" data-launch-step="ignition">
+              <span class="launch-step-index">02 / 05</span>
+              <h2>Thrust has to win.</h2>
+              <p>
+                The engines wake up before the rocket moves. A launch begins when the force
+                pushing up is greater than the weight pulling down.
+              </p>
+            </article>
+            <article class="launch-step" data-launch-step="liftoff">
+              <span class="launch-step-index">03 / 05</span>
+              <h2>Thrust &gt; weight.</h2>
+              <p>
+                The pad starts to fall away. The exhaust gets longer, the camera follows, and
+                the vehicle finally has somewhere to go.
+              </p>
+            </article>
+            <article class="launch-step" data-launch-step="ascent">
+              <span class="launch-step-index">04 / 05</span>
+              <h2>Mass is leaving with the flame.</h2>
+              <p>
+                As propellant burns, the same thrust moves less mass. Acceleration is no longer
+                a promise — it is visible in the climb.
+              </p>
+            </article>
+            <article class="launch-step" data-launch-step="orbit">
+              <span class="launch-step-index">05 / 05</span>
+              <h2>Now the problem changes.</h2>
+              <p>
+                Getting high was only the beginning. Orbit is sideways speed, held long enough
+                to keep missing the ground.
+              </p>
+            </article>
+          </div>
         </div>
 
-        <p class="atrium-axis-note">
-          <span class="tag tag-accent">Behind this text</span>
-          The curve on the left is air density, ρ(h) = ρ₀·e<sup>−h/H</sup>, scale height H ≈ 8.5 km,
-          plotted as width against a logarithmic altitude axis. It is the reason the airliner
-          cruises where it does and the reason the station does not.
-        </p>
+        <div class="launch-footer frame">
+          <span class="launch-source">
+            A visual prelude to the <a href="/space-lab/rockets.html">Rockets exhibit</a> ·
+            concepts and model notes are listed in <a href="/references/index.html">References</a>.
+          </span>
+          <span class="launch-progress-track" aria-hidden="true">
+            <span class="launch-progress-fill" data-launch-progress></span>
+          </span>
+        </div>
       </div>
     </section>
 

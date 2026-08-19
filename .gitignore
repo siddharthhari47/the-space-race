@@ -9,3 +9,6 @@ dist
 # facts extracted from them (with citations) go into the site itself.
 .nptel-src/
 Lecture *.pdf
+
+# Local, pre-change archives kept as rollback mirrors.
+mirrors/
