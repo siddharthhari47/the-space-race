@@ -21,6 +21,16 @@ export default defineConfig({
   },
   preview: {
     port: 5500,
+    // vite preview otherwise serves /assets/ with max-age=31536000,immutable.
+    // The two bundles here are deliberately unhashed so the HTML never has to
+    // change between builds, which means an immutable header tells the browser
+    // to keep yesterday's JavaScript forever: you rebuild, reload, and see the
+    // old page with no indication anything is stale. This is a local review
+    // server, so nothing is gained by caching at all. Production is served by
+    // Vercel straight out of dist/ and is unaffected by this.
+    headers: {
+      "Cache-Control": "no-store",
+    },
   },
   build: {
     outDir: "dist",

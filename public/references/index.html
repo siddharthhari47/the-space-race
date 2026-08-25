@@ -26,14 +26,97 @@
 
     <section-header eyebrow="Interactive source notes" title="Site-built exhibits"></section-header>
     <feature-grid columns="2">
-      <info-card title="Homepage scroll launch" href="../space-lab/rockets.html">
-        The opening sequence is an original visual prelude to the Rockets exhibit. Its copy
-        stays at the level of the existing exhibit's concepts — thrust, weight, propellant,
-        ascent, and the sideways problem of orbit — and introduces no new performance figures.
-        The rocket and exhaust are procedural illustrations; the checked model lives in the
-        Rockets exhibit itself.
+      <info-card title="Homepage Apollo 11 layer" href="../index.html">
+        The Earth behind the homepage is a live render, not a photograph. The surface, cloud
+        and night-lights imagery is NASA's and is credited below; the camera moves, the
+        atmospheric scattering and the vehicle are this site's own work. Nothing on that layer
+        is a NASA photograph, and nothing on it should be read as one. Where it uses real
+        numbers — the pad's coordinates, the launch time, the position of the Sun that
+        morning — those numbers come from the sources listed below and are checked by a test
+        harness in the repository rather than eyeballed.
+      </info-card>
+      <info-card title="Scale on the Apollo layer" href="../index.html">
+        A Saturn V is 110.6 m tall and the Earth's radius is 6,371 km, a ratio of about
+        58 million to one. At any framing that shows the curve of the planet the vehicle is
+        smaller than one pixel, so its apparent size on the homepage is deliberately
+        exaggerated. Every visualisation of a launch from orbit does this; this one says so.
+        Altitudes, the shape of the trajectory and the order of events are not exaggerated.
+      </info-card>
+      <info-card title="The light on the pad" href="../index.html">
+        At the opening framing the camera is 3,150 km up, and one pixel of a 1600-wide frame
+        covers about 2.9 km of ground. A Saturn V is four hundredths of that pixel; its
+        exhaust plume, tens of metres across, is not much better off. Neither would be
+        visible from there in daylight however good the render was. So the warm point of
+        light on Merritt Island is invented. It marks where Launch Complex 39A is and when
+        something is happening on it, at a size the eye can find. The position is real and
+        comes from the coordinates cited below. The brightness is not a measurement of
+        anything.
+      </info-card>
+      <info-card title="How fast the Earth turns" href="../index.html">
+        The planet behind the homepage goes round in about thirteen minutes: 0.45 degrees a
+        second against the real 0.0042, roughly a hundred and eight times too fast. At the
+        true rate nothing would move within any visit anyone is going to make and the Earth
+        would read as a photograph. The direction and the axis are right, and the Sun holds
+        still where it was at 13:32 GMT on 16 July 1969 while the surface turns through it,
+        which is what a day actually looks like from up there. The speed is the part that
+        has been made up.
       </info-card>
     </feature-grid>
+
+    <section-header eyebrow="Imagery" title="NASA Earth Imagery"></section-header>
+    <p class="lab-intro">
+      The three textures wrapped around the homepage's Earth. Each was downloaded from NASA
+      Visible Earth and then resized and re-encoded to WebP for the web — the geometry and
+      the colours are NASA's, the file format and resolution are not. The exact source files,
+      with their byte counts, are recorded in <code>tools/build-earth-textures.py</code> in
+      this site's repository, which is how each shipped texture can be matched back to the
+      URL it came from.
+    </p>
+    <feature-grid columns="3">
+      <info-card title="Blue Marble: Next Generation" href="https://visibleearth.nasa.gov/images/73751/">
+        NASA Visible Earth image record 73751, "Blue Marble: Next Generation with Topography
+        and Bathymetry" — the July 2004 monthly composite, from MODIS on Terra. This is the
+        daylit surface: land, ice, and ocean floor.
+      </info-card>
+      <info-card title="Blue Marble Clouds" href="https://visibleearth.nasa.gov/images/57747/blue-marble-clouds">
+        NASA Visible Earth image record 57747. A single global cloud composite, drifting slowly
+        over the surface layer. It is one snapshot of weather, not the weather of 16 July 1969
+        — that record does not exist at this resolution.
+      </info-card>
+      <info-card title="Night Lights 2012" href="https://visibleearth.nasa.gov/images/79765/night-lights-2012-flat-map">
+        NASA Visible Earth image record 79765, from the Suomi NPP satellite's VIIRS day/night
+        band. Used only on the unlit side of the terminator. It is 2012 lighting shown under
+        1969 sunlight, which is an anachronism the page accepts in exchange for a night side
+        that is not simply black.
+      </info-card>
+    </feature-grid>
+
+    <section-header eyebrow="Numbers" title="Apollo 11 Positions &amp; Times"></section-header>
+    <p class="post-body">
+      <strong>The pad and the clock.</strong> Launch Complex 39A's geodetic coordinates
+      (28.608422&deg;&nbsp;N, 80.604133&deg;&nbsp;W) and the launch time (Range Zero
+      13:32:00&nbsp;GMT on 16 July 1969, actual liftoff 13:32:00.63) are taken from the Launch
+      Information table and the Apollo 11 narrative in NASA SP-2000-4029, Richard W. Orloff,
+      <em>Apollo by the Numbers: A Statistical Reference</em>
+      (<a href="https://www.nasa.gov/wp-content/uploads/2023/04/sp-4029.pdf" target="_blank" rel="noopener noreferrer">PDF, NASA History Division</a>).
+      They are transcribed at full published precision rather than rounded, because the launch
+      point on the globe is computed from them.
+    </p>
+    <p class="post-body">
+      <strong>Where the Sun was.</strong> The terminator on the homepage is not decorative. The
+      sub-solar point is computed from the low-precision solar position algorithm published by
+      the U.S. Naval Observatory's Astronomical Applications Department as
+      <a href="https://aa.usno.navy.mil/faq/sun_approx" target="_blank" rel="noopener noreferrer">Computing Approximate Solar Coordinates</a>
+      — the <em>Astronomical Almanac</em>'s own page-C5 algorithm with its constants refitted
+      against JPL's DE405 ephemeris, quoted as accurate to about one arcminute within two
+      centuries of 2000. The Earth's rotation under that Sun uses the IAU 1982 Greenwich mean
+      sidereal time coefficients as given by Jean Meeus, <em>Astronomical Algorithms</em>,
+      2nd&nbsp;ed., Willmann-Bell, 1998, equation&nbsp;12.4. Run against the launch epoch the two
+      together put the Sun overhead at 21.342&deg;&nbsp;N, 21.509&deg;&nbsp;W and 36.46&deg; above
+      the horizon at the pad, which is a morning Sun a third of the way up the sky — and which
+      matches the shadows in the launch photography. That check runs in
+      <code>tools/apollo-mission-check.mjs</code> on every build.
+    </p>
 
     <section-header eyebrow="Organizations" title="Agencies &amp; Manufacturers"></section-header>
     <feature-grid columns="3">

@@ -1,32 +1,17 @@
 // The atrium — homepage behaviour.
 //
-// Three jobs: run the hero environment, let the two gateways bias it, and
-// reveal sections as they come into view. Nothing here is load-bearing for
+// Two jobs: reveal sections as they come into view, and keep the directory's
+// own count of interactive exhibits honest. Nothing here is load-bearing for
 // content — with JavaScript off the page is still a complete, readable
 // directory, which is the standard a homepage should meet.
+//
+// The Apollo layer behind the page is not started from here. It is a
+// separate bundled entry (assets/js/dist/apollo.js) with its own loading,
+// capability and reduced-motion decisions to make, and it deliberately has
+// no connection to anything in this file: if it never starts, nothing on
+// this page notices.
 
-import { mountScrollLaunch } from "../experiences/scroll-launch.js";
 import { SIMULATOR_REGISTRY } from "../simulators/registry.js";
-
-/* ---------- Scroll-driven flagship ---------- */
-
-const launchSequence = document.querySelector("[data-launch-sequence]");
-const launchCanvas = document.getElementById("launch-canvas");
-const launchReadout = document.querySelector("[data-launch-readout]");
-const launchProgress = document.querySelector("[data-launch-progress]");
-
-if (launchSequence && launchCanvas) {
-  mountScrollLaunch(launchCanvas, launchSequence, {
-    onProgress(progress, phase) {
-      launchSequence.dataset.launchPhase = phase.key;
-      launchSequence.style.setProperty("--launch-progress", progress.toFixed(4));
-      if (launchReadout) {
-        launchReadout.textContent = `${String(Math.round(progress * 100)).padStart(2, "0")}% / ${phase.label}`;
-      }
-      if (launchProgress) launchProgress.style.transform = `scaleX(${progress})`;
-    },
-  });
-}
 
 /* ---------- Scroll reveals ---------- */
 

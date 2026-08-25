@@ -687,50 +687,191 @@ lab-readout[data-state="live"] {
   transform: none;
 }
 
+/* atrium.js says, correctly, that the page should still be a complete and
+   readable directory with JavaScript off. It was not: the rule above hides
+   every section until an IntersectionObserver adds is-in, and with no script
+   running nothing ever does, so everything below the hero stayed at zero
+   opacity. The reveal is decoration and decoration is not allowed to be the
+   thing standing between a reader and the content.
+
+   This does not cover the other way it can fail -- script enabled but the
+   module never arrives -- because CSS cannot ask about that. */
+@media (scripting: none) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* =========================================================================
+   THE APOLLO LAYER
+   =========================================================================
+
+   A fixed pane behind the entire document, holding a WebGL Earth whose
+   camera is driven by how far down the page you have scrolled. Three rules
+   govern everything below.
+
+   It is behind, not in front. z-index 0, pointer-events none, and every
+   piece of real content sits above it. Nothing here can intercept a click,
+   cover a paragraph or move a heading.
+
+   It is optional. The canvas starts at zero opacity and is only faded up
+   once a scene actually exists. If WebGL is unavailable, the device asked
+   for reduced data, or the textures fail, the pane keeps the gradient sky
+   drawn underneath in plain CSS and the page reads as a deliberate dark
+   design rather than a failure.
+
+   It gets quieter as you read, and then it gets brighter again. main
+   carries one gradient, and its shape follows the planet: clear at the top
+   of the hero, heavy through the middle where the Earth is large and lit
+   and cards sit straight over it, and back to a thin veil at the bottom
+   where the planet has slid out of the frame and there is nothing behind
+   the text but stars. That gradient is the entire mechanism by which text
+   stays legible over a live render - there is no per-section background
+   anywhere below, and nothing else may add one, because a second layer is
+   a second edge and edges show.
+   ========================================================================= */
+
+.apollo-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--ink-void);
+}
+
+/* The fallback sky, and also the thing the canvas fades in over so the
+   arrival is a brightening rather than a cut from black. Two radial
+   gradients: a broad limb glow rising out of the bottom-right corner, and
+   a tighter, whiter core inside it where the atmosphere would be thickest.
+   Both are centred past the corner of the viewport, which is what gives
+   the impression of a curve too large to fit on the screen. */
+.apollo-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      116% 88% at 86% 116%,
+      rgba(78, 132, 198, 0.5) 0%,
+      rgba(30, 62, 108, 0.3) 36%,
+      rgba(6, 11, 22, 0) 64%
+    ),
+    radial-gradient(
+      74% 58% at 80% 110%,
+      rgba(168, 210, 248, 0.28) 0%,
+      rgba(10, 20, 38, 0) 58%
+    );
+}
+
+.apollo-stage canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1400ms var(--ease-camera);
+}
+
+/* "still" is the reduced-motion case: one frame was drawn and the loop was
+   never started. It is a finished picture, so it gets the same fade. */
+.apollo-stage[data-apollo-state="ready"] canvas,
+.apollo-stage[data-apollo-state="still"] canvas {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apollo-stage canvas {
+    transition-duration: 1ms;
+  }
+}
+
+/* ---------- Stacking ----------
+
+   The header is already sticky at z-index 10, so it wins without help.
+   These two put the document's own content above the pane. */
+
+body[data-world="atrium"] main,
+body[data-world="atrium"] site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* The legibility ramp, and now the only one. There used to be a second
+   gradient on .atrium-hero::after covering the lower half of the first
+   screen, and the two did not meet: at the hero's bottom edge the hero's
+   scrim was at 0.86 and this one was at 0.19, so the composited darkness
+   fell from 0.886 to 0.205 across a single pixel. That is a hard horizontal
+   line drawn across the planet, dim above and bright below, and it was
+   visible from across the room. Two gradients over one continuous backdrop
+   cannot be made to meet by tuning; the only fix that stays fixed is for
+   there to be one of them.
+
+   So this one now does both jobs. The early stops are in svh, absolute
+   lengths against the viewport, because they have to land on the first
+   screen no matter how much page follows. The late ones are percentages,
+   because they have to track the end of the document rather than a fixed
+   distance from its top.
+
+   The shape follows the planet rather than the text. It is heaviest through
+   the middle of the page, which is where the Earth is still large and lit
+   and where cards are laid straight over it, and it eases back to a thin
+   veil at the bottom, where the planet has left the frame and there is
+   nothing behind the text but stars. Holding 0.93 down there was what made
+   the last sections look like they had no background at all: it was not
+   that the backdrop was missing, it was that it had been painted out.
+
+   The 104svh stop is 0.83 rather than a rounder 0.8 because of one line.
+   Sweeping sixty scroll positions and measuring every line of text that
+   sits on the backdrop instead of on a card, the directory's subhead came
+   to 4.31 against the brightest pixel behind it as it crossed the bottom
+   of the viewport -- a lit cloud top on the limb, near (180, 224, 255)
+   before the scrim went over it. 4.5 is the threshold. 0.83 makes it 4.58,
+   and against the 0.86 it is already climbing towards, nobody can see the
+   difference. */
+body[data-world="atrium"] main {
+  background: linear-gradient(
+    180deg,
+    rgba(4, 6, 12, 0) 0,
+    rgba(4, 6, 12, 0) 42svh,
+    rgba(4, 6, 12, 0.42) 74svh,
+    rgba(4, 6, 12, 0.83) 104svh,
+    rgba(4, 6, 12, 0.86) 230svh,
+    rgba(4, 6, 12, 0.84) 58%,
+    rgba(4, 6, 12, 0.58) 82%,
+    rgba(4, 6, 12, 0.4) 100%
+  );
+}
+
 /* =========================================================================
    ATRIUM — the homepage
    =========================================================================
 
-   Composition rule: the environment owns the left half of the hero, the
-   content owns the right. That isn't a style choice, it's a collision fix —
-   the altitude axis and its labels are drawn down the left of the canvas,
-   and text laid over them would be unreadable at every viewport width. The
-   split gives the axis room to be read as a diagram, which is the only
-   reason it is there.
+   Composition rule: content left, planet lower-right. The Apollo layer puts
+   Earth's limb into the bottom-right corner and leaves the upper left as
+   empty space, so every element in the hero is held inside a left column
+   and the right of the frame is deliberately kept empty. That is a
+   collision fix rather than a taste: text laid over the bright edge of the
+   atmosphere is unreadable at every viewport width.
+
+   The hero has no canvas of its own. What used to be here was a 2D
+   altitude-axis diagram owned by this section; the layer that replaced it
+   is fixed behind the whole document, which is why nothing below sets a
+   background or a height for it.
    ========================================================================= */
 
+/* No scrim of its own. It used to carry one across its lower half, which
+   is where the gateways sit and where the limb comes up behind them, and
+   the first three stops of the ramp on main are that scrim moved onto the
+   element that could carry it all the way down. isolation: isolate went
+   with it -- the stacking context existed to contain the ::after and there
+   is no ::after. */
 .atrium-hero {
   position: relative;
   min-height: 100svh;
   display: flex;
-  isolation: isolate;
-}
-
-#hero-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-/* Scrim across the lower half only. The top of the frame is vacuum and
-   already black, so darkening it would just flatten the star field; the
-   bottom holds the gateways over the brightest part of the atmosphere and
-   genuinely needs the contrast. */
-.atrium-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(4, 6, 12, 0) 0%,
-    rgba(4, 6, 12, 0) 38%,
-    rgba(4, 6, 12, 0.55) 68%,
-    rgba(4, 6, 12, 0.92) 100%
-  );
 }
 
 .atrium-hero-inner {
@@ -744,10 +885,14 @@ lab-readout[data-state="live"] {
   padding: clamp(4rem, 10vh, 6.5rem) 0 clamp(1.25rem, 3vh, 2.25rem);
 }
 
+/* One column, held to the left. 42rem against a 1440px frame leaves a
+   little over half the width clear, which is where the limb comes up. */
+.atrium-hero-inner > * {
+  width: min(100%, 42rem);
+}
+
 .atrium-title-block {
   align-self: center;
-  justify-self: end;
-  max-width: 34rem;
 }
 
 /* Sized against viewport *height* as well as width. A wide, short window —
@@ -770,6 +915,7 @@ lab-readout[data-state="live"] {
   line-height: 1.6;
   color: var(--type);
   margin: 0 0 0.75rem;
+  max-width: 36rem;
 }
 
 .atrium-lede-2 {
@@ -781,8 +927,7 @@ lab-readout[data-state="live"] {
 /* ---------- Gateways ----------
 
    Two doors. Each states the altitude regime it covers, because that is the
-   actual thing that separates them, and hovering one biases the environment
-   toward it rather than swapping the scene out. */
+   actual thing that separates them. */
 
 .gateways {
   display: grid;
@@ -860,7 +1005,7 @@ lab-readout[data-state="live"] {
 .gateway-name {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.7rem, min(3.4vw, 5vh), 2.7rem);
+  font-size: clamp(1.6rem, min(3vw, 4.4vh), 2.4rem);
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--type-hi);
@@ -868,10 +1013,10 @@ lab-readout[data-state="live"] {
 }
 
 .gateway-line {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.55;
   color: var(--type-dim);
-  max-width: 34ch;
+  max-width: 32ch;
 }
 
 .gateway-go {
@@ -896,7 +1041,11 @@ lab-readout[data-state="live"] {
   color: var(--aircraft-accent);
 }
 
-.atrium-axis-note {
+/* The note that says what the picture behind the page actually is. Every
+   other visual on this site explains itself somewhere; this one is the
+   most convincing thing here and therefore the one that most needs to say
+   which parts are measured and which are staged. */
+.atrium-note {
   font-size: 0.8rem;
   line-height: 1.6;
   color: var(--type-faint);
@@ -904,19 +1053,31 @@ lab-readout[data-state="live"] {
   margin: 0;
 }
 
-.atrium-axis-note .tag {
+.atrium-note .tag {
   display: block;
   margin-bottom: 0.3rem;
 }
 
+.atrium-note a {
+  color: var(--type-dim);
+}
+
+@media (max-width: 1100px) {
+  .atrium-hero-inner > * {
+    width: min(100%, 34rem);
+  }
+}
+
+/* Below this width there is no room to keep half the frame clear, so the
+   hero stops trying: content takes the full width and the scrim does the
+   legibility work instead. */
 @media (max-width: 900px) {
   .atrium-hero-inner {
     padding-top: clamp(3.5rem, 10vh, 6rem);
   }
 
-  .atrium-title-block {
-    justify-self: stretch;
-    max-width: none;
+  .atrium-hero-inner > * {
+    width: 100%;
   }
 
   .gateways {
@@ -930,407 +1091,40 @@ lab-readout[data-state="live"] {
   .gateway-line {
     max-width: none;
   }
-}
-
-/* The environment is the point on desktop, but on a phone the text has to
-   win. Fade the canvas rather than removing it — the axis still reads as a
-   background diagram, just quietly. */
-@media (max-width: 620px) {
-  #hero-canvas {
-    opacity: 0.42;
-  }
 
   .atrium-hero::after {
     background: linear-gradient(
       180deg,
-      rgba(4, 6, 12, 0.4) 0%,
-      rgba(4, 6, 12, 0.6) 50%,
+      rgba(4, 6, 12, 0.35) 0%,
+      rgba(4, 6, 12, 0.55) 45%,
+      rgba(4, 6, 12, 0.9) 100%
+    );
+  }
+
+  /* The ramp has to start sooner too: the hero is taller relative to the
+     viewport once the doors are stacked. */
+  body[data-world="atrium"] main {
+    background: linear-gradient(
+      180deg,
+      rgba(4, 6, 12, 0) 0,
+      rgba(4, 6, 12, 0) 84svh,
+      rgba(4, 6, 12, 0.72) 118svh,
+      rgba(4, 6, 12, 0.93) 180svh,
       rgba(4, 6, 12, 0.95) 100%
     );
   }
 }
 
-/* =========================================================================
-   FLAGSHIP 01 — SCROLL-DRIVEN LAUNCH
-   =========================================================================
-
-   This is intentionally one long instrument, not five stacked hero panels.
-   The sticky viewport holds the camera; the scroll length is the timeline.
-   Copy sits in the quiet left margin so the rocket remains the protagonist.
-   ========================================================================= */
-
-.launch-sequence {
-  --launch-progress: 0;
-  position: relative;
-  height: 460svh;
-  min-height: 3000px;
-  background: #040914;
-}
-
-.launch-viewport {
-  position: sticky;
-  top: 4.2rem;
-  height: calc(100svh - 4.2rem);
-  min-height: 0;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-#launch-canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.launch-viewport::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(3, 7, 14, 0.78), rgba(3, 7, 14, 0.2) 39%, transparent 65%),
-    linear-gradient(180deg, rgba(3, 7, 14, 0.3), transparent 22%, rgba(3, 7, 14, 0.45));
-}
-
-.launch-chrome,
-.launch-copy,
-.launch-footer {
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  width: var(--frame);
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.launch-chrome {
-  top: clamp(4.1rem, 11vh, 7rem);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-}
-
-.launch-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-}
-
-.launch-slash {
-  color: var(--type-faint);
-  font-family: var(--font-mono);
-}
-
-.launch-readout {
-  color: var(--type);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.launch-copy {
-  top: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-top: clamp(6rem, 12vh, 8rem);
-  padding-bottom: clamp(6.2rem, 12vh, 8rem);
-}
-
-.launch-title-block {
-  max-width: 25rem;
-  transition: opacity 420ms var(--ease-camera), transform 620ms var(--ease-camera);
-}
-
-.launch-eyebrow {
-  color: var(--type-dim);
-}
-
-.launch-title {
-  max-width: 7ch;
-  margin: 0.5rem 0 1.1rem;
-  color: var(--type-hi);
-  font-family: var(--font-display);
-  font-size: clamp(3.25rem, 6vw, 5.5rem);
-  font-weight: 700;
-  letter-spacing: -0.065em;
-  line-height: 0.88;
-  text-wrap: balance;
-}
-
-.launch-lede {
-  max-width: 31ch;
-  margin: 0;
-  color: var(--type);
-  font-size: clamp(0.94rem, 1.2vw, 1.06rem);
-  line-height: 1.6;
-}
-
-.launch-cue {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin-top: 2.3rem;
-  color: var(--type-hi);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  transition: opacity 320ms ease, transform 420ms var(--ease-camera);
-}
-
-.launch-cue-line {
-  display: inline-block;
-  width: 2.8rem;
-  height: 1px;
-  background: var(--aircraft-accent);
-  box-shadow: 0 0 12px rgba(255, 171, 64, 0.52);
-}
-
-.launch-cue-arrow {
-  color: var(--aircraft-accent);
-  font-size: 1rem;
-  animation: launch-cue-pulse 1.8s ease-in-out infinite;
-}
-
-@keyframes launch-cue-pulse {
-  0%,
-  100% {
-    transform: translateY(-2px);
+/* On a phone the planet is a texture behind text and nothing more. */
+@media (max-width: 620px) {
+  .apollo-stage canvas,
+  .apollo-stage::before {
     opacity: 0.55;
   }
-  50% {
-    transform: translateY(3px);
-    opacity: 1;
-  }
-}
 
-.launch-narrative {
-  position: absolute;
-  left: 0;
-  bottom: clamp(4.6rem, 10vh, 6.5rem);
-  width: min(22rem, 38vw);
-  min-height: 9.5rem;
-  pointer-events: none;
-}
-
-.launch-step {
-  position: absolute;
-  inset: 0;
-  visibility: hidden;
-  max-width: 22rem;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 440ms var(--ease-camera), transform 620ms var(--ease-camera), visibility 0s linear 440ms;
-}
-
-.launch-step-index {
-  display: block;
-  margin-bottom: 0.7rem;
-  color: var(--aircraft-accent);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-}
-
-.launch-step h2 {
-  max-width: 15ch;
-  margin: 0 0 0.55rem;
-  color: var(--type-hi);
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.5vw, 2.3rem);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-
-.launch-step p {
-  max-width: 32ch;
-  margin: 0;
-  color: var(--type-dim);
-  font-size: 0.88rem;
-  line-height: 1.55;
-}
-
-.launch-sequence[data-launch-phase="pad"] [data-launch-step="pad"],
-.launch-sequence[data-launch-phase="ignition"] [data-launch-step="ignition"],
-.launch-sequence[data-launch-phase="liftoff"] [data-launch-step="liftoff"],
-.launch-sequence[data-launch-phase="ascent"] [data-launch-step="ascent"],
-.launch-sequence[data-launch-phase="orbit"] [data-launch-step="orbit"] {
-  visibility: visible;
-  opacity: 1;
-  transform: none;
-  transition-delay: 0s;
-}
-
-.launch-sequence[data-launch-phase="ignition"] .launch-title-block,
-.launch-sequence[data-launch-phase="liftoff"] .launch-title-block,
-.launch-sequence[data-launch-phase="ascent"] .launch-title-block,
-.launch-sequence[data-launch-phase="orbit"] .launch-title-block {
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.launch-sequence[data-launch-phase="ignition"] .launch-cue,
-.launch-sequence[data-launch-phase="liftoff"] .launch-cue,
-.launch-sequence[data-launch-phase="ascent"] .launch-cue,
-.launch-sequence[data-launch-phase="orbit"] .launch-cue {
-  opacity: 0;
-  transform: translateY(8px);
-}
-
-.launch-footer {
-  bottom: clamp(1.4rem, 4vh, 2.8rem);
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 2rem;
-}
-
-.launch-source {
-  max-width: 38rem;
-  color: var(--type-faint);
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-}
-
-.launch-source a {
-  color: var(--type-dim);
-  pointer-events: auto;
-}
-
-.launch-progress-track {
-  display: block;
-  width: clamp(9rem, 19vw, 16rem);
-  height: 1px;
-  flex: 0 0 auto;
-  overflow: hidden;
-  background: rgba(155, 184, 214, 0.22);
-}
-
-.launch-progress-fill {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: var(--aircraft-accent);
-  box-shadow: 0 0 10px rgba(255, 171, 64, 0.6);
-  transform: scaleX(0);
-  transform-origin: left center;
-}
-
-@media (max-width: 900px) {
-  .launch-copy {
-    padding-top: clamp(8rem, 17vh, 10rem);
-  }
-
-  .launch-title {
-    font-size: clamp(3.1rem, 9vw, 5rem);
-  }
-}
-
-@media (max-width: 620px) {
-  html:has(body[data-world="atrium"]) {
-    overflow-x: clip;
-  }
-
-  .launch-sequence {
-    height: 560svh;
-    min-height: 3300px;
-  }
-
-  .launch-viewport {
-    min-height: 560px;
-  }
-
-  .launch-viewport::after {
-    background:
-      linear-gradient(180deg, rgba(3, 7, 14, 0.28), transparent 30%, rgba(3, 7, 14, 0.62)),
-      linear-gradient(90deg, rgba(3, 7, 14, 0.36), transparent 72%);
-  }
-
-  .launch-chrome,
-  .launch-copy,
-  .launch-footer {
-    width: calc(100% - 2.4rem);
-  }
-
-  .launch-chrome {
-    top: 4.2rem;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .launch-brand .launch-slash,
-  .launch-brand .tag:last-child {
-    display: none;
-  }
-
-  .launch-copy {
-    padding-top: 8.5rem;
-    padding-bottom: 6.8rem;
-  }
-
-  .launch-title-block {
-    max-width: 18rem;
-  }
-
-  .launch-title {
-    font-size: clamp(3.2rem, 15vw, 4.7rem);
-  }
-
-  .launch-lede {
-    max-width: 27ch;
-    font-size: 0.9rem;
-  }
-
-  .launch-narrative {
-    width: 100%;
-    min-height: 9.4rem;
-    padding: 0.85rem 0.95rem;
-    background: rgba(5, 10, 19, 0.58);
-    border: 1px solid rgba(151, 181, 214, 0.17);
-    backdrop-filter: blur(8px);
-  }
-
-  .launch-step h2 {
-    font-size: 1.45rem;
-  }
-
-  .launch-step p {
-    font-size: 0.82rem;
-  }
-
-  .launch-footer {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .launch-progress-track {
-    width: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .launch-cue-arrow {
-    animation: none;
-  }
-
-  .launch-step,
-  .launch-title-block,
-  .launch-cue {
-    transition-duration: 1ms;
+  .apollo-stage[data-apollo-state="ready"] canvas,
+  .apollo-stage[data-apollo-state="still"] canvas {
+    opacity: 0.55;
   }
 }
 
@@ -1944,6 +1738,40 @@ body[data-world] .lab-title {
   letter-spacing: -0.035em;
   color: var(--type-hi);
   margin: 0 0 1.1rem;
+}
+
+/* "Hi, I'm Sid." It was set at the same size as the paragraph under it,
+   which made the two read as one block of body copy and wasted the only line
+   on the page that is allowed to just be a greeting. Sized between the
+   section title above it and the paragraph below, so it reads as a third
+   step rather than competing with the heading. */
+body[data-world] .about-greeting {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.45rem, 2.6vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--type-hi);
+  margin: 0 0 0.7rem;
+}
+
+/* The four paragraphs of the about section are the only long-form prose on
+   the homepage, and .exhibit-body sets no measure, so they ran the full
+   width of the frame -- about two hundred characters to the line at a
+   desktop width, which is roughly three times what anyone can track back
+   from. Every other block of copy on the site is already held to 68ch; this
+   is the same rule applied to the one place that was missing it.
+
+   It also settles a legibility problem that no amount of scrim would have.
+   The planet spends the last third of the page as a small disc in the
+   bottom-right corner, and full-bleed paragraphs put text directly over it:
+   measured, three lines of this prose fell to between 2.55 and 2.80 against
+   the lit limb behind them. Darkening the tail of the ramp to cover that
+   would have painted out exactly the backdrop the ramp was just reshaped to
+   let through. Ending the line before the corner costs nothing and fixes
+   both. The grid and the link row below keep the full width. */
+body[data-world="atrium"] #about .exhibit-body > p {
+  max-width: var(--measure);
 }
 
 body[data-world] .lab-intro {

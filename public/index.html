@@ -13,93 +13,72 @@
   <link rel="stylesheet" href="assets/css/museum.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
   <script type="module" src="/assets/js/pages/atrium.js" defer></script>
+  <script type="module" src="/assets/js/dist/apollo.js" defer></script>
 </head>
 <body data-world="atrium">
+  <!-- The Apollo layer. Decoration, and marked as such: aria-hidden, no
+       focusable content, pointer-events disabled in CSS, and nothing below
+       depends on it existing. If the bundle never loads, this is an empty
+       div with a gradient in it. -->
+  <div class="apollo-stage" data-apollo-stage aria-hidden="true">
+    <canvas id="apollo-canvas"></canvas>
+  </div>
+
   <site-header current="home" brand-href="/index.html"></site-header>
 
   <main>
-    <!-- ================= FLAGSHIP 01: SCROLL TO LAUNCH ================= -->
-    <section class="launch-sequence" data-launch-sequence data-launch-phase="pad">
-      <div class="launch-viewport">
-        <canvas id="launch-canvas" aria-hidden="true"></canvas>
-
-        <div class="launch-chrome frame" aria-hidden="true">
-          <div class="launch-brand">
-            <span class="tag">Interactive aerospace</span>
-            <span class="launch-slash">/</span>
-            <span class="tag">Flagship 01 · rocketry</span>
-          </div>
-          <div class="launch-readout" data-launch-readout>00% / LAUNCH PAD</div>
+    <!-- ================= HERO ================= -->
+    <section class="atrium-hero">
+      <div class="atrium-hero-inner frame">
+        <div class="atrium-title-block">
+          <p class="tag">Interactive aerospace</p>
+          <h1 class="atrium-title">The Space<br />Race</h1>
+          <p class="atrium-lede">
+            Everything that flies sits somewhere on one axis. Below about twenty kilometres
+            there is air to push against, so you build a wing. Above a hundred there is nothing
+            to push at all, so you carry your own reaction mass and go sideways fast enough to
+            keep missing the ground.
+          </p>
+          <p class="atrium-lede-2">
+            One variable, two wings. Pick one.
+          </p>
         </div>
 
-        <div class="launch-copy frame">
-          <div class="launch-title-block">
-            <p class="tag launch-eyebrow">The Space Race</p>
-            <h1 class="launch-title">Scroll to launch.</h1>
-            <p class="launch-lede">
-              A rocket is a sequence of decisions. Move through the opening and watch the
-              vehicle trade a quiet pad for a dark sky.
-            </p>
-            <div class="launch-cue" aria-hidden="true">
-              <span class="launch-cue-line"></span>
-              <span>Keep scrolling</span>
-              <span class="launch-cue-arrow">↓</span>
-            </div>
-          </div>
+        <div class="gateways">
+          <a class="gateway" data-gateway="space" href="/space-lab/index.html">
+            <span class="gateway-index">01</span>
+            <span class="gateway-regime">100 km and above</span>
+            <span class="gateway-name">Space</span>
+            <span class="gateway-line">
+              Nothing to push against, and nothing to breathe. Orbit turns out to be a
+              sideways problem, not a height problem.
+            </span>
+            <span class="gateway-go">Enter <span aria-hidden="true">→</span></span>
+          </a>
 
-          <div class="launch-narrative" aria-live="polite">
-            <article class="launch-step" data-launch-step="pad">
-              <span class="launch-step-index">01 / 05</span>
-              <h2>Everything starts on the pad.</h2>
-              <p>
-                The vehicle is mostly decisions waiting to become motion. For now, the only
-                thing winning is gravity.
-              </p>
-            </article>
-            <article class="launch-step" data-launch-step="ignition">
-              <span class="launch-step-index">02 / 05</span>
-              <h2>Thrust has to win.</h2>
-              <p>
-                The engines wake up before the rocket moves. A launch begins when the force
-                pushing up is greater than the weight pulling down.
-              </p>
-            </article>
-            <article class="launch-step" data-launch-step="liftoff">
-              <span class="launch-step-index">03 / 05</span>
-              <h2>Thrust &gt; weight.</h2>
-              <p>
-                The pad starts to fall away. The exhaust gets longer, the camera follows, and
-                the vehicle finally has somewhere to go.
-              </p>
-            </article>
-            <article class="launch-step" data-launch-step="ascent">
-              <span class="launch-step-index">04 / 05</span>
-              <h2>Mass is leaving with the flame.</h2>
-              <p>
-                As propellant burns, the same thrust moves less mass. Acceleration is no longer
-                a promise — it is visible in the climb.
-              </p>
-            </article>
-            <article class="launch-step" data-launch-step="orbit">
-              <span class="launch-step-index">05 / 05</span>
-              <h2>Now the problem changes.</h2>
-              <p>
-                Getting high was only the beginning. Orbit is sideways speed, held long enough
-                to keep missing the ground.
-              </p>
-            </article>
-          </div>
+          <a class="gateway" data-gateway="aircraft" href="/flight-lab/index.html">
+            <span class="gateway-index">02</span>
+            <span class="gateway-regime">0 – 20 km</span>
+            <span class="gateway-name">Aircraft</span>
+            <span class="gateway-line">
+              Air to work with. Everything in this wing is an argument about how to use it,
+              and what happens as it thins out.
+            </span>
+            <span class="gateway-go">Enter <span aria-hidden="true">→</span></span>
+          </a>
         </div>
 
-        <div class="launch-footer frame">
-          <span class="launch-source">
-            A visual prelude to the <a href="/space-lab/rockets.html">Rockets exhibit</a> ·
-            concepts and model notes are listed in <a href="/references/index.html">References</a>.
-          </span>
-          <span class="launch-progress-track" aria-hidden="true">
-            <span class="launch-progress-fill" data-launch-progress></span>
-          </span>
-        </div>
+        <p class="atrium-note">
+          <span class="tag tag-accent">Behind this text</span>
+          The Earth is rendered live from NASA imagery — the
+          <a href="https://visibleearth.nasa.gov/images/73751/">Blue Marble</a> July 2004
+          surface mosaic, the Suomi NPP
+          <a href="https://visibleearth.nasa.gov/images/79765/night-lights-2012-flat-map">night-lights</a>
+          composite on the dark side, and a
+          <a href="https://visibleearth.nasa.gov/images/57747/blue-marble-clouds">cloud</a>
+          layer over both. The Sun is where it actually stood at 13:32 UTC on 16 July 1969.
+          Everything is listed in <a href="/references/index.html">References</a>.
+        </p>
       </div>
     </section>
 
@@ -312,8 +291,206 @@
         </div>
         <p class="ctrl-row" style="margin-top: 2rem">
           <a class="ctrl" href="/timeline/index.html">Full timeline</a>
-          <a class="ctrl" href="/blog/index.html">Writing</a>
-          <a class="ctrl" href="/about/index.html">About</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= PLAYGROUND ================= -->
+    <section class="exhibit frame" id="playground">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">04</span>
+        <div>
+          <h2 class="exhibit-title">Everything else you can run</h2>
+          <p class="exhibit-sub">
+            Section 02 has the three big ones. These are smaller, and they all work the
+            same way: you pick the numbers, then you find out what the numbers cost you.
+          </p>
+        </div>
+      </div>
+
+      <div class="routes reveal">
+        <a class="route registered" href="/playground/cubesat-builder.html">
+          <span class="route-tag tag">Space · build</span>
+          <h3 class="route-title">Build a CubeSat</h3>
+          <p class="route-note">
+            Choose a mission, then choose components. Each one has a mass, a volume and a
+            power draw, and the box you are fitting them into does not get any bigger. Most
+            of the work turns out to be deciding what to leave out.
+          </p>
+          <span class="route-go">Open the builder <span aria-hidden="true">&rarr;</span></span>
+        </a>
+
+        <a class="route registered" href="/playground/orbit-simulator.html">
+          <span class="route-tag tag">Space · orbits</span>
+          <h3 class="route-title">Put a satellite in orbit</h3>
+          <p class="route-note">
+            Set an altitude and an inclination, and watch what each one does — to the shape
+            of the orbit, and to the ground track it draws on the planet underneath.
+          </p>
+          <span class="route-go">Set an orbit <span aria-hidden="true">&rarr;</span></span>
+        </a>
+
+        <a class="route registered" href="/playground/power-budget-simulator.html">
+          <span class="route-tag tag">Engineering · power</span>
+          <h3 class="route-title">Balance a power budget</h3>
+          <p class="route-note">
+            Solar panel area on one side. Battery capacity and payload draw on the other.
+            Run it round a full orbit, including the part spent in the Earth's shadow with
+            nothing coming in.
+          </p>
+          <span class="route-go">Run the budget <span aria-hidden="true">&rarr;</span></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= WRITING ================= -->
+    <section class="exhibit frame" id="writing">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">05</span>
+        <div>
+          <h2 class="exhibit-title">Writing</h2>
+          <p class="exhibit-sub">
+            Four pieces, none of them long. Where the rest of the site explains how
+            something works, these ask who was doing it and why.
+          </p>
+        </div>
+      </div>
+
+      <div class="routes reveal">
+        <a class="route registered" href="/blog/the-space-race.html">
+          <span class="route-tag tag">Oct 2022 · 2 min</span>
+          <h3 class="route-title">The Space Race: what is it, and who is leading?</h3>
+          <p class="route-note">
+            It started in secret, between two superpowers, and ended on the surface of the
+            Moon. The story, and who holds the lead today.
+          </p>
+          <span class="route-go">Read <span aria-hidden="true">&rarr;</span></span>
+        </a>
+
+        <a class="route registered" href="/blog/where-are-we-now.html">
+          <span class="route-tag tag">Dec 2022 · 2 min</span>
+          <h3 class="route-title">Where are we now?</h3>
+          <p class="route-note">
+            We have walked on the Moon and driven rovers on Mars. So what is the next
+            milestone, and what is standing in the way of getting humans to Mars?
+          </p>
+          <span class="route-go">Read <span aria-hidden="true">&rarr;</span></span>
+        </a>
+
+        <a class="route registered" href="/blog/what-about-the-aviation.html">
+          <span class="route-tag tag">Jan 2025 · 2 min</span>
+          <h3 class="route-title">What about the aviation?</h3>
+          <p class="route-note">
+            While the Space Race made headlines, a quieter rivalry was unfolding closer to
+            the ground — between Boeing and a scrappy new competitor called Airbus.
+          </p>
+          <span class="route-go">Read <span aria-hidden="true">&rarr;</span></span>
+        </a>
+
+        <a class="route registered" href="/blog/cubesats.html">
+          <span class="route-tag tag">Aug 2026 · 2 min</span>
+          <h3 class="route-title">What about CubeSats?</h3>
+          <p class="route-note">
+            The Space Race never ended, it evolved. How a ten-centimetre cube let
+            universities, startups and small nations join in.
+          </p>
+          <span class="route-go">Read <span aria-hidden="true">&rarr;</span></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section class="exhibit frame" id="about">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">06</span>
+        <div>
+          <h2 class="exhibit-title">About me</h2>
+          <p class="exhibit-sub">
+            The short version is below. The long one is on its own page.
+          </p>
+        </div>
+      </div>
+
+      <div class="exhibit-body reveal">
+        <div class="about-hero">
+          <img
+            class="about-photo"
+            src="/assets/images/siddharth-about.webp"
+            alt="Sid looking out over a misty mountain valley, holding a cup of tea"
+            loading="lazy"
+            decoding="async"
+            width="200"
+            height="267"
+          />
+          <div class="about-hero-text">
+            <p class="about-greeting">Hi, I'm Sid.</p>
+            <p class="lab-intro">
+              I'm an Electronics and Communication Engineering student at BITS Pilani, and
+              I'm a little obsessed with figuring out how things work.
+            </p>
+          </div>
+        </div>
+
+        <p>
+          It started at a Boeing plant, sometime in middle school. I don't think I understood
+          the scale of what I was looking at. I just remember that the building was absurd,
+          the aircraft inside it were somehow more absurd, and I did not shut up about it for
+          weeks afterwards. My dad bought me a model 747-8 on that trip, and it did not stay a
+          model for very long. I started modifying it with clay — solar panels along the top
+          of the wings, because the sun was right there, so why wouldn't you use it — and I
+          had an entire list of improvements that Boeing had apparently overlooked.
+        </p>
+
+        <p>
+          Nobody had explained mass budgets to me, or drag, or what actually happens to a
+          control surface when you press a slab of clay onto it. I understand a lot more about
+          why most of those ideas wouldn't work now. The instinct hasn't changed, though. I
+          still look at a machine and immediately start wondering what I'd do differently. The
+          only real difference is that now I have to check.
+        </p>
+
+        <p>
+          Which is roughly what this site is for. Learning aerospace mostly means reading, and
+          then more reading, until you have seventeen tabs open and a headache. I wanted to
+          find out whether you could interact with the thing instead — rotate the aircraft,
+          change the orbit, build the CubeSat, and see what breaks. It's part learning
+          resource, part experiment, and part me seeing how far a browser will go.
+        </p>
+
+        <p>
+          If you leave here knowing every equation behind orbital mechanics, I've probably
+          failed a little. I'd rather you left with a question.
+        </p>
+
+        <div class="matters-grid">
+          <div class="item">
+            <h4>Avionics</h4>
+            <p>How computers, sensors and control systems keep an aircraft or spacecraft alive.</p>
+          </div>
+          <div class="item">
+            <h4>Embedded Systems</h4>
+            <p>The tiny computers that quietly run much of the hardware around us.</p>
+          </div>
+          <div class="item">
+            <h4>Spacecraft Systems</h4>
+            <p>Power, communications, attitude control, sensing, and the rest of what has to
+            work together.</p>
+          </div>
+          <div class="item">
+            <h4>AI + Aerospace</h4>
+            <p>Where machine learning is actually useful, rather than just putting "AI" in
+            front of everything.</p>
+          </div>
+          <div class="item">
+            <h4>Experimental Engineering</h4>
+            <p>Building things, breaking them, figuring out why they broke, and trying again.</p>
+          </div>
+        </div>
+
+        <p class="ctrl-row" style="margin-top: 2rem">
+          <a class="ctrl" href="/about/index.html">The whole story</a>
+          <a class="ctrl" href="/assets/documents/siddharth-hariharan-engineering-portfolio.pdf" target="_blank" rel="noopener">Engineering portfolio (PDF)</a>
+          <a class="ctrl" href="/references/index.html">References</a>
         </p>
       </div>
     </section>
