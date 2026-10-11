@@ -1,0 +1,24 @@
+// Exercise the real Stage and drawing code in reduced-motion mode, without a browser.
+import assert from 'node:assert/strict';
+globalThis.window={matchMedia:()=>({matches:true}),devicePixelRatio:1,addEventListener(){},removeEventListener(){}};
+globalThis.document={hidden:false,addEventListener(){},removeEventListener(){}};
+globalThis.IntersectionObserver=globalThis.ResizeObserver=class {observe(){} disconnect(){}};
+let frames=0;
+globalThis.requestAnimationFrame=()=>{frames++;return 1;};
+globalThis.cancelAnimationFrame=()=>{};
+const calls=[];
+const context=new Proxy({}, {get:(target,key)=>target[key] ?? ((...args)=>{calls.push([key,...args]);return {addColorStop(){}};}),set:(target,key,value)=>{target[key]=value;return true;}});
+const canvas=()=>({getContext:()=>context,getBoundingClientRect:()=>({width:500,height:320}),style:{}});
+const {mountWindTunnel,mountPolar}=await import('../public/assets/js/experiences/wind-tunnel.js');
+let result={alpha:4,cl:.4,cd:.01,stalled:false,alphaStallDeg:17.13};
+const state={alpha:4,wing:{camber:0,thickness:.12}};
+const tunnel=mountWindTunnel(canvas(),{getState:()=>state,getEvaluation:()=>result});
+assert.equal(frames,0,'Reduced motion must not schedule animation frames');
+calls.length=0;state.alpha=18;result={alpha:18,cl:1,cd:.2,stalled:true,alphaStallDeg:17.13};tunnel.stage.renderOnce();
+assert.ok(calls.some(c=>c[0]==='rotate' && Math.abs(c[1]-18*Math.PI/180)<1e-12),'Wing angle must redraw immediately at the new angle');
+assert.equal(frames,0);
+let count=0;
+const polar=mountPolar(canvas(),{getEvaluation:()=>{count++;return result;},getCurve:()=>[{alpha:0,cl:0,cd:.01},{alpha:18,cl:1,cd:.2}],getTrials:()=>[],getTarget:()=>.7});
+const before=count;polar.stage.renderOnce();assert.ok(count>before,'Static plots must read the current result on demand');assert.equal(frames,0);
+tunnel.destroy();polar.destroy();
+console.log('PASS: reduced-motion scenes remain static, wing orientation and plots redraw on input, no animation frames requested.');

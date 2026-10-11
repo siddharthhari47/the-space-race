@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {missionEntry} from '../public/assets/js/systems/mission-entry.js';
+import {emptyProgress} from '../public/assets/js/systems/mission-storage.js';
+import {saveAttempt} from '../public/assets/js/systems/cargo-mission.js';
+const entry=s=>missionEntry(JSON.stringify(s));
+assert.match(missionEntry(null).label,/Take/);assert.match(missionEntry('corrupt').label,/Take/);
+let s=emptyProgress();s.prediction='balance';assert.ok(entry(s).href.endsWith('#mission'));
+s.manifest.baggage.station=1;assert.ok(entry(s).href.endsWith('#mission-runway'));assert.match(entry(s).label,/Resume/);
+s.attempt=saveAttempt(s.manifest);assert.match(entry(s).label,/Review your cargo/);
+s.manifest.baggage.mass=100;assert.match(entry(s).label,/Resume/);
+s=emptyProgress();s.trials.B=saveAttempt(s.manifest);assert.ok(entry(s).href.endsWith('#mission-comparison'));
+s.missionId='old';assert.match(entry(s).label,/Take/);
+console.log('PASS: fresh, corrupt, old, loading, runway-ready, completed, stale and saved-only mission entry states.');

@@ -5,8 +5,9 @@
 // entry + a <simulation-container type="..."> tag is the whole integration.
 class SimulationContainer extends HTMLElement {
   async connectedCallback() {
+    const generation = this._generation = (this._generation || 0) + 1;
     const type = this.getAttribute("type");
-    const root = this.attachShadow({ mode: "open" });
+    const root = this.shadowRoot || this.attachShadow({ mode: "open" });
 
     root.innerHTML = `
       <style>
@@ -36,6 +37,7 @@ class SimulationContainer extends HTMLElement {
       return;
     }
 
+    if (!this.isConnected || generation !== this._generation) return;
     const meta = registry[type];
     if (!meta) {
       this._renderError(`Unknown simulator: "${type}".`);
@@ -51,6 +53,7 @@ class SimulationContainer extends HTMLElement {
 
     try {
       const module = await import(meta.module);
+      if (!this.isConnected || generation !== this._generation) return;
       this._panel.innerHTML = "";
       module.mount(this._panel, meta);
       this._mountedModule = module;
@@ -60,6 +63,7 @@ class SimulationContainer extends HTMLElement {
   }
 
   disconnectedCallback() {
+    this._generation = (this._generation || 0) + 1;
     if (this._mountedModule && typeof this._mountedModule.unmount === "function") {
       this._mountedModule.unmount(this._panel);
     }

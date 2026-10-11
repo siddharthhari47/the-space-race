@@ -1,0 +1,106 @@
+{
+  "id": "ladson-tm4074-re6m-m015-80grit-v1",
+  "airfoil": "NACA 0012",
+  "source": {
+    "title": "Ladson, NASA TM 4074 (1988), NASA TMR force-data extract",
+    "url": "https://tmbwg.github.io/turbmodels/NACA0012_validation/CLCD_Ladson_expdata.dat",
+    "validationUrl": "https://tmbwg.github.io/turbmodels/naca0012_val.html",
+    "reportUrl": "https://ntrs.nasa.gov/citations/19880019495",
+    "retrieved": "2026-09-27",
+    "zone": "80 grit"
+  },
+  "conditions": {
+    "reynolds": 6000000,
+    "mach": 0.15,
+    "transition": "80 grit",
+    "surfaceTreatment": "Transition tripped with 80-grit roughness; only the 80 grit zone is used."
+  },
+  "interpolation": "Piecewise linear in angle; no extrapolation. Airfoil-section coefficients, not whole-aircraft forces.",
+  "samples": [
+    {
+      "alpha": -4.04,
+      "cl": -0.4417,
+      "cd": 0.00871
+    },
+    {
+      "alpha": -2.14,
+      "cl": -0.2385,
+      "cd": 0.008
+    },
+    {
+      "alpha": -0.05,
+      "cl": -0.0126,
+      "cd": 0.00809
+    },
+    {
+      "alpha": 2.05,
+      "cl": 0.2125,
+      "cd": 0.00816
+    },
+    {
+      "alpha": 4.04,
+      "cl": 0.4316,
+      "cd": 0.00823
+    },
+    {
+      "alpha": 6.09,
+      "cl": 0.6546,
+      "cd": 0.00885
+    },
+    {
+      "alpha": 8.3,
+      "cl": 0.8873,
+      "cd": 0.0105
+    },
+    {
+      "alpha": 10.12,
+      "cl": 1.0707,
+      "cd": 0.01201
+    },
+    {
+      "alpha": 11.13,
+      "cl": 1.1685,
+      "cd": 0.01239
+    },
+    {
+      "alpha": 12.12,
+      "cl": 1.2605,
+      "cd": 0.01332
+    },
+    {
+      "alpha": 13.08,
+      "cl": 1.3455,
+      "cd": 0.01503
+    },
+    {
+      "alpha": 14.22,
+      "cl": 1.4365,
+      "cd": 0.01625
+    },
+    {
+      "alpha": 15.26,
+      "cl": 1.5129,
+      "cd": 0.019
+    },
+    {
+      "alpha": 16.3,
+      "cl": 1.5739,
+      "cd": 0.02218
+    },
+    {
+      "alpha": 17.13,
+      "cl": 1.6116,
+      "cd": 0.0256
+    },
+    {
+      "alpha": 18.02,
+      "cl": 0.9967,
+      "cd": 0.18785
+    },
+    {
+      "alpha": 19.08,
+      "cl": 1.1358,
+      "cd": 0.27292
+    }
+  ]
+}

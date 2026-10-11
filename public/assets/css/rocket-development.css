@@ -1,0 +1,47 @@
+.development-page { max-width: 1160px; margin: 0 auto; padding-bottom: 5rem; }
+.development-hero { padding: clamp(3rem, 8vw, 7rem) 0 3rem; max-width: 940px; }
+.development-hero .back-link { display: inline-block; margin-bottom: 2.5rem; }
+.development-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(3rem, 7vw, 6rem); line-height: 1.02; letter-spacing: -.055em; margin: 1rem 0 1.5rem; }
+.development-hero > p { max-width: 720px; color: #a9b3c7; line-height: 1.8; }
+.development-hero .development-deck { color: #e9eef8; font-size: 1.4rem; }
+.development-range { display: flex; align-items: center; gap: 1.5rem; color: #73d9cc; font: 1rem 'JetBrains Mono', monospace; margin: 3rem 0 1.5rem; }
+.development-range-line { height: 1px; flex: 1; background: linear-gradient(90deg, #73d9cc, #739be4); }
+.development-hero .development-scope { font-size: .85rem; color: #8995ad; }
+.development-filter { display: flex; gap: .65rem; flex-wrap: wrap; align-items: center; padding: 1rem 0 2rem; border-bottom: 1px solid #293044; }
+.development-filter[hidden], .development-event[hidden] { display: none; }
+.development-filter button { border: 1px solid #354059; background: #101626; color: #d3dceb; border-radius: 100px; padding: .7rem 1.1rem; font: inherit; cursor: pointer; }
+.development-filter button[aria-pressed='true'] { background: #72d8ca; color: #071511; border-color: #72d8ca; }
+.development-filter button:focus-visible, .development-card summary:focus-visible { outline: 2px solid #a9c8ff; outline-offset: 4px; }
+#development-count { margin-left: auto; color: #94a4bf; font-size: .85rem; }
+.development-list { list-style: none; padding: 0; margin: 0; }
+.development-event { display: grid; grid-template-columns: 175px minmax(0, 1fr); gap: 2.5rem; padding: 2.5rem 0; position: relative; scroll-margin-top: 100px; }
+.development-event::before { content: ''; position: absolute; left: 188px; top: 0; bottom: 0; width: 1px; background: #29374a; }
+.development-event::after { content: ''; position: absolute; left: 184px; top: 3.4rem; width: 9px; height: 9px; border-radius: 50%; background: #76d9cc; box-shadow: 0 0 0 5px #080d17; }
+.development-date > span { display: block; font: 500 2.9rem 'Space Grotesk', sans-serif; letter-spacing: -.06em; color: #e0e8f7; }
+.development-date time { display: block; margin-top: .5rem; color: #91a4c5; font: .75rem 'JetBrains Mono', monospace; line-height: 1.8; }
+.development-card { background: linear-gradient(120deg, #11192a, #0b101c); border: 1px solid #253148; border-radius: 10px; padding: clamp(1.3rem, 3vw, 2.4rem); }
+.development-card h2 { color: #eff4fc; font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.55rem, 2.8vw, 2.1rem); line-height: 1.2; margin: .8rem 0 1rem; }
+.development-card p { color: #b2bdd0; line-height: 1.8; }
+.development-card .development-meta { font: .72rem/1.8 'JetBrains Mono', monospace; color: #79dacc; text-transform: uppercase; letter-spacing: .045em; margin: 0; }
+.development-meta span { color: #697e9e; margin: 0 .35rem; }
+.development-event[data-track='shuttle']::after { background: #8aaeff; }
+.development-event[data-track='shuttle'] .development-meta { color: #9dbdff; }
+.development-lesson { border-left: 2px solid #384f70; padding-left: 1rem; margin: 1.4rem 0; }
+.development-lesson > span { font: .65rem 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .12em; color: #9fb0cb; }
+.development-lesson p { margin: .35rem 0 0; font-size: .9rem; }
+.development-card details { border-top: 1px solid #293247; padding-top: 1rem; }
+.development-card summary { cursor: pointer; color: #cfddf2; font-size: .85rem; }
+.development-sources { display: grid; gap: .7rem; margin-top: 1rem; font-size: .85rem; overflow-wrap: anywhere; }
+.development-permalink { display: inline-block; margin-top: 1.2rem; color: #7e91af; font: .65rem 'JetBrains Mono', monospace; }
+.development-footer { border-top: 1px solid #293247; padding-top: 2rem; }
+.development-footer a { display: inline-block; margin: 1rem 1.5rem 1rem 0; }
+.development-footer p { color: #8c9bb2; max-width: 760px; font-size: .85rem; line-height: 1.8; }
+@media (max-width: 680px) {
+  .development-event { grid-template-columns: 1fr; gap: 1rem; padding: 2rem 0 2rem 1rem; }
+  .development-event::before { left: 0; }
+  .development-event::after { left: -4px; top: 3rem; }
+  .development-date { display: flex; gap: 1rem; align-items: baseline; flex-wrap: wrap; }
+  .development-date > span { font-size: 2.4rem; }
+  #development-count { width: 100%; margin: .5rem 0 0; }
+  .development-hero { padding-top: 3rem; }
+}

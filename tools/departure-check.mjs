@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {evaluateRunway} from '../public/assets/js/systems/runway.js';
+import {evaluateLoading} from '../public/assets/js/systems/loading.js';
+const loading=evaluateLoading({passenger:{mass:80,station:2},baggage:{mass:160,station:1},fuel:{mass:80,station:0}});
+assert.equal(loading.mass,1100);assert.equal(loading.payload,240);assert.equal(loading.cg,2.56);assert.ok(loading.passed);
+const results=[15,25,40].map(temperature=>evaluateRunway({mass:loading.mass,altitude:2500,temperature,runway:650,throttle:1}));
+assert.deepEqual(results.map(r=>r.outcome),['airborne','airborne','exhausted']);
+assert.ok(results[0].required<results[1].required&&results[1].required<results[2].required);
+assert.ok(results[0].rho>results[1].rho&&results[1].rho>results[2].rho);
+assert.equal(Math.round(results[2].required-results[0].required),126);
+console.log('PASS: fixed manifest, two successful departures, hot failure, temperature ordering and 126 m comparison.');

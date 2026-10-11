@@ -1,0 +1,44 @@
+[hidden] { display: none !important; }
+.wing-modes,.wing-mission,.wing-comparison { margin: 1.5rem 0; }
+.wing-modes { display:flex; flex-wrap:wrap; gap:.7rem; }
+.wing-modes [aria-pressed="true"] { background:#ffab40; color:#13151a; border-color:#ffab40; }
+.wing-source { color:#b7c6da; line-height:1.7; max-width:80ch; }
+.wing-mission { border:1px solid #596070; border-left:3px solid #ffab40; border-radius:12px; padding:clamp(1rem,3vw,2rem); background:linear-gradient(120deg,#172132,#10151e); }
+.wing-mission h3 { font-size:clamp(1.3rem,3vw,2rem); margin:.5rem 0 1rem; }
+.wing-mission p { line-height:1.6; }
+.wing-feedback { font-size:1.1rem; color:#a8f3ce; min-height:1.8em; }
+.wing-mission details { margin-top:1rem; max-width:75ch; }
+.wing-mission summary { cursor:pointer; padding:.5rem 0; }
+.wing-scene { min-width:0; }
+.wing-angle { padding:1rem 0; }
+.wing-angle label { display:flex; justify-content:space-between; gap:1rem; font-weight:600; }
+.wing-angle output { color:#ffbd6a; font-variant-numeric:tabular-nums; }
+.wing-angle input { width:100%; min-height:44px; accent-color:#ffab40; cursor:ew-resize; }
+#tunnel-canvas { touch-action:none; cursor:ns-resize; }
+.wing-scene .tunnel-stage { min-height:340px; }
+.wing-comparison { padding:1.3rem; border:1px solid #343f50; border-radius:12px; }
+.wing-comparison p,.wing-comparison caption { color:#b7c6da; line-height:1.6; }
+.wing-table-scroll { overflow-x:auto; }
+.wing-comparison table { width:100%; border-collapse:collapse; font-size:.88rem; }
+.wing-comparison caption { text-align:left; padding:.8rem 0; }
+.wing-comparison th,.wing-comparison td { text-align:left; padding:.8rem; border-bottom:1px solid #343f50; vertical-align:top; }
+.wing-comparison th { color:#eef4ff; }
+.wing-comparison [data-slot="A"] { color:#f5a5d7; }
+.wing-comparison [data-slot="B"] { color:#8ecbff; }
+.tunnel-panel fieldset { border:0; padding:0; margin:0 0 1rem; min-width:0; }
+.tunnel-panel legend { font-size:.85rem; color:#ffbd6a; margin-bottom:1rem; }
+.tunnel-panel .polar-wrap { height:170px; }
+.tunnel-panel .polar-wrap canvas { height:140px; }
+.tunnel-lab { align-items:start; grid-template-columns:minmax(0,1.35fr) minmax(340px,1fr); }
+.wing-scene { background:#101722; padding:1rem; }
+.wing-live { margin:.8rem 0; padding:1rem; background:#192538; border-radius:8px; }
+.wing-live p { line-height:1.6; }
+.wing-live details { margin:.8rem 0; }
+.wing-live summary { cursor:pointer; }
+.wing-zoom { display:flex; align-items:center; gap:.5rem; font-size:.8rem; line-height:1.5; }
+.wing-zoom input { min-width:20px; min-height:32px; }
+.polar-wrap canvas { width:100%; display:block; }
+@media(max-width:880px) { .tunnel-lab { grid-template-columns:1fr; } }
+.ctrl:disabled { opacity:.4; cursor:not-allowed; }
+#tunnel :focus-visible { outline:2px solid #9bdaff; outline-offset:4px; }
+@media(max-width:700px) { .wing-scene .tunnel-stage { min-height:260px; } .wing-mission .ctrl-row { align-items:stretch; } .wing-mission .ctrl-row button { white-space:normal; text-align:left; } .wing-comparison { padding:.8rem; } .wing-comparison th,.wing-comparison td { padding:.6rem .4rem; } }

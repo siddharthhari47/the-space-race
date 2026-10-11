@@ -1,6 +1,6 @@
 const CATEGORIES = {
   commercial: { label: "Commercial", available: true },
-  military: { label: "Military", available: false },
+  military: { label: "Military", available: false, page: "/flight-lab/interactive-fighter-aircraft.html" },
   private: { label: "Private", available: false },
   // Cargo has a real model now, but it lives on its own page rather than
   // swapping into this canvas (see the note below on why), so the tab

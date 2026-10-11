@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {emptyProgress,parseProgress,writeProgress} from '../public/assets/js/systems/mission-storage.js';
+import {saveAttempt} from '../public/assets/js/systems/cargo-mission.js';
+const state=emptyProgress();state.prediction='balance';state.manifest.baggage.station=1;
+state.attempt=saveAttempt(state.manifest);state.trials.B=saveAttempt(state.manifest);
+const restored=parseProgress(JSON.stringify(state));assert.deepEqual(restored,state);
+state.manifest.baggage.mass=100;assert.equal(parseProgress(JSON.stringify(state)).attempt,null);
+assert.deepEqual(parseProgress('invalid'),emptyProgress());
+assert.deepEqual(parseProgress('{"missionId":"old"}'),emptyProgress());
+assert.equal(writeProgress(null,state),false);
+assert.equal(writeProgress({setItem(){throw new Error('quota');}},state),false);
+assert.equal(writeProgress({setItem(k,v){assert.equal(JSON.parse(v).manifest.baggage.mass,100);}},state),true);
+state.trials.A={missionId:'old'};assert.ok(parseProgress(JSON.stringify(state)).trials.B);assert.equal(parseProgress(JSON.stringify(state)).trials.A,undefined);
+console.log('PASS: progress round-trip, B-only save, stale-run invalidation, corrupt/old saves, unavailable storage and quota fallback.');

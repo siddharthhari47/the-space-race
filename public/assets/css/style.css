@@ -2035,8 +2035,14 @@ simulation-container[data-status="live"]::part(panel) {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
+  header.site-header {
+    z-index: var(--z-modal);
+  }
+
   .nav-toggle {
     display: flex;
+    position: relative;
+    z-index: calc(var(--z-modal) + 1);
   }
 
   nav.site-nav {
@@ -2050,7 +2056,8 @@ simulation-container[data-status="live"]::part(panel) {
     padding: 5rem 1.5rem 2rem;
     margin: 0;
     transform: translateX(100%);
-    transition: transform var(--duration-base) var(--ease-standard);
+    visibility: hidden;
+    transition: transform var(--duration-base) var(--ease-standard), visibility 0s var(--duration-base);
     overflow-y: auto;
     z-index: var(--z-modal);
     box-sizing: border-box;
@@ -2058,6 +2065,8 @@ simulation-container[data-status="live"]::part(panel) {
 
   nav.site-nav[data-state="open"] {
     transform: translateX(0);
+    visibility: visible;
+    transition-delay: 0s;
   }
 
   .nav-top {

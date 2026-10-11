@@ -57,11 +57,7 @@
       batteries, a radio, a flight computer, sometimes an entire scientific instrument, all
       stacked into less room than a shoebox. Pull it apart layer by layer and see what actually
       fits.</p>
-      <expandable-diagram
-        src="/assets/images/cubesat-exploded.svg"
-        data-src="/assets/data/cubesat-pins.json"
-        alt="Exploded view of a 1U CubeSat's internal layers"
-      ></expandable-diagram>
+      <simulation-container type="cubesat-exploded-view"></simulation-container>
 
       <h2>Build a CubeSat</h2>
       <p>Every real CubeSat mission starts with the same fight: too many components, not enough
@@ -91,15 +87,11 @@
       eventually clear themselves out of orbit instead of piling up as debris forever.</p>
 
       <h2>More Tools</h2>
-      <p>Two pieces of the CubeSat picture aren't built yet: a mission planner, for laying out an
-      orbit, a payload, and a ground station schedule together the way a real mission designer
-      has to juggle all three at once, and a communications simulator, showing how link budget,
-      ground station count, and data rate trade off once your CubeSat is actually flying and
-      trying to phone home. Both are in development.</p>
-      <feature-grid columns="2">
+      <p>Now put the pieces together. Plan a day of ground-station contacts, then find out whether your radio can get the data home. Change the assumptions and see which budget runs out first.</p>
+      <div>
         <simulation-container type="cubesat-mission-planner"></simulation-container>
         <simulation-container type="communications-simulator"></simulation-container>
-      </feature-grid>
+      </div>
 
       <h2>Going Further</h2>
       <p>CubeSats have gone well past Earth orbit. In May 2018, two 6U CubeSats, MarCO-A and

@@ -167,7 +167,7 @@ export function mountWindTunnel(canvas, options = {}) {
   }
 
   function drawStreamlines(ctx, alphaRad, c, wing, time) {
-    const sepX = clamp(0.75 - (Math.abs(smoothAlpha) - c.alphaStallDeg) * 0.06, 0.06, 0.95);
+    const sepX = clamp(0.75 - (Math.abs(c.alpha ?? smoothAlpha) - c.alphaStallDeg) * 0.06, 0.06, 0.95);
 
     for (const y0 of seeds) {
       const pts = traceStreamline(y0, alphaRad, c.cl, wing.thickness, sepX, c.stalled);
@@ -279,8 +279,8 @@ export function mountWindTunnel(canvas, options = {}) {
       if (plot.w <= 0) layout(st);
       const { wing } = getState();
       ensureProfile(wing);
-      const c = coefficients(smoothAlpha, wing);
-      const alphaRad = smoothAlpha * DEG;
+      const c = options.getEvaluation?.() || coefficients(smoothAlpha, wing);
+      const alphaRad = (options.getEvaluation ? getState().alpha : smoothAlpha) * DEG;
 
       // Tunnel walls
       ctx.strokeStyle = "rgba(200, 214, 232, 0.12)";
@@ -311,86 +311,43 @@ export function mountWindTunnel(canvas, options = {}) {
 /* ---------- The polar ---------- */
 
 export function mountPolar(canvas, options = {}) {
-  const getState = options.getState || (() => ({ alpha: 4, wing: {} }));
-  let plot = { x: 0, y: 0, w: 0, h: 0 };
-  const A_MIN = -6;
-  const A_MAX = 22;
-  const CL_MAX = 1.8;
-  const CL_MIN = -0.6;
-
-  function layout(stage) {
-    plot = { x: 30, y: 12, w: stage.width - 40, h: stage.height - 30 };
-  }
-  const px = (a) => plot.x + ((a - A_MIN) / (A_MAX - A_MIN)) * plot.w;
-  const py = (cl) => plot.y + plot.h - ((cl - CL_MIN) / (CL_MAX - CL_MIN)) * plot.h;
-
+  const metric = options.metric || 'cl';
+  let plot;
+  const layout = st => { plot = {x:42,y:16,w:Math.max(1,st.width-58),h:Math.max(1,st.height-40)}; };
   const stage = new Stage(canvas, {
-    staticFrameTime: 0.2,
-    onResize: layout,
-    draw(ctx, st) {
-      if (plot.w <= 0) layout(st);
-      const { alpha, wing } = getState();
-
-      ctx.font = '500 8px "JetBrains Mono", monospace';
-      ctx.strokeStyle = "rgba(200, 214, 232, 0.08)";
-      ctx.fillStyle = "rgba(150, 168, 195, 0.6)";
-      ctx.lineWidth = 1;
-
-      for (let cl = 0; cl <= CL_MAX; cl += 0.5) {
-        const y = py(cl);
-        ctx.beginPath();
-        ctx.moveTo(plot.x, y + 0.5);
-        ctx.lineTo(plot.x + plot.w, y + 0.5);
-        ctx.stroke();
-        ctx.textAlign = "right";
-        ctx.fillText(cl.toFixed(1), plot.x - 5, y + 3);
+    staticFrameTime:.2, onResize:layout,
+    draw(ctx,st) {
+      if (!plot) layout(st);
+      const current = options.getEvaluation();
+      const series = [{curve:options.getCurve(),result:current,color:'#ffbd6a',dash:[],slot:'Now'},
+        ...options.getTrials().map(t=>({...t,color:t.slot==='A'?'#f5a5d7':'#8ecbff',dash:t.slot==='A'?[7,4]:[2,4]}))];
+      const all = series.flatMap(s=>s.curve);
+      const minA=Math.min(...all.map(p=>p.alpha)), maxA=Math.max(...all.map(p=>p.alpha));
+      const target=options.getTarget(metric);
+      const low=Math.min(0,...all.map(p=>p[metric])), high=metric==='cd' && options.getZoom?.() ? .03 : Math.max(.02,...all.map(p=>p[metric]),target||0)*1.12;
+      const px=a=>plot.x+(a-minA)/(maxA-minA)*plot.w;
+      const py=v=>plot.y+plot.h-(v-low)/(high-low)*plot.h;
+      ctx.font='10px monospace'; ctx.lineWidth=1;
+      for(let i=0;i<=3;i++) {
+        const value=low+(high-low)*i/3, y=py(value);
+        ctx.strokeStyle='#344153'; ctx.beginPath(); ctx.moveTo(plot.x,y);ctx.lineTo(plot.x+plot.w,y);ctx.stroke();
+        ctx.fillStyle='#c1cbd9';ctx.textAlign='right';ctx.fillText(value.toFixed(metric==='cl'?1:3),plot.x-5,y+3);
       }
-      for (let a = 0; a <= 20; a += 10) {
-        const x = px(a);
-        ctx.beginPath();
-        ctx.moveTo(x + 0.5, plot.y);
-        ctx.lineTo(x + 0.5, plot.y + plot.h);
-        ctx.stroke();
-        ctx.textAlign = "center";
-        ctx.fillText(String(a), x, plot.y + plot.h + 11);
+      ctx.textAlign='center';ctx.fillText(minA.toFixed(1)+'°',plot.x,plot.y+plot.h+17);ctx.fillText(maxA.toFixed(1)+'°',plot.x+plot.w,plot.y+plot.h+17);
+      if(target!==null && target!==undefined) {
+        ctx.strokeStyle='#a8f3ce';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(plot.x,py(target));ctx.lineTo(plot.x+plot.w,py(target));ctx.stroke();ctx.setLineDash([]);
+        ctx.fillStyle='#a8f3ce';ctx.textAlign='right';ctx.fillText('goal '+target.toFixed(metric==='cl'?3:5),plot.x+plot.w,Math.max(12,py(target)-5));
       }
-
-      ctx.textAlign = "left";
-      ctx.fillText("CL", 4, plot.y + 8);
-      ctx.textAlign = "right";
-      ctx.fillText("α°", plot.x + plot.w, plot.y + plot.h + 11);
-
-      // The curve
-      ctx.beginPath();
-      let started = false;
-      for (let a = A_MIN; a <= A_MAX; a += 0.25) {
-        const c = coefficients(a, wing);
-        const X = px(a);
-        const Y = py(c.cl);
-        started ? ctx.lineTo(X, Y) : (ctx.moveTo(X, Y), (started = true));
+      ctx.save();ctx.beginPath();ctx.rect(plot.x,plot.y-1,plot.w,plot.h+2);ctx.clip();
+      for(const s of series) {
+        ctx.strokeStyle=s.color;ctx.lineWidth=s.slot==='Now'?2:1.5;ctx.setLineDash(s.dash);ctx.beginPath();
+        s.curve.forEach((p,i)=>{ i?ctx.lineTo(px(p.alpha),py(p[metric])):ctx.moveTo(px(p.alpha),py(p[metric])); });ctx.stroke();ctx.setLineDash([]);
+        const x=px(s.result.alpha), y=py(s.result[metric]);ctx.fillStyle=s.color;ctx.beginPath();ctx.arc(x,y,s.slot==='Now'?4:5,0,Math.PI*2);ctx.stroke();
+        if(s.slot==='Now')ctx.fill();
+        ctx.textAlign='center';ctx.fillText(s.slot,Math.max(plot.x+12,Math.min(plot.x+plot.w-12,x)),Math.max(10,y-9));
       }
-      ctx.strokeStyle = "rgba(255, 171, 64, 0.9)";
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // Where you are on it
-      const here = coefficients(alpha, wing);
-      const hx = px(alpha);
-      const hy = py(here.cl);
-      ctx.fillStyle = here.stalled ? "#ff8f8f" : "#7cf0be";
-      ctx.beginPath();
-      ctx.arc(hx, hy, 3.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = "rgba(255,255,255,0.35)";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(hx, plot.y + plot.h);
-      ctx.lineTo(hx, hy);
-      ctx.stroke();
-    },
+      ctx.restore();
+    }
   });
-
-  layout(stage);
-  stage.start();
-  return { stage, destroy: () => stage.destroy() };
+  layout(stage);stage.start();return {stage,destroy:()=>stage.destroy()};
 }

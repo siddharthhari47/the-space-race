@@ -254,9 +254,41 @@
       </div>
     </section>
 
+    <section class="exhibit frame" id="read-the-engine">
+      <div class="exhibit-head">
+        <span class="exhibit-index">05</span>
+        <div>
+          <h2 class="exhibit-title">Three numbers. Three different questions.</h2>
+          <p class="exhibit-sub">Read the engine before you size the rocket.</p>
+        </div>
+      </div>
+      <div class="exhibit-body">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <caption>Performance quantities in NASA Glenn’s propulsion guides</caption>
+            <thead><tr><th scope="col">Quantity</th><th scope="col">What it tells you</th><th scope="col">What to check</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Thrust · N</th><td>The force produced by the engine.</td><td>Exhaust momentum and the pressure difference at the nozzle both contribute.</td></tr>
+              <tr><th scope="row">Specific impulse · s</th><td>Thrust divided by propellant weight flow.</td><td>A higher value means more thrust for the same propellant mass flow, at the stated conditions.</td></tr>
+              <tr><th scope="row">Ideal Δv · m/s</th><td>The velocity change available from a mass ratio and effective exhaust velocity.</td><td>It is not a complete launch trajectory: the ideal equation omits gravity and drag losses.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="finding">Δv = I<sub>sp</sub> g<sub>0</sub> ln(m<sub>initial</sub> / m<sub>final</sub>)</p>
+        <p class="note">The final mass includes everything still carried after the burn. Payload and retained structure therefore matter alongside propellant. The logarithm also means that doubling the mass ratio does not double the available velocity change.</p>
+        <details class="source-detail">
+          <summary>Worked example: change the mass ratio</summary>
+          <p class="note">Take an illustrative effective exhaust velocity of 3,000 m/s. A mass ratio of 2 gives 3,000 × ln(2) ≈ 2.08 km/s; a ratio of 4 gives ≈ 4.16 km/s; a ratio of 8 gives ≈ 6.24 km/s. Each doubling adds the same ≈ 2.08 km/s.</p>
+          <p class="note">These are calculations from the ideal equation using a chosen input, not measured performance of a named rocket. They assume constant effective exhaust velocity and omit external forces.</p>
+        </details>
+        <p class="note">Sources: NASA Glenn’s <a href="https://www.grc.nasa.gov/www/k-12/airplane/rockth.html">Rocket Thrust Equation</a>, <a href="https://www.grc.nasa.gov/www/k-12/airplane/specimp.html">Specific Impulse</a> and <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/ideal-rocket-equation/">Ideal Rocket Equation</a>. Explanation adapted from these sources; example calculated here. Checked 25 September 2026.</p>
+      </div>
+    </section>
+
     <div class="frame">
       <div class="continue-explore">
         <h2>Related</h2>
+        <p><a href="../timeline/rocket-development.html">Rocket &amp; Space Shuttle development: explore the timeline →</a></p>
         <ul>
           <li><a href="index.html">Orbits, to scale</a></li>
           <li><a href="cubesats.html">CubeSats</a></li>

@@ -14,7 +14,7 @@
   <script type="module" src="/assets/js/components/index.js"></script>
   <script type="module" src="/assets/js/pages/atrium.js" defer></script>
   <script type="module" src="/assets/js/dist/apollo.js" defer></script>
-</head>
+<script type="module" src="/assets/js/pages/mission-entry.js"></script></head>
 <body data-world="atrium">
   <!-- The Apollo layer. Decoration, and marked as such: aria-hidden, no
        focusable content, pointer-events disabled in CSS, and nothing below
@@ -31,17 +31,22 @@
     <section class="atrium-hero">
       <div class="atrium-hero-inner frame">
         <div class="atrium-title-block">
-          <p class="tag">Interactive aerospace</p>
+          <p class="tag">An interactive aerospace museum · Start with Apollo 11</p>
           <h1 class="atrium-title">The Space<br />Race</h1>
           <p class="atrium-lede">
-            Everything that flies sits somewhere on one axis. Below about twenty kilometres
-            there is air to push against, so you build a wing. Above a hundred there is nothing
-            to push at all, so you carry your own reaction mass and go sideways fast enough to
-            keep missing the ground.
+            You came for a website.<br /><strong>Slight detour: the Moon.</strong>
           </p>
           <p class="atrium-lede-2">
-            One variable, two wings. Pick one.
+            Follow Apollo 11 from launch to lunar landing. Pull up alongside the Saturn V,
+            leave Earth behind, and watch the Moon fill the window.
           </p>
+          <div class="mission-invite">
+            <a class="mission-start" href="#saturn-v" data-tour-start>Take me to the Moon <span aria-hidden="true">↗</span></a>
+            <a class="mission-explore" href="/playground/index.html">I want to press buttons instead →</a>
+            <a class="mission-explore" href="/flight-lab/cargo-mission.html" data-mission-entry>Take the cargo mission →</a>
+            <p class="mission-route">Launch <span>→</span> Saturn V <span>→</span> Lunar approach <span>→</span> Landing</p>
+            <p class="mission-hint" data-tour-hint>About 3 minutes on autopilot. Or scroll down to fly at your own pace. No spacesuit required.</p>
+          </div>
         </div>
 
         <div class="gateways">
@@ -343,6 +348,87 @@
       </div>
     </section>
 
+    <!-- ================= SATURN V =================
+
+         A break in the reading, three screens deep, and the only section on
+         this page without a number. It is not a room in the museum; it is
+         the corridor between two of them, and the exhibit standing in it is
+         drawn by the Apollo layer over the top.
+
+         Everything below is legible with the visualisation switched off,
+         which is the rule the rest of the page follows too. What the layer
+         adds is the vehicle these captions are about. -->
+    <section class="interlude" id="saturn-v" aria-labelledby="saturn-v-title">
+      <div class="interlude-open frame reveal">
+        <p class="tag">Interlude</p>
+        <h2 class="interlude-title" id="saturn-v-title">Saturn V</h2>
+        <p class="interlude-lede">
+          One hundred and ten metres, three stages, and 33,360,000 newtons
+          of thrust at liftoff. The rest of this page is what it did.
+        </p>
+      </div>
+
+      <ol class="interlude-notes frame">
+        <li class="interlude-note interlude-note--sic reveal">
+          <p class="tag">First stage &middot; S&#8209;IC</p>
+          <p>
+            Five F&#8209;1 engines, 6,672,000 newtons of thrust each and later
+            uprated to 6,805,000. They burned kerosene and liquid oxygen for
+            two and a half minutes and were finished by about 61 kilometres.
+          </p>
+        </li>
+
+        <li class="interlude-note interlude-note--stage reveal">
+          <p class="tag">Separation</p>
+          <p>
+            The black ring is the interstage. Staging ran on small solid
+            rockets: eight retro motors at 391,000 newtons to drag the spent
+            stage clear, and eight ullage motors at 101,000 newtons each to
+            shove the vehicle forward first, so the propellant sat at the
+            bottom of the tank where the pumps could find it.
+          </p>
+        </li>
+
+        <li class="interlude-note interlude-note--tower reveal">
+          <p class="tag">Launch escape system</p>
+          <p>
+            Three solid motors on a lattice above the command module: an
+            escape motor at 667,000 newtons, a pitch motor at 13,300, and a
+            jettison motor at 178,000 whose only job was to throw the whole
+            assembly away once it was no longer wanted.
+          </p>
+        </li>
+
+        <li class="interlude-note interlude-note--sii reveal">
+          <p class="tag">Second stage &middot; S&#8209;II</p>
+          <p>
+            Five J&#8209;2 engines burning liquid hydrogen, 889,600 newtons
+            each and later 1,023,000. Six minutes took the vehicle to 184
+            kilometres and 24,620 km/h &mdash; nearly orbit, and not quite.
+          </p>
+        </li>
+
+        <li class="interlude-note interlude-note--sivb reveal">
+          <p class="tag">Third stage &middot; S&#8209;IVB</p>
+          <p>
+            One J&#8209;2, and the only engine on the vehicle that had to
+            start twice. Two and three quarter minutes put the spacecraft in a
+            190&#8209;kilometre orbit; two hours and 44 minutes after liftoff
+            it lit again and pushed it to 39,400 km/h, out of Earth orbit
+            altogether.
+          </p>
+        </li>
+      </ol>
+
+      <p class="interlude-source frame">
+        Figures from Roger E. Bilstein, <cite>Stages to Saturn</cite>, NASA
+        SP&#8209;4206 &mdash; page 5 and the Appendix&nbsp;A schematic. The
+        height is measured off NASA's own model of the vehicle, not taken
+        from the book. <a href="/references/#apollo">Where these come
+        from</a>.
+      </p>
+    </section>
+
     <!-- ================= WRITING ================= -->
     <section class="exhibit frame" id="writing">
       <div class="exhibit-head reveal">
@@ -494,7 +580,151 @@
         </p>
       </div>
     </section>
+
+    <!-- ================= THE MOON =================
+
+         The second interlude, and the end of the mission. Everything above
+         it takes eleven and a half minutes of flight and three days of
+         coasting; everything in it happens in the last half hour.
+
+         data-after-mission is load-bearing. Mission progress is a scroll
+         position over a height, so every tuned number in flight.js and
+         shots.js is a pixel position in disguise, and appending a section
+         would quietly move all of them at once -- the launch, the staging,
+         the whole Saturn V tour. measurePage() in scene.js subtracts the
+         height of everything carrying this attribute, so u = 1 still means
+         the moment the page used to end and nothing above here shifts by a
+         pixel. The lunar act is authored past u = 1 instead. -->
+    <section class="interlude interlude--moon" id="the-moon" data-after-mission aria-labelledby="the-moon-title">
+      <div class="interlude-open frame reveal">
+        <p class="tag">Interlude</p>
+        <h2 class="interlude-title" id="the-moon-title">Descent</h2>
+        <p class="interlude-lede">
+          Three days of coasting, then twelve and a half minutes of flying.
+          The times below are ground elapsed time &mdash; hours, minutes and
+          seconds since the clock started at 13:32:00&nbsp;UTC on 16 July.
+        </p>
+      </div>
+
+      <ol class="interlude-notes frame">
+        <li class="interlude-note interlude-note--coast reveal">
+          <p class="tag">002:50:13 &middot; Translunar injection</p>
+          <p>
+            The S&#8209;IVB shut down and the spacecraft was on its way. What
+            followed was seventy&#8209;three hours of coasting on a curve
+            already decided, which is most of the mission and almost none of
+            the story.
+          </p>
+        </li>
+
+        <li class="interlude-note interlude-note--loi reveal">
+          <p class="tag">075:49:50 &middot; Lunar orbit insertion</p>
+          <p>
+            A retrograde burn of five minutes and 58 seconds, made at
+            closest approach and therefore on the far side &mdash; where the
+            Moon itself is between the spacecraft and every antenna on Earth.
+            Nobody in Houston could have helped, and nobody in Houston knew
+            it had worked until the signal came back.
+          </p>
+        </li>
+
+        <li class="interlude-note interlude-note--undock reveal">
+          <p class="tag">100:12:00 &middot; Undocking</p>
+          <p>
+            <i>Eagle</i> undocked from <i>Columbia</i> and turned a full
+            circle so Collins could check that its legs were down. An hour
+            and 24 minutes later it made a 30&#8209;second burn to drop the
+            low point of its orbit toward the surface. Collins stayed with
+            the command module. He is the reason there is a photograph of
+            everything.
+          </p>
+        </li>
+
+        <li class="interlude-note interlude-note--pdi reveal">
+          <p class="tag">102:33:05 &middot; Powered descent</p>
+          <p>
+            Twelve minutes and 36 seconds, engine lit the whole way. Five
+            times in the last seven and a half minutes the guidance computer
+            stopped to report that it had more work queued than it could
+            finish &mdash; four 1202s and a 1201 &mdash; and five times it
+            shed the low priority work and kept flying. It was designed to do
+            that. The people who had to decide, in seconds, that it was
+            designed to do that were more than 380,000 kilometres away.
+          </p>
+        </li>
+
+        <li class="interlude-note interlude-note--contact reveal">
+          <p class="tag">102:45:40 &middot; Contact</p>
+          <p>
+            The engine was blowing dust across the ground from about 100 feet
+            up, a minute before the footpads touched. The fuel
+            low&#8209;level light had come on 72 seconds before landing.
+          </p>
+        </li>
+      </ol>
+
+      <p class="interlude-source frame">
+        The times in this act are from Richard&nbsp;W. Orloff,
+        <cite>Apollo by the Numbers: A Statistical Reference</cite>, NASA
+        SP&#8209;4029, checked against NASA&rsquo;s <cite>Apollo&nbsp;11
+        Mission Report</cite> (MSC&#8209;00171).
+        <a href="/references/#apollo">Where these come from</a>.
+      </p>
+    </section>
+
+    <!-- ================= FIRST STEP =================
+
+         data-mission-end stops the visualisation here: the lunar module has
+         landed and the scene holds, so this section has the screen to
+         itself rather than competing with a Moon still drifting behind it.
+
+         preload="none" is not an optimisation detail, it is the reason a
+         23 MB video is allowed on the homepage at all. Nothing is fetched
+         until the reader presses play; until then this costs one 7 KB
+         poster frame. -->
+    <section class="exhibit frame" id="first-step" data-after-mission data-mission-end aria-labelledby="first-step-title">
+      <div class="exhibit-head reveal">
+        <span class="exhibit-index">07</span>
+        <h2 id="first-step-title">109:24:15</h2>
+      </div>
+
+      <blockquote class="first-step-quote reveal">
+        <p>That&rsquo;s one small step for (a) man; one giant leap for mankind.</p>
+        <cite>Neil Armstrong, 02:56:15&nbsp;UTC, 21 July 1969</cite>
+      </blockquote>
+
+      <figure class="first-step-film reveal">
+        <video
+          controls
+          preload="none"
+          playsinline
+          poster="/assets/images/apollo11-eva-poster.webp"
+          src="https://images-assets.nasa.gov/video/Apollo_11_moonwalk_montage_720p/Apollo_11_moonwalk_montage_720p~small.mp4"
+        ></video>
+        <figcaption>
+          NASA television from the lunar surface, partially restored. The
+          Sun was low, between 14&frac12; and 16 degrees above the horizon
+          while they walked, and that was planned: the launch was timed so
+          that at landing it would be low enough for shadows to show the
+          shape of the ground, and not so low that they hid it.
+          <span class="first-step-credit">
+            NASA, <cite>Apollo 11 moonwalk montage</cite> (NASA Image and
+            Video Library, <code>Apollo_11_moonwalk_montage_720p</code>),
+            from the partially restored footage NASA released in July 2009
+            (Scientific Visualization Studio, item 10451). NASA material is
+            generally not subject to copyright in the United States. Served
+            from NASA's own library rather than copied here.
+            <a href="/references/#apollo">References</a>.
+          </span>
+        </figcaption>
+      </figure>
+    </section>
   </main>
+  <aside class="mission-controls" data-tour-controls hidden aria-label="Apollo tour controls">
+    <span class="mission-control-label" data-tour-status role="status">Apollo 11 · Guided tour</span>
+    <button type="button" data-tour-toggle>Pause tour</button>
+    <button type="button" data-tour-end>Exit tour</button>
+  </aside>
 
   <site-footer></site-footer>
 </body>

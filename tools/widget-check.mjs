@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {period,pathLoss,linkBudget,plan,dockStep} from '../public/assets/js/simulators/widget-physics.js';
+assert.ok(period(400)/60>92&&period(400)/60<93);
+assert.ok(Math.abs(pathLoss(437,2000)-pathLoss(437,1000)-6.0206)<1e-4);
+const base={power:2,gain:12,frequency:437,range:1000,rate:9.6,loss:3};
+assert.ok(Math.abs(linkBudget(base).margin-linkBudget({...base,rate:19.2}).margin-3.0103)<1e-4);
+const p={altitude:500,inclination:0,latitude:0,longitude:0,mask:10,rate:100,production:5};
+const a=plan(p);assert.ok(a.windows.length>0);assert.ok(a.windows[0].peak>80);assert.ok(a.capacity>0);
+assert.equal(plan({...p,latitude:80}).windows.length,0);
+assert.equal(plan({...p,rate:200}).capacity,a.capacity*2);
+assert.equal(plan({...p,production:10}).generated,240);
+for(let i=1;i<a.windows.length;i++)assert.ok(a.windows[i].start>a.windows[i-1].end);
+assert.equal(dockStep({x:.01,y:0,vx:-.1,vy:0},.2).result,'Docked');
+assert.equal(dockStep({x:.01,y:0,vx:-1,vy:0},.2).result,'Contact failed');
+assert.equal(dockStep({x:.01,y:2,vx:-.1,vy:0},.2).result,'Contact failed');
+assert.equal(dockStep({x:5,y:2,vx:0,vy:0},20).x,5);
+console.log('Widget checks passed: orbit period, access geometry, data budget, link scaling, docking limits.');

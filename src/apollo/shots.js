@@ -60,9 +60,9 @@ export const SHOTS = [
   { p: 0.0, latDeg: 18.5, lonDeg: -62.0, altitudeKm: 3150, aim: 0.885, azimuthDeg: 315, rollDeg: 10, fovDeg: 40, offsetX: 0.16, offsetY: 0.06 },
   { p: 0.115, latDeg: 20.0, lonDeg: -64.0, altitudeKm: 3050, aim: 0.9, azimuthDeg: 317.3, rollDeg: 9.6, fovDeg: 39.5, offsetX: 0.16, offsetY: 0.06 },
   { p: 0.185, latDeg: 21.1, lonDeg: -65.3, altitudeKm: 2980, aim: 0.92, azimuthDeg: 318.6, rollDeg: 9.3, fovDeg: 39.2, offsetX: 0.16, offsetY: 0.06 },
-  { p: 0.375, latDeg: 23.5, lonDeg: -68.5, altitudeKm: 3400, aim: 0.95, azimuthDeg: 322, rollDeg: 8.5, fovDeg: 38, offsetX: 0.1601, offsetY: 0.06 },
-  { p: 0.555, latDeg: 25.0, lonDeg: -70.0, altitudeKm: 7100, aim: 0.97, azimuthDeg: 324, rollDeg: 7, fovDeg: 37, offsetX: 0.1911, offsetY: 0.0653 },
-  { p: 0.675, latDeg: 26.0, lonDeg: -71.0, altitudeKm: 16900, aim: 0.98, azimuthDeg: 326, rollDeg: 6, fovDeg: 36, offsetX: 0.2409, offsetY: 0.1705 },
+  { p: 0.409, latDeg: 23.5, lonDeg: -68.5, altitudeKm: 3400, aim: 0.95, azimuthDeg: 322, rollDeg: 8.5, fovDeg: 38, offsetX: 0.1601, offsetY: 0.06 },
+  { p: 0.597, latDeg: 25.0, lonDeg: -70.0, altitudeKm: 7100, aim: 0.97, azimuthDeg: 324, rollDeg: 7, fovDeg: 37, offsetX: 0.1911, offsetY: 0.0653 },
+  { p: 0.709, latDeg: 26.0, lonDeg: -71.0, altitudeKm: 16900, aim: 0.98, azimuthDeg: 326, rollDeg: 6, fovDeg: 36, offsetX: 0.2409, offsetY: 0.1705 },
   // The altitude column past the hold is scheduled, not chosen by eye, and
   // getting the rule right took two wrong answers first.
   //
@@ -81,17 +81,31 @@ export const SHOTS = [
   //
   // What the eye reads for something receding is the rate of change of
   // apparent size relative to size: d(log theta)/dp. For a distant sphere
-  // theta goes as 1/d, so the quantity to hold steady is d(log d)/dp, which
-  // is what the numbers below do. The rate ramps in on a smoothstep from the
-  // end of the hold at p=0.185 to p=0.80 and then stays put, so the retreat
-  // starts from rest instead of switching on, and never changes gear after.
+  // theta goes as 1/d, so the quantity to hold steady -- or at least never
+  // let fall -- is d(log d)/dp. The knots below are placed by choosing a
+  // target rate for each of the eight segments from the end of the hold
+  // onward, none lower than the one before it (0.52, 4.68, 7.80, 9.36,
+  // 10.19, 10.61, 10.81, 10.92 per unit p), and solving each segment's
+  // width from it: the log of the altitude ratio over the target rate.
   //
-  // Generated rather than typed; the rule is one line and hand-arithmetic
-  // through eight knots is not. Peak rate is 9.28 per unit p.
+  // Three of these knots used to sit on flight.js's staging1, staging2 and
+  // orbitInsertion, from before the interlude took three screens out of the
+  // middle of the page. Moving those events pulled two of the three to
+  // within 0.014 of each other, which put the sampled rate between them
+  // past 50 per unit p -- nothing here is keyed to a mission event any
+  // more, and the eight altitudes are simply re-spaced across the room the
+  // page now has. A Catmull-Rom spline through unevenly spaced knots does
+  // not reproduce a piecewise target rate exactly -- it overshoots between
+  // them -- so the widths solved above are a starting point, iterated
+  // against tools/apollo-mission-check.mjs until the sampled curve clears
+  // every bound it checks: peak rate 11.48 per unit p, against a ceiling of
+  // 12, and no point anywhere past the hold where the sampled rate is lower
+  // than a point before it.
   //
-  // p=0.985 is not a mission event, it is a control point. It keeps the
-  // spline's tangents honest through the last stretch, where the numbers
-  // climb fastest and two knots would kink where three bend.
+  // p=0.988 is a control point, not a knot with anything behind it any more
+  // than the rest of them. It keeps the spline's tangents honest through the
+  // last stretch, where the numbers climb fastest and two knots would kink
+  // where three bend.
 
   // ---- the lens shift, and why the planet leaves ------------------------
   //
@@ -139,10 +153,10 @@ export const SHOTS = [
   // not. A lens shift that creeps one way and then the other is a slow
   // sideways slide that changes direction, and a reader notices that even
   // when the numbers involved are two hundredths of a frame.
-  { p: 0.765, latDeg: 26.5, lonDeg: -71.5, altitudeKm: 37400, aim: 0.95, azimuthDeg: 328, rollDeg: 5, fovDeg: 35, offsetX: 0.2756, offsetY: 0.3214 },
-  { p: 0.845, latDeg: 27.0, lonDeg: -72.0, altitudeKm: 78400, aim: 0.85, azimuthDeg: 330, rollDeg: 4, fovDeg: 34, offsetX: 0.2943, offsetY: 0.447 },
-  { p: 0.955, latDeg: 27.0, lonDeg: -72.0, altitudeKm: 217400, aim: 0.53, azimuthDeg: 332.8, rollDeg: 2.6, fovDeg: 32.6, offsetX: 0.3, offsetY: 0.527 },
-  { p: 0.985, latDeg: 27.0, lonDeg: -72.0, altitudeKm: 287100, aim: 0.444, azimuthDeg: 333.6, rollDeg: 2.2, fovDeg: 32.2, offsetX: 0.3, offsetY: 0.5299 },
+  { p: 0.794, latDeg: 26.5, lonDeg: -71.5, altitudeKm: 37400, aim: 0.95, azimuthDeg: 328, rollDeg: 5, fovDeg: 35, offsetX: 0.2756, offsetY: 0.3214 },
+  { p: 0.866, latDeg: 27.0, lonDeg: -72.0, altitudeKm: 78400, aim: 0.85, azimuthDeg: 330, rollDeg: 4, fovDeg: 34, offsetX: 0.2943, offsetY: 0.447 },
+  { p: 0.963, latDeg: 27.0, lonDeg: -72.0, altitudeKm: 217400, aim: 0.53, azimuthDeg: 332.8, rollDeg: 2.6, fovDeg: 32.6, offsetX: 0.3, offsetY: 0.527 },
+  { p: 0.988, latDeg: 27.0, lonDeg: -72.0, altitudeKm: 287100, aim: 0.444, azimuthDeg: 333.6, rollDeg: 2.2, fovDeg: 32.2, offsetX: 0.3, offsetY: 0.5299 },
   { p: 1.0, latDeg: 27.0, lonDeg: -72.0, altitudeKm: 330000, aim: 0.4, azimuthDeg: 334, rollDeg: 2, fovDeg: 32, offsetX: 0.3, offsetY: 0.53 },
 ];
 

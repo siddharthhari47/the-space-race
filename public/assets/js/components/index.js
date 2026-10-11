@@ -14,3 +14,7 @@ import "./timeline-event.js";
 import "./expandable-diagram.js";
 import "./simulation-container.js";
 import "./model-viewer-embed.js";
+
+// Not a component: page behaviour that depends on all of the above having
+// upgraded, so it is imported last.
+import "./hash-landing.js";

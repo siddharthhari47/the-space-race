@@ -1,0 +1,13 @@
+# Upload only the site and the inputs required for its production build.
+# Local reference PDFs, archives, scratch files and dependencies stay local.
+/*
+!public
+!public/**
+!src
+!src/**
+!package.json
+!package-lock.json
+!tsconfig.json
+!vite.config.ts
+!vite.apollo.config.ts
+!vercel.json

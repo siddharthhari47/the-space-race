@@ -4,17 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aerodynamics — The Space Race</title>
-  <meta name="description" content="A working wind tunnel. Set the angle of attack on a real NACA section and watch the potential-flow streamlines, the lift curve, and the stall — then find out why gliders have long wings." />
+  <meta name="description" content="An interactive wing challenge using measured NACA 0012 data. Predict, tilt, reach a lift target, reduce drag, and compare two saved trials." />
   <link rel="icon" href="../assets/images/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link rel="stylesheet" href="../assets/css/museum.css" />
+  <link rel="stylesheet" href="../assets/css/wing-challenge.css" />
   <script type="module" src="/assets/js/components/index.js"></script>
   <script type="module" src="/assets/js/systems/instruments.js"></script>
   <script type="module" src="/assets/js/pages/wind-tunnel.js" defer></script>
-</head>
+<link rel="stylesheet" href="/assets/css/flight-path.css" /></head>
 <body data-world="aircraft">
   <site-header current="flight-lab"></site-header>
 
@@ -33,78 +34,74 @@
     <section class="exhibit frame" id="tunnel">
       <div class="exhibit-head">
         <span class="exhibit-index">01</span>
-        <div>
-          <h2 class="exhibit-title">Stall it yourself</h2>
-          <p class="exhibit-sub">
-            Take the angle of attack up slowly. Lift climbs in a straight line, exactly as the
-            theory says it should — and then, somewhere past fourteen degrees, it stops climbing
-            and falls off a cliff. Watch the streamlines when it happens.
-          </p>
-        </div>
+        <div><h2 class="exhibit-title">It looks like a wing.<br>That is apparently not enough.</h2>
+        <p class="exhibit-sub">More tilt. More lift. Forever? Put that theory in a wind tunnel.</p></div>
       </div>
-
-      <div class="tunnel-lab">
-        <div class="stage tunnel-stage">
-          <canvas id="tunnel-canvas"></canvas>
+      <div class="wing-modes" role="group" aria-label="Wind tunnel mode">
+        <button class="ctrl" data-mode="measured" aria-pressed="true">Take the challenge</button>
+        <button class="ctrl" data-mode="theory" aria-pressed="false">Explore freely</button>
+      </div>
+      <p class="wing-source" data-source>Loading verified experimental data…</p>
+      <div class="wing-mission" data-mission>
+        <p class="tag" data-step>Before you touch the wing</p>
+        <h3 data-objective>Keep tilting the wing. Does lift keep increasing?</h3>
+        <div class="ctrl-row" data-predictions role="group" aria-label="Make a prediction">
+          <button class="ctrl" data-prediction="yes">Yes. More angle, more lift.</button>
+          <button class="ctrl" data-prediction="no">No. There has to be a limit.</button>
+          <button class="ctrl" data-prediction="unsure">Honestly? Let's find out.</button>
         </div>
+        <p data-prediction-note></p>
+        <p data-goal></p>
 
-        <div class="panel tunnel-panel">
-          <div class="panel-head">
-            <span>Working section</span>
-            <span data-tunnel-status>Attached flow</span>
+      </div>
+      <div class="tunnel-lab">
+        <div class="wing-scene">
+          <div class="stage tunnel-stage"><canvas id="tunnel-canvas" aria-label="Illustrative airfoil and coefficient arrows. Use the angle slider below for equivalent control."></canvas></div>
+          <p class="panel-note">Drag vertically on the wing to tilt it, or use the angle slider. Airflow is illustrative; drag arrow is enlarged ×4.</p>
+          <div class="wing-angle">
+            <label for="wing-angle">Angle of attack <output id="angle-output">4.00°</output></label>
+            <input id="wing-angle" type="range" min="-4.04" max="19.08" step="0.01" value="4" disabled aria-describedby="angle-help">
+            <p id="angle-help" class="panel-note">Use arrow keys for fine adjustment. Home / End go to the range limits.</p>
           </div>
+          <div class="wing-live" data-live><p data-live-goal></p>        <p class="wing-feedback" role="status" aria-live="polite" data-feedback>Choose a prediction to begin.</p>
+        <button class="ctrl" data-next hidden>Keep the lift. Now cut the drag →</button>
+        <details><summary>Why did that happen?</summary><p data-why>Make a prediction, then tilt the wing and watch the measured curve.</p><a href="../references/index.html#wing-challenge">Read the source notes ↗</a></details></div>
+          <div class="ctrl-row"><button class="ctrl" data-reset>Reset experiment</button><button class="ctrl" data-save="A" disabled>Save trial A</button><button class="ctrl" data-save="B" disabled>Save trial B</button></div>
+        </div>
+        <div class="panel tunnel-panel">
+          <div class="panel-head"><span data-result-label>Measured section</span><span data-tunnel-status>Loading</span></div>
           <div class="panel-body">
-            <lab-control name="alpha" label="Angle of attack" unit="°" min="-6" max="22" step="0.5" value="4"></lab-control>
-            <lab-control name="speed" label="Airspeed" unit="m/s" min="15" max="120" step="1" value="60"></lab-control>
-            <lab-control name="aspect" label="Aspect ratio" min="3" max="30" step="0.5" value="8"></lab-control>
-            <lab-control name="camber" label="Camber" unit="% chord" min="0" max="6" step="0.5" value="2"></lab-control>
-            <lab-control name="thickness" label="Thickness" unit="% chord" min="6" max="20" step="0.5" value="12"></lab-control>
-
-            <div class="polar-wrap">
-              <span class="tag">Lift curve</span>
-              <canvas id="polar-canvas"></canvas>
-            </div>
-
+            <fieldset data-free-controls hidden><legend>Adjustable theoretical wing</legend>
+              <lab-control name="speed" label="Airspeed" unit="m/s" min="15" max="120" step="1" value="60"></lab-control>
+              <lab-control name="aspect" label="Aspect ratio" min="3" max="30" step="0.5" value="8"></lab-control>
+              <lab-control name="camber" label="Camber" unit="% chord" min="0" max="6" step="0.5" value="2"></lab-control>
+              <lab-control name="thickness" label="Thickness (drawing only)" unit="% chord" min="6" max="20" step="0.5" value="12"></lab-control>
+              <div class="ctrl-row ctrl-row-tight"><button class="ctrl" data-wing-preset="airliner">Airliner-like</button><button class="ctrl" data-wing-preset="glider">Glider-like</button><button class="ctrl" data-wing-preset="fighter">Fighter-like</button><button class="ctrl" data-wing-preset="stall">Stall it</button></div>
+            </fieldset>
             <div class="readout-row">
-              <lab-readout data-out="cl" label="C&#8343;" decimals="3"></lab-readout>
-              <lab-readout data-out="cd" label="C&#7492;" decimals="4"></lab-readout>
+              <lab-readout data-out="cl" label="Lift coefficient Cₗ" decimals="4"></lab-readout>
+              <lab-readout data-out="cd" label="Drag coefficient Cᴅ" decimals="5"></lab-readout>
               <lab-readout data-out="ld" label="L / D" decimals="1"></lab-readout>
-              <lab-readout data-out="lift" label="Lift" unit="kN" decimals="1"></lab-readout>
-              <lab-readout data-out="drag" label="Drag" unit="kN" decimals="2"></lab-readout>
+              <lab-readout data-out="lift" label="Model lift" unit="kN" decimals="1" hidden></lab-readout>
+              <lab-readout data-out="drag" label="Model drag" unit="kN" decimals="2" hidden></lab-readout>
               <lab-readout data-out="re" label="Reynolds" unit="×10⁶" decimals="1"></lab-readout>
             </div>
-
-            <p class="panel-note" data-margin></p>
-
-            <div class="ctrl-row ctrl-row-tight">
-              <button class="ctrl" type="button" data-wing-preset="airliner">Airliner</button>
-              <button class="ctrl" type="button" data-wing-preset="glider">Glider</button>
-              <button class="ctrl" type="button" data-wing-preset="fighter">Fighter</button>
-              <button class="ctrl" type="button" data-wing-preset="stall">Stall it</button>
-            </div>
+            <p class="panel-note" data-plot-trials></p>
+            <div class="polar-wrap"><span class="tag">Lift / angle</span><canvas id="polar-canvas" role="img" aria-describedby="plot-summary"></canvas></div>
+            <label class="wing-zoom"><input type="checkbox" id="drag-zoom"> Zoom drag scale to 0–0.03 (higher values clipped)</label>
+            <div class="polar-wrap"><span class="tag">Drag / angle</span><canvas id="drag-canvas" role="img" aria-describedby="plot-summary"></canvas></div>
+            <p class="panel-note" id="plot-summary"></p><p class="panel-note" data-margin></p>
           </div>
         </div>
       </div>
-
-      <div class="stage-caption">
-        <span><strong>Section</strong> NACA four-digit, generated from the published equations</span>
-        <span><strong>Streamlines</strong> potential flow: uniform stream + bound vortex (Γ = C&#8343;/2) + thickness doublet</span>
-        <span><strong>Forces</strong> at sea level, 16 m² wing</span>
-      </div>
-
-      <p class="finding">
-        The colour of each streamline is its speed. Look at the top surface versus the bottom
-        at any positive angle: the upper flow is genuinely faster, and the gap widens as lift
-        grows. <em>That is the lift</em> — faster flow, lower pressure, and an equal and
-        opposite shove of air downwards behind the wing.
-      </p>
-
-      <p class="note">
-        Past the stall the streamlines stop following the surface and the wake goes to pieces.
-        The lift arrow shrinks even though the wing is pointed further up than ever, which is
-        the whole counter-intuitive heart of a stall: <strong>it is caused by angle, not by
-        speed.</strong> It can happen at any airspeed, in any attitude, nose up or nose down.
-      </p>
+      <section class="wing-comparison" aria-labelledby="comparison-title">
+        <h3 id="comparison-title">Same wing. Different decisions.</h3>
+        <p>Save a moment as A, change something, save B. Their curves and markers stay on both plots: A is dashed pink, B is dotted blue; the current curve is solid gold. Identical curves overlap.</p>
+        <p data-storage role="status"></p>
+        <div class="wing-table-scroll"><table><caption>Saved trials — section measurements and theoretical wings are different models, not a controlled comparison.</caption><thead><tr><th scope="col">Trial</th><th scope="col">Model / conditions</th><th scope="col">Angle</th><th scope="col">Cₗ</th><th scope="col">Cᴅ</th><th scope="col">L/D</th></tr></thead><tbody data-trials></tbody></table></div>
+        <div class="ctrl-row"><button class="ctrl" data-clear="A">Clear A</button><button class="ctrl" data-clear="B">Clear B</button></div>
+      </section>
+      <p class="note">An airfoil is a slice across a wing, normal to its span. That's the slice we're testing here. A whole aircraft brings a lot more to the argument. <a href="../references/index.html#wing-challenge">NPTEL Flight, Lecture 22, PDF p. 13 ↗</a></p>
     </section>
 
     <!-- ================= EXHIBIT 02: WHY LONG WINGS ================= -->
@@ -114,7 +111,7 @@
         <div>
           <h2 class="exhibit-title">Why a glider's wings are so long</h2>
           <p class="exhibit-sub">
-            Go back up and drag the aspect ratio from 3 to 30, watching only the L/D readout.
+            Switch to Explore freely above and drag the aspect ratio from 3 to 30, watching only the L/D readout.
             Nothing else on that panel changes it nearly as much.
           </p>
         </div>
@@ -176,7 +173,7 @@
         </p>
 
         <p class="note">
-          Set the camber to zero in the tunnel above. The section becomes symmetric, with
+          In Explore freely, set the camber to zero. The section becomes symmetric, with
           identical path lengths top and bottom, and it still makes lift the moment you give it
           an angle. Whatever is happening, it is not about the distance the air travels.
         </p>
@@ -255,7 +252,7 @@
         </ul>
       </div>
     </div>
-  </main>
+  <nav class="flight-path frame" aria-label="Flight Lab experiments"><h2>Try it. Change something. See what happens.</h2><p>Pick an experiment or jump straight into the cargo mission. The measured wing data stay separate from the fictional loading and runway models.</p><ol><li><a href="/flight-lab/aerodynamics.html" aria-current="page"><strong>01 · Wing</strong><span>Measured airfoil experiment</span></a></li><li><a href="/flight-lab/loading-and-balance.html"><strong>02 · Loading</strong><span>Move loads and check the balance</span></a></li><li><a href="/flight-lab/runway.html"><strong>03 · Runway</strong><span>Explore a fictional ground run</span></a></li><li><a href="/flight-lab/cargo-mission.html"><strong>04 · Mission</strong><span>Carry your decisions through</span></a></li></ol></nav></main>
 
   <site-footer></site-footer>
 </body>

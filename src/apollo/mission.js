@@ -93,15 +93,27 @@ export function subSolarPoint(ms) {
 
   // Greenwich mean sidereal time gives the rotation of the Earth under the
   // sky; the sub-solar longitude is just the Sun's right ascension read
-  // against it. Different source from the block above: these are the IAU
-  // 1982 coefficients, as given by Jean Meeus, Astronomical Algorithms
-  // (2nd ed.), equation 12.4. The two century terms Meeus carries after
-  // them are dropped — over the 31 years back to 1969 they come to under
-  // a thousandth of a degree.
-  const gmst = norm360(280.46061837 + 360.98564736629 * n);
-  const lonDeg = norm180(rightAscension / DEG - gmst);
+  // against it.
+  const lonDeg = norm180(rightAscension / DEG - gmstDeg(ms));
 
   return { latDeg: declination / DEG, lonDeg };
+}
+
+/* Greenwich mean sidereal time, in degrees.
+
+   These are the IAU 1982 coefficients, as given by Jean Meeus, Astronomical
+   Algorithms (2nd ed.), equation 12.4. The two century terms Meeus carries
+   after them are dropped -- over the 31 years back to 1969 they come to
+   under a thousandth of a degree.
+
+   Pulled out of subSolarPoint so the Moon can be read against the same
+   rotation the Sun is. Two bodies placed against two slightly different
+   ideas of where Greenwich is pointing would put the terminator and the
+   Moon in inconsistent places, and that error would be far too small to
+   notice and far too annoying to find later.
+*/
+export function gmstDeg(ms) {
+  return norm360(280.46061837 + 360.98564736629 * daysSinceJ2000(ms));
 }
 
 /* =========================================================================
@@ -133,6 +145,127 @@ export function sunElevationDeg(ms, latDeg, lonDeg) {
 }
 
 /* =========================================================================
+   WHERE THE MOON WAS
+   =========================================================================
+
+   Not a formula. The Sun above is computed, because a two-term equation of
+   centre is good to an arcminute and fits in a paragraph. The Moon is not
+   like that -- getting it right from series takes dozens of periodic terms,
+   and a truncated version written from memory is exactly the kind of thing
+   that looks authoritative and is quietly wrong by a degree.
+
+   So these are measurements, not derivations: geocentric apparent right
+   ascension, declination and range for the Moon, read straight out of NASA
+   JPL's Horizons system on the DE441 ephemeris, at twelve-hour steps across
+   the mission. Anyone can reproduce the table:
+
+     https://ssd.jpl.nasa.gov/horizons/app.html
+       Ephemeris Type  Observer Table
+       Target Body     Moon (301)
+       Observer        Geocentric (500@399)
+       Time Span       1969-07-16 12:00 to 1969-07-21 12:00, step 12 h
+       Table Settings  quantities 1,20 (astrometric RA & Dec, delta)
+
+   The numbers below are transcribed unchanged, which is the only thing that
+   makes the citation worth anything. RA and Dec are ICRF degrees; delta is
+   in astronomical units, as Horizons gives it, and is converted here rather
+   than in the table so the transcription stays a transcription.
+
+   Twelve hours is close enough spacing that a straight line between samples
+   is good to a few arcminutes, which is a small fraction of the Moon's own
+   half-degree disc -- so the interpolation below is linear and does not
+   pretend to be anything better.
+
+   Over these five days the Moon moves about 56 degrees against the stars
+   and closes about 12,000 km. It was near apogee when Apollo 11 left, which
+   is why the range starts above 404,000 km rather than at the 384,400 km
+   everyone quotes. */
+
+const MOON_EPOCH_MS = Date.UTC(1969, 6, 16, 12, 0, 0);
+const MOON_STEP_MS = 12 * 3600 * 1000;
+
+// One astronomical unit in kilometres, IAU 2012 exact definition.
+const AU_KM = 149597870.7;
+
+//                 RA deg      Dec deg      delta AU
+const MOON_ROWS = [
+  [138.51259,   19.30417,  0.00270089451560], // 1969-Jul-16 12:00
+  [144.34678,   17.03101,  0.00269416655715], // 1969-Jul-17 00:00
+  [150.06184,   14.58330,  0.00268629719763], // 1969-Jul-17 12:00
+  [155.67756,   11.98486,  0.00267726781006], // 1969-Jul-18 00:00
+  [161.21785,    9.25899,  0.00266706260550], // 1969-Jul-18 12:00
+  [166.71006,    6.42853,  0.00265567336021], // 1969-Jul-19 00:00
+  [172.18439,    3.51613,  0.00264310453452], // 1969-Jul-19 12:00
+  [177.67355,    0.54467,  0.00262937861400], // 1969-Jul-20 00:00
+  [183.21252,   -2.46214,  0.00261454147778], // 1969-Jul-20 12:00
+  [188.83834,   -5.47912,  0.00259866757222], // 1969-Jul-21 00:00
+  [194.58986,   -8.47878,  0.00258186463644], // 1969-Jul-21 12:00
+];
+
+/* The Moon at a moment, in the frame the rest of this scene is drawn in.
+
+   The subtlety worth stating: latDeg and lonDeg here are NOT the sub-lunar
+   point at `ms`. They are the Moon's direction expressed in the Earth-fixed
+   frame *frozen at the launch epoch*, which is the frame scene.js treats as
+   world space -- at load time the ground and the world frame coincide, the
+   Sun is pinned there once, and afterwards earthGroup spins underneath.
+   Reading the Moon against gmstDeg(ms) instead would spin it around the
+   planet once a day along with the ground, which is exactly backwards: over
+   the minutes this page is open, and over the days the mission takes, the
+   Moon does not go round the Earth once every twenty-four hours -- the
+   Earth turns underneath it.
+
+   So the longitude below is read against Greenwich as it was at 13:32 GMT
+   on 16 July 1969 and never again, and what is left moving is the Moon's
+   own 13 degrees a day along its orbit. */
+export function moonAt(ms) {
+  const t = (ms - MOON_EPOCH_MS) / MOON_STEP_MS;
+  const last = MOON_ROWS.length - 1;
+  const i = Math.max(0, Math.min(last - 1, Math.floor(t)));
+  const f = Math.max(0, Math.min(1, t - i));
+  const a = MOON_ROWS[i];
+  const b = MOON_ROWS[i + 1];
+
+  const raDeg = a[0] + (b[0] - a[0]) * f;
+  const decDeg = a[1] + (b[1] - a[1]) * f;
+  const deltaAu = a[2] + (b[2] - a[2]) * f;
+
+  return {
+    raDeg,
+    decDeg,
+    distanceKm: deltaAu * AU_KM,
+    latDeg: decDeg,
+    lonDeg: norm180(raDeg - gmstDeg(LAUNCH_EPOCH_MS)),
+  };
+}
+
+// The Moon's radius, kilometres. IAU mean radius, the same number the
+// texture in public/assets/textures was reprojected against.
+export const MOON_RADIUS_KM = 1737.4;
+
+// Obliquity of the ecliptic at J2000, degrees. IAU value.
+export const OBLIQUITY_DEG = 23.4393;
+
+/* Which way lunar north points, in the same frozen world frame as moonAt.
+
+   The Moon's rotation axis is not the Earth's and is not the Moon's orbit
+   normal either. What it is very nearly is the pole of the ecliptic: the
+   axis sits 1.54 degrees from it, and unlike almost everything else about
+   the Moon that angle stays put rather than wandering. So lunar north is
+   taken to be the ecliptic pole exactly and the degree and a half is
+   dropped, which rolls the visible disc by about that much -- a fifth of
+   the libration that is already not modelled, and far below anything this
+   page could show.
+
+   The ecliptic pole is at right ascension 270 degrees, declination 90 minus
+   the obliquity, by definition. Read into the scene the same way the Moon
+   is: against Greenwich as it stood at the launch epoch, once. */
+export const LUNAR_NORTH = {
+  latDeg: 90 - OBLIQUITY_DEG,
+  lonDeg: norm180(270 - gmstDeg(LAUNCH_EPOCH_MS)),
+};
+
+/* =========================================================================
    THE TIMELINE
    =========================================================================
 
@@ -147,18 +280,26 @@ export function sunElevationDeg(ms, latDeg, lonDeg) {
    0 at the top and 1 at the bottom. Nothing here pins, traps or consumes
    scroll — it only reads it. */
 
+// staging1, staging2 and orbit are pinned to flight.js's EVENTS -- staging1,
+// staging2 and orbitInsertion respectively -- because the interlude moved
+// them there: #saturn-v now sits between #playground and #writing, and its
+// five captions fire the separations they describe as each one comes fully
+// into view. Everything from "ascent" to "tli" is squeezed into what used to
+// be a much wider run of the page for the same reason: the events it used to
+// have room around no longer have that room, having moved into the
+// interlude's own three screens instead.
 export const PHASES = [
   { key: "prelaunch", label: "Launch Complex 39A", from: 0.0, to: 0.075 },
   { key: "ignition", label: "Ignition", from: 0.075, to: 0.115 },
   { key: "liftoff", label: "Liftoff", from: 0.115, to: 0.185 },
-  { key: "ascent", label: "First stage", from: 0.185, to: 0.375 },
-  { key: "staging1", label: "S-IC separation", from: 0.375, to: 0.425 },
-  { key: "secondStage", label: "Second stage", from: 0.425, to: 0.555 },
-  { key: "staging2", label: "S-II separation", from: 0.555, to: 0.6 },
-  { key: "thirdStage", label: "S-IVB", from: 0.6, to: 0.675 },
-  { key: "orbit", label: "Earth orbit", from: 0.675, to: 0.765 },
-  { key: "tli", label: "Translunar injection", from: 0.765, to: 0.845 },
-  { key: "coast", label: "Translunar coast", from: 0.845, to: 0.955 },
+  { key: "ascent", label: "First stage", from: 0.185, to: 0.593 },
+  { key: "staging1", label: "S-IC separation", from: 0.593, to: 0.660 },
+  { key: "secondStage", label: "Second stage", from: 0.660, to: 0.682 },
+  { key: "staging2", label: "S-II separation", from: 0.682, to: 0.690 },
+  { key: "thirdStage", label: "S-IVB", from: 0.690, to: 0.696 },
+  { key: "orbit", label: "Earth orbit", from: 0.696, to: 0.702 },
+  { key: "tli", label: "Translunar injection", from: 0.702, to: 0.734 },
+  { key: "coast", label: "Translunar coast", from: 0.734, to: 0.955 },
   { key: "lunar", label: "Approaching the Moon", from: 0.955, to: 1.0001 },
 ];
 

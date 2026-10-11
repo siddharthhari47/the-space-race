@@ -63,7 +63,7 @@ export function mount(container) {
 
     netEl.textContent =
       net >= 0
-        ? `Surplus: +${net.toFixed(2)} W — the battery can recharge fully each orbit.`
+        ? `Surplus: +${net.toFixed(2)} W — positive average power balance; battery capacity and charging losses still need checking.`
         : `Deficit: ${net.toFixed(2)} W — the battery will drain over time at this rate.`;
     netEl.classList.toggle("over", net < 0);
   }

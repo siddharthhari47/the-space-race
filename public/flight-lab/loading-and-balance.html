@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loading & Balance — The Space Race</title>
+  <meta name="description" content="Move the passengers and luggage. Keep the same mass, change the balance, and see why position matters." />
+  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
+  <link rel="stylesheet" href="../assets/css/loading.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/systems/instruments.js"></script>
+  <script type="module" src="/assets/js/pages/lab-startup.js" defer></script>
+<link rel="stylesheet" href="/assets/css/flight-path.css" /></head>
+<body data-world="aircraft">
+  <site-header current="flight-lab"></site-header>
+
+  <main><p data-lab-startup role="status" class="frame">Loading the experiment…</p><noscript><p class="frame">Enable JavaScript to use the experiment. Sources and navigation remain available below.</p></noscript><fieldset disabled data-lab-gate="loading" style="display:contents">
+    <section class="world-head frame"><a class="back-link" href="flight-dynamics.html">← Flight Dynamics</a><p class="tag tag-accent">Flight Lab · Loading challenge</p><h1 class="world-title">Please stop moving<br>the luggage.</h1><p class="world-lede">Same aircraft. Same weight. Very different afternoon.</p></section>
+    <section class="exhibit frame" id="loading">
+      <p class="loading-model">FICTIONAL TEACHING AIRCRAFT · These masses, stations and limits are game settings. No real aircraft is represented.</p>
+      <div class="ctrl-row" role="group" aria-label="Loading mode"><button class="ctrl" data-mode="challenge" aria-pressed="true">Take the challenge</button><button class="ctrl" data-mode="free" aria-pressed="false">Explore freely</button></div>
+      <div class="loading-prediction" data-prediction><h2>Move a heavy bag towards the tail. What happens to the balance point?</h2><div class="ctrl-row"><button class="ctrl" data-guess="aft">It moves towards the tail</button><button class="ctrl" data-guess="same">Same weight. Same balance?</button><button class="ctrl" data-guess="unsure">Let me try it</button></div></div>
+      <p data-brief>Keep all 180 kg of payload and 80 kg of fuel. Rearrange the loads to put the centre of gravity inside 2.35–2.60 m from the nose datum. Maximum mass: 1,100 kg.</p>
+      <div class="loading-grid">
+        <div>
+          <div class="loading-scene" aria-label="Side view of fictional aircraft">
+            <svg class="loading-plane" viewBox="0 0 800 220" role="img" aria-label="Aircraft nose at left, tail at right; schematic, not to scale"><defs><linearGradient id="skin" x2="0" y2="1"><stop stop-color="#e9f1ff"/><stop offset="1" stop-color="#778da9"/></linearGradient></defs><path d="M44 128 Q72 85 160 94 L232 52 298 54 350 96 635 99 697 23 731 26 712 105 772 125 711 140 230 158 95 148Z" fill="url(#skin)"/><path d="M275 110 455 110 610 186 551 190 337 151Z" fill="#536d8d"/><path d="M178 91 241 60 284 63 318 94Z" fill="#193046"/><circle cx="181" cy="161" r="14" fill="#050a13"/><circle cx="545" cy="173" r="15" fill="#050a13"/><text x="40" y="210" fill="#bdcbe0" font-size="14">NOSE / DATUM 0 m</text><text x="684" y="210" fill="#bdcbe0" font-size="14">TAIL →</text></svg>
+            <p class="loading-scene-summary" data-scene-summary></p>
+            <div class="load-rails" data-rails></div>
+            <div class="loading-gauge" aria-hidden="true"><span class="allowed-band"></span><span class="cg-pointer" data-cg-marker>CG</span><span class="np-pointer">NP</span></div>
+            <p class="loading-gauge-key">CG detail scale: 1.80–3.40 m. Green band: fictional loading limits · CG: balance point · NP: assumed neutral point (2.80 m)</p>
+          </div>
+          <p>Drag the labelled loads along their rails. Or use the station menus below—same controls, no dragging required.</p>
+          <div class="loading-feedback" role="status" aria-live="polite" data-feedback>Make a prediction to begin.</div>
+          <p data-move-note></p>
+          <div class="ctrl-row"><button class="ctrl" data-reset>Reset</button><button class="ctrl" data-hint>Show one useful move</button><button class="ctrl" data-save="A">Save A</button><button class="ctrl" data-save="B">Save B</button></div>
+          <p data-hint-text></p>
+        </div>
+        <div class="panel"><div class="panel-head"><span>Load sheet</span><span data-mode-label>Challenge</span></div><div class="panel-body">
+          <div class="loading-numbers"><div><span>Total mass</span><strong data-mass>—</strong></div><div><span>Centre of gravity</span><strong data-cg>—</strong></div><div><span>Payload</span><strong data-payload>—</strong></div></div>
+          <div data-controls></div>
+          <p class="panel-note">Fixed: empty aircraft 700 kg at 2.40 m, pilot 80 kg at 1.80 m. Passenger and baggage count as payload; fuel does not. Tanks are selectable design locations, not an in-flight transfer system.</p>
+        </div></div>
+      </div>
+      <details class="loading-explain"><summary>Why did that happen? Show me the arithmetic.</summary><p>Weight is only half the argument. Where you put it matters too. Each load contributes mass × distance from the datum. Add those contributions, divide by total mass, and you have the balance point. Moving a load changes that point without changing the total mass.</p><p data-math></p><div class="loading-table"><table><caption>Current mass moments (kg·m, not torque in N·m)</caption><thead><tr><th>Item</th><th>Mass (kg)</th><th>Arm (m)</th><th>Mass × arm (kg·m)</th></tr></thead><tbody data-moments></tbody></table></div><a href="../references/index.html#loading-challenge">NPTEL lecture/page notes and NASA equation reference ↗</a></details>
+      <section class="loading-pitch"><p class="tag">A separate question · static stability</p><h2>Balanced cargo does not tell the whole story.</h2><p>Tap the nose up by an assumed 5°. Which way does the <em>initial</em> pitching moment act? This linear teaching model uses a fixed neutral point and an assumed lift slope. It does not predict a flight path, recovery time or whether a real aircraft is safe.</p><button class="ctrl" data-pitch>Try a 5° nose-up disturbance</button><p data-pitch-result role="status">No disturbance applied.</p><div data-pitch-arrow class="pitch-arrow" aria-hidden="true"></div></section>
+      <section class="loading-compare"><h2>Keep the evidence.</h2><p>Save before and after. If all you changed was position, the mass should match.</p><div class="loading-table"><table><caption>Trial comparison — fictional loading model v1</caption><thead><tr><th>Trial</th><th>Mode / configuration</th><th>Mass</th><th>CG</th><th>Payload</th><th>Result</th></tr></thead><tbody data-trials></tbody></table></div><p data-storage></p><div class="ctrl-row"><button class="ctrl" data-clear="A">Clear A</button><button class="ctrl" data-clear="B">Clear B</button></div></section>
+      <details class="loading-explain"><summary>Model assumptions and limits</summary><p>One-dimensional mass balance: xCG = Σ(mx) / Σm, with uniform gravity. Fictional rectangular CG envelope 2.35–2.60 m at all masses, maximum 1,100 kg, payload objective 180 kg. No station capacity, lateral balance, fuel slosh, structural load or real-aircraft trim calculation.</p><p>Pitch demonstration: ΔCₘ = a × (xCG − xNP) / c × Δα, with a = 4.5 rad⁻¹, xNP = 2.80 m, c = 2 m and Δα = 5° converted to radians. Negative means an initial nose-down restoring tendency; positive means an initial nose-up tendency. Values are original teaching assumptions about an initially trimmed reference. Static stability is not a simulation of dynamic stability.</p><a href="../references/index.html#loading-challenge">Sources and assumptions ↗</a></details>
+    </section>
+  <section class="exhibit frame"><h2>You have one runway.</h2><p>Hot day. Heavy aircraft. Find out which one runs out first: your problems or your runway.</p><a class="ctrl" href="/flight-lab/runway.html">Try the runway challenge →</a></section><nav class="flight-path frame" aria-label="Flight Lab experiments"><h2>Try it. Change something. See what happens.</h2><p>Pick an experiment or jump straight into the cargo mission. The measured wing data stay separate from the fictional loading and runway models.</p><ol><li><a href="/flight-lab/aerodynamics.html"><strong>01 · Wing</strong><span>Measured airfoil experiment</span></a></li><li><a href="/flight-lab/loading-and-balance.html" aria-current="page"><strong>02 · Loading</strong><span>Move loads and check the balance</span></a></li><li><a href="/flight-lab/runway.html"><strong>03 · Runway</strong><span>Explore a fictional ground run</span></a></li><li><a href="/flight-lab/cargo-mission.html"><strong>04 · Mission</strong><span>Carry your decisions through</span></a></li></ol></nav></fieldset></main><site-footer></site-footer></body></html>

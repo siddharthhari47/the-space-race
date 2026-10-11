@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {Playback} from '../public/assets/js/systems/playback.js';
+let pending, done=0, painted=0;
+const clock=new Playback({duration:20,paint:t=>painted=t,done:()=>done++,request:cb=>(pending=cb,1),cancel:()=>pending=null});
+clock.start();pending(100);pending(1100);assert.equal(painted,5);
+clock.pause();assert.equal(pending,null);assert.equal(clock.status,'paused');
+clock.start();pending(100000);assert.equal(painted,5);pending(101000);assert.equal(painted,10);
+clock.seek(3);assert.equal(painted,3);assert.equal(clock.status,'paused');assert.equal(pending,null);
+clock.finish();assert.equal(painted,20);assert.equal(done,1);assert.equal(clock.status,'complete');
+clock.start();assert.equal(painted,0);clock.dispose();assert.equal(pending,null);
+const zero=new Playback({duration:0,paint:()=>{},request:()=>assert.fail('zero duration frame requested'),cancel:()=>{}});zero.start();assert.equal(zero.status,'complete');
+console.log('PASS: clock pause/resume excludes hidden elapsed time; scrub, finish, replay, cancellation and zero-duration completion.');

@@ -13,7 +13,8 @@ export const SIMULATOR_REGISTRY = {
     title: "CubeSat Exploded View",
     description: "Pull a 1U CubeSat apart layer by layer and see what's inside.",
     module: "/assets/js/simulators/cubesat-exploded-view.js",
-    status: "coming-soon",
+    page: "/playground/cubesat-exploded-view.html",
+    status: "live",
     category: "space",
   },
   "cubesat-builder": {
@@ -28,7 +29,8 @@ export const SIMULATOR_REGISTRY = {
     title: "CubeSat Mission Planner",
     description: "Plan an orbit, a payload, and a ground station schedule for a small mission.",
     module: "/assets/js/simulators/cubesat-mission-planner.js",
-    status: "coming-soon",
+    page: "/playground/cubesat-mission-planner.html",
+    status: "live",
     category: "space",
   },
   "power-budget-simulator": {
@@ -43,7 +45,8 @@ export const SIMULATOR_REGISTRY = {
     title: "Communications Simulator",
     description: "See how link budget, ground stations, and data rate trade off against each other.",
     module: "/assets/js/simulators/communications-simulator.js",
-    status: "coming-soon",
+    page: "/playground/communications-simulator.html",
+    status: "live",
     category: "engineering",
   },
   "orbit-simulator": {
@@ -142,14 +145,16 @@ export const SIMULATOR_REGISTRY = {
     title: "Interactive Rocket",
     description: "Explore a launch vehicle stage by stage, from engines to payload fairing.",
     module: "/assets/js/simulators/interactive-rocket.js",
-    status: "coming-soon",
+    page: "/playground/interactive-rocket.html",
+    status: "live",
     category: "space",
   },
   "docking-simulator": {
     title: "Docking Simulator",
     description: "Line up, close in, and dock two spacecraft together.",
     module: "/assets/js/simulators/docking-simulator.js",
-    status: "coming-soon",
+    page: "/playground/docking-simulator.html",
+    status: "live",
     category: "space",
   },
 };

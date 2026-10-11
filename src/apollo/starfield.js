@@ -112,7 +112,9 @@ export function createStarfield({ count = 2400, seed = 19690716, radius = 1e6 } 
     },
     vertexShader: VERTEX,
     fragmentShader: FRAGMENT,
-    transparent: true,
+    // Opaque queue, still additive: a negative renderOrder only sorts within
+    // a queue. Transparent stars were painting over the opaque Moon.
+    transparent: false,
     depthTest: false,
     depthWrite: false,
     blending: THREE.AdditiveBlending,

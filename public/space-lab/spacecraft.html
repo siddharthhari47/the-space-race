@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spacecraft — Space Lab — The Space Race</title>
-  <meta name="description" content="Vostok 1 flew one person for under two hours in 1961. Crew Dragon now flies four for months. What it actually takes to bring them back alive." />
+  <meta name="description" content="Explore Orion’s life support systems and the Artemis I heat-shield investigation through cited NASA explanations." />
   <link rel="icon" href="../assets/images/logo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,83 +19,59 @@
   <main class="container lab-page">
     <a class="back-link" href="index.html">&larr; Space Lab</a>
     <h1 class="lab-title">Spacecraft</h1>
-    <p class="lab-intro">
-      Getting to orbit is a rocket's job. Keeping a person alive once they're there, and
-      getting them back through the atmosphere in one piece, is the spacecraft's, and arguably
-      the harder half of the problem.
-    </p>
+    <p class="lab-intro">Inside a crewed spacecraft, breathable air, drinking water and temperature control are engineered systems. Start with Orion: NASA documents both how its cabin works and what engineers learned when its heat shield returned from Artemis I.</p>
 
-    <div class="stat-row">
-      <stat-card value="1961" label="Vostok 1 — first crewed spacecraft" accent="space"></stat-card>
-      <stat-card value="1967" label="Soyuz's first flight — still flying today" accent="space"></stat-card>
-      <stat-card value="~1,650°C" label="Typical reentry heat-shield temperature" accent="space"></stat-card>
-    </div>
+    <section class="exhibit" id="cabin">
+      <div class="exhibit-head"><span class="exhibit-index">01</span><div>
+        <h2 class="exhibit-title">A cabin is a system that keeps working.</h2>
+        <p class="exhibit-sub">Orion’s environmental control and life support systems, explained from NASA’s Crew Systems reference.</p>
+      </div></div>
+      <div class="data-table-wrap"><table class="data-table">
+        <caption>Four connected jobs inside Orion</caption>
+        <thead><tr><th scope="col">Job</th><th scope="col">How NASA describes it</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Manage the atmosphere</th><td>Supply oxygen, remove carbon dioxide and trace contaminants, ventilate the cabin, and filter particles and microbes.</td></tr>
+          <tr><th scope="row">Control pressure</th><td>High-pressure oxygen and nitrogen tanks supply the crew environment. The system can also be operated manually.</td></tr>
+          <tr><th scope="row">Supply water</th><td>Store and distribute potable water for drinking, food preparation, hygiene and medical needs.</td></tr>
+          <tr><th scope="row">Monitor the environment</th><td>Track temperature, humidity and pressure to detect unsafe cabin conditions.</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Source: <a href="https://www.nasa.gov/reference/crew-systems/">NASA — Crew Systems</a>, “Environmental Control and Life Support Systems.” These details describe Orion; other spacecraft use different implementations.</p>
+    </section>
 
-    <callout-box type="engineering-insight">
-      <p>Early heat shields, including Vostok's, worked by ablation: the outer material was
-      designed to burn away and flake off deliberately, carrying reentry heat with it rather
-      than letting it soak into the capsule. It's a strategy that treats losing material as a
-      feature, not a failure: the shield is only doing its job if a visible layer of it is
-      gone by the time the capsule lands.</p>
-    </callout-box>
+    <section class="exhibit" id="air-revitalization">
+      <div class="exhibit-head"><span class="exhibit-index">02</span><div>
+        <h2 class="exhibit-title">Clean the air. Regenerate. Repeat.</h2>
+        <p class="exhibit-sub">Follow Orion’s regenerable carbon-dioxide and humidity removal process.</p>
+      </div></div>
+      <ol class="post-body">
+        <li><strong>Cabin exposure.</strong> The removal system takes up carbon dioxide and humidity from cabin air.</li>
+        <li><strong>Vacuum exposure.</strong> Exposure to space vents the collected carbon dioxide and humidity overboard.</li>
+        <li><strong>Return to service.</strong> Regeneration prepares the system to clean cabin air again.</li>
+      </ol>
+      <details class="source-detail"><summary>Why regenerate instead of carry more consumables?</summary>
+        <p class="note">NASA identifies mass and volume savings as a reason for Orion’s regenerable system, contrasting it with expendable carbon-dioxide-removal chemicals used on the Space Shuttle. Regeneration reduces the need to carry replacement removal material for that task.</p>
+      </details>
+      <p class="note">Source: <a href="https://www.nasa.gov/reference/crew-systems/">NASA — Crew Systems</a>. This is a conceptual sequence, not a plumbing schematic or a simulation of valve timing.</p>
+    </section>
 
-    <div class="post-body">
-      <p>Coming back from orbit means shedding an enormous amount of speed as heat. The heat
-      shield's outer surface often hits around 1,650°C during reentry, hot enough to destroy most
-      materials outright without a way to manage it. That's on top of everything else a satellite
-      never has to deal with: a breathable atmosphere to maintain, heat from the astronauts
-      themselves as well as the sun, and a person who has to arrive at the other end still alive.</p>
-
-      <p>Vostok 1 carried Yuri Gagarin into orbit in 1961, the first time any spacecraft had
-      carried a person at all. It was simple by necessity: a spherical descent capsule, an
-      ablative heat shield, and very little automation the cosmonaut could actually override.
-      Six years later, in 1967, the Soviet Union introduced Soyuz, a more capable, more
-      controllable design that, after a difficult early history, became one of the most reliable
-      crewed spacecraft ever built. Soyuz is still flying today, over half a century after its
-      first launch.</p>
-
-      <p>Modern spacecraft look different from either. SpaceX's Crew Dragon, which began flying
-      astronauts in 2020, replaced Soyuz's mostly-analog cockpit with touchscreens and a much
-      higher degree of automation, while keeping the same fundamental job: protect the crew,
-      survive reentry, land safely.</p>
-
-      <div class="data-table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Spacecraft</th>
-              <th>First Flight</th>
-              <th>Crew Capacity</th>
-              <th>Operator</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Vostok 1</td>
-              <td>1961</td>
-              <td>1</td>
-              <td>Soviet Union</td>
-            </tr>
-            <tr>
-              <td>Soyuz</td>
-              <td>1967</td>
-              <td>3</td>
-              <td>Roscosmos</td>
-            </tr>
-            <tr>
-              <td>Crew Dragon</td>
-              <td>2020</td>
-              <td>Up to 4</td>
-              <td>SpaceX</td>
-            </tr>
-          </tbody>
-        </table>
+    <section class="exhibit" id="heat-shield">
+      <div class="exhibit-head"><span class="exhibit-index">03</span><div>
+        <h2 class="exhibit-title">The heat shield came back with a question.</h2>
+        <p class="exhibit-sub">A documented engineering investigation: Artemis I’s unexpected Avcoat char loss.</p>
+      </div></div>
+      <div class="post-body">
+        <p>NASA’s December 2024 investigation reported that gases generated inside Orion’s ablative Avcoat could not escape as expected. Pressure built up, cracking the material and releasing charred pieces.</p>
+        <p>The entry environment mattered. Between the atmospheric dips of the skip-entry trajectory, heating decreased while energy accumulated inside the material. Ground tests conducted before flight at higher heating rates had allowed permeable char to form and gases to escape; they had not reproduced the same cracking behaviour.</p>
+        <p>Post-flight testing reproduced the relevant environment. NASA reported that locally permeable areas of the flown shield had avoided the cracking and char loss. This case shows why reproducing the flight conditions matters alongside choosing a test temperature.</p>
       </div>
+      <details class="source-detail"><summary>What this case does—and does not—establish</summary>
+        <p class="note">These are NASA’s published findings for the uncrewed Artemis I flight, not a universal description of all ablative shields. The article reports cabin-system temperatures within limits. It does not justify treating every pattern of material loss as expected, or assigning all spacecraft one re-entry temperature.</p>
+      </details>
+      <p class="note">Source: <a href="https://www.nasa.gov/missions/artemis/nasa-identifies-cause-of-artemis-i-orion-heat-shield-char-loss/">NASA — NASA Identifies Cause of Artemis I Orion Heat Shield Char Loss</a>, 5 December 2024. Historical case study; not a statement of current flight readiness.</p>
+    </section>
 
-      <p>Crew capacity barely moved across sixty years, from one seat to four. That's not
-      because engineers couldn't fit more people in. Fitting more people in was never actually
-      the hard problem — surviving the trip, and doing it again on the next flight, was.</p>
-    </div>
+    <p class="note">Source check: 25 September 2026. The explanations on this page are paraphrased from the linked NASA material. No spacecraft performance figures are inferred from a visual model.</p>
 
     <div class="continue-explore">
       <h2>Related Technologies</h2>

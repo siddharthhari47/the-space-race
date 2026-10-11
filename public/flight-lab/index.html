@@ -14,7 +14,7 @@
   <script type="module" src="/assets/js/components/index.js"></script>
   <script type="module" src="/assets/js/systems/instruments.js"></script>
   <script type="module" src="/assets/js/pages/aircraft-world.js" defer></script>
-</head>
+<link rel="stylesheet" href="/assets/css/flight-path.css" /><script type="module" src="/assets/js/pages/mission-entry.js"></script><link rel="stylesheet" href="/assets/css/departure-comparison.css" /></head>
 <body data-world="aircraft">
   <site-header current="flight-lab"></site-header>
 
@@ -29,6 +29,8 @@
         different answer, and they all fit on one chart.
       </p>
     </section>
+
+    <section class="exhibit frame"><p class="tag tag-accent">Pick your problem</p><div class="mission-choices"><article class="mission-choice"><p class="tag">Mission 01 · Cargo</p><h2>The cargo has to go.</h2><p>Load one aircraft, fix its balance, then take that exact manifest to a 450 m runway. Your choices carry through.</p><a class="ctrl ctrl-primary" href="cargo-mission.html" data-mission-entry>Take the cargo mission →</a></article><article class="mission-choice"><p class="tag">Mission 02 · Departure window</p><h2>The cargo stays. Pick your air.</h2><p>Start with a fixed, balanced load. Test three temperatures against one 650 m runway. Find out what changes when the cargo cannot.</p><a class="ctrl" href="departure-window.html">Try the departure window →</a></article></div></section><section class="exhibit frame"><p class="tag tag-accent">New experiment · loading &amp; balance</p><h2 class="exhibit-title">Same aircraft. Same weight. Very different afternoon.</h2><p class="exhibit-sub">Move the passengers and baggage, then find out why where you put them matters.</p><a class="ctrl" href="loading-and-balance.html#loading">Please stop moving the luggage →</a></section>
 
     <!-- ================= EXHIBIT 01: THE ENVELOPE ================= -->
     <section class="exhibit frame" id="envelope">
@@ -266,7 +268,7 @@
         </p>
       </div>
     </section>
-  </main>
+  <section class="exhibit frame"><h2>You have one runway.</h2><p>Hot day. Heavy aircraft. Find out which one runs out first: your problems or your runway.</p><a class="ctrl" href="/flight-lab/runway.html">Try the runway challenge →</a></section><nav class="flight-path frame" aria-label="Flight Lab experiments"><h2>Try it. Change something. See what happens.</h2><p>Pick an experiment or jump straight into the cargo mission. The measured wing data stay separate from the fictional loading and runway models.</p><ol><li><a href="/flight-lab/aerodynamics.html"><strong>01 · Wing</strong><span>Measured airfoil experiment</span></a></li><li><a href="/flight-lab/loading-and-balance.html"><strong>02 · Loading</strong><span>Move loads and check the balance</span></a></li><li><a href="/flight-lab/runway.html"><strong>03 · Runway</strong><span>Explore a fictional ground run</span></a></li><li><a href="/flight-lab/cargo-mission.html"><strong>04 · Mission</strong><span>Carry your decisions through</span></a></li></ol></nav></main>
 
   <site-footer></site-footer>
 </body>

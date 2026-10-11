@@ -12,3 +12,15 @@ Lecture *.pdf
 
 # Local, pre-change archives kept as rollback mirrors.
 mirrors/
+
+# Python bytecode from the build tools.
+__pycache__/
+
+# Throwaway patch scripts and probes written while working. Not part of the
+# build and not worth keeping.
+tools/scratch/
+
+.vercel
+.env*
+.firecrawl/
+/output/

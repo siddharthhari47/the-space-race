@@ -8,6 +8,8 @@
 // hole where a canvas should be.
 
 import { createApolloScene, prefersReducedMotion } from "./scene.js";
+import { createCountdown } from "./countdown.js";
+import { createFlare } from "./flare.js";
 
 function webglAvailable() {
   try {
@@ -71,6 +73,32 @@ function boot() {
   scene.ready
     .then(() => {
       container.dataset.apolloState = prefersReducedMotion ? "still" : "ready";
+
+      // The count is mounted here rather than at scene creation because
+      // this is the first moment it would be telling the truth. Before the
+      // textures resolve there is no planet to launch from, and a clock
+      // ticking over a blank rectangle promises something the page has not
+      // yet proved it can deliver. It attaches to the container so it
+      // inherits the layer's own aria-hidden and disappears with it.
+      const countdown = createCountdown({ mount: container });
+
+      // The flare does not go in the container with everything else, and
+      // that is the whole reason it exists as a separate element: the
+      // container is behind main's readability scrim, which caps anything
+      // underneath it at about a sixth of its brightness. Mounted inside
+      // main instead, with z-index -1, it paints above main's own
+      // background and below main's content -- brighter than the canvas can
+      // be, without taking a single point of contrast off the text.
+      //
+      // If main is missing for any reason, so is the flare. It is an
+      // embellishment on an embellishment and not worth a fallback.
+      const main = document.querySelector("main");
+      const flare = main ? createFlare({ mount: main }) : null;
+
+      scene.onFrame((p, s) => {
+        countdown.set(p);
+        if (flare) flare.set(s.flare);
+      });
     })
     .catch((error) => {
       console.warn("Apollo layer could not load its textures:", error);

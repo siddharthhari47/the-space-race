@@ -121,9 +121,9 @@
         <p class="finding">
           Unless you choose an inclination that makes the drift come out at
           <em>exactly one revolution per year</em>. Then the orbit plane keeps a fixed angle to
-          the Sun, and the satellite crosses every latitude at the same local time on every
-          single pass — so today's image and last month's image have identical lighting and
-          identical shadows. The nuisance becomes the instrument.
+          the Sun. Passes at consistent local solar times make images more comparable in
+          lighting and shadows, rather than guaranteeing identical illumination.
+          <a href="https://www.esa.int/Enabling_Support/Space_Transportation/Types_of_orbits">ESA explains this imaging advantage.</a>
         </p>
 
         <p class="note" data-sso></p>
@@ -168,18 +168,46 @@
           </table>
         </div>
 
-        <p class="note">
-          This is the real reason the ISS sits at 51.6°. It is not an optimum for science or
-          coverage — it is the lowest inclination reachable from Baikonur, and the station had
-          to be somewhere Soyuz could get to.
-        </p>
-
         <callout-box type="did-you-know">
           <p>Geostationary orbit was not proposed by an engineer. In a 1945 magazine article,
           the science fiction writer Arthur C. Clarke worked out that a satellite at the right
           altitude above the equator would circle at exactly the rate Earth turns, and appear
           to hang motionless. Television and weather satellites still park there.</p>
         </callout-box>
+      </div>
+    </section>
+
+    <section class="exhibit frame" id="mission-to-orbit">
+      <div class="exhibit-head">
+        <span class="exhibit-index">04</span>
+        <div>
+          <h2 class="exhibit-title">Choose the job. Then choose the orbit.</h2>
+          <p class="exhibit-sub">Altitude is only part of the decision.</p>
+        </div>
+      </div>
+      <div class="exhibit-body">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <caption>Mission examples explained in ESA’s Types of orbits guide</caption>
+            <thead><tr><th scope="col">Mission need</th><th scope="col">Orbit to investigate</th><th scope="col">Reason</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Watch one region continuously</th><td>Geostationary</td><td>An equatorial satellite matching Earth’s rotation appears fixed in the sky. Ground antennas can keep pointing in the same direction.</td></tr>
+              <tr><th scope="row">Compare Earth images over time</th><td>Sun-synchronous</td><td>Passes at consistent local solar times make lighting conditions more comparable.</td></tr>
+              <tr><th scope="row">Provide navigation coverage</th><td>Medium Earth orbit</td><td>ESA’s Galileo is an example of a navigation constellation using MEO.</td></tr>
+              <tr><th scope="row">Image Earth from nearby</th><td>Low Earth orbit</td><td>Proximity supports high-resolution imaging. A moving satellite’s coverage differs from a fixed GEO view.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="source-detail">
+          <summary>Why “delivered to GTO” does not mean “already in GEO”</summary>
+          <ol class="note">
+            <li>The launcher can release the satellite into an elliptical geostationary transfer orbit.</li>
+            <li>The satellite travels towards apogee, the point farthest from Earth.</li>
+            <li>Onboard propulsion changes the orbit. In ESA’s conventional example, a burn at GEO altitude circularises it; the manoeuvre can also remove inclination.</li>
+          </ol>
+          <p class="note">A transfer orbit is an intermediate path. ESA also describes supersynchronous transfers, so the conventional sequence is an example rather than a rule for every mission.</p>
+        </details>
+        <p class="note">Source: <a href="https://www.esa.int/Enabling_Support/Space_Transportation/Types_of_orbits">ESA — Types of orbits</a>, sections on GEO, LEO, SSO, MEO and transfer orbits. Adapted explanation, checked 25 September 2026.</p>
       </div>
     </section>
 
