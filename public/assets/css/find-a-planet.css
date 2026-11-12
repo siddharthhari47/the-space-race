@@ -1,0 +1,399 @@
+/* Find a planet.
+
+   The stage, panel, instruments and exhibit headings come from museum.css.
+   This file adds what this page needs: a wide stage, because a light curve
+   is a long thin thing; the prediction buttons; the step swapping in the
+   panel; and the results table and size circles. Class names start fp-. */
+
+.fp-head {
+  padding-top: clamp(1rem, 2.5vh, 1.75rem);
+  padding-bottom: 0;
+}
+
+.fp-head .world-title {
+  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+  margin: 0.2rem 0 0.4rem;
+}
+
+.fp-head .world-lede {
+  max-width: 100ch;
+}
+
+@media (min-width: 881px) {
+  .fp-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1.2rem;
+  }
+
+  .fp-head .back-link,
+  .fp-head .tag {
+    margin: 0;
+  }
+
+  .fp-head .world-title,
+  .fp-head .world-lede {
+    flex: 1 1 100%;
+  }
+}
+
+.fp-exhibit {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  border-top: 0;
+}
+
+/* Wider than tall on a desktop: ten days of readings need the width more
+   than the brightness axis needs the height. */
+.fp-stage {
+  aspect-ratio: 4 / 3;
+  max-height: min(78vh, calc(100vh - 14rem));
+  min-height: 22rem;
+  border: 0;
+}
+
+/* museum.css turns off touch scrolling on every stage canvas. Here a finger
+   on the plot should still scroll the page, except while the measuring line
+   is up, when a vertical drag moves the line instead. */
+/* Side by side, the panel grows taller than the plot on the stacking step,
+   and the grid's rule colour, which draws the 1 px divider, would show as a
+   grey slab under the canvas. The lab takes the stage's darkest colour
+   instead and the stage draws its own divider. */
+@media (min-width: 881px) {
+  .fp-lab {
+    background: var(--w-bg);
+    align-items: start;
+  }
+
+  .fp-stage {
+    box-shadow: 1px 0 0 var(--rule);
+  }
+
+  .fp-panel {
+    align-self: stretch;
+  }
+}
+
+.fp-stage canvas {
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.fp-stage[data-drag] canvas {
+  touch-action: none;
+  cursor: ns-resize;
+}
+
+.fp-panel {
+  border: 0;
+  background: var(--ink-panel);
+}
+
+.fp-step[hidden],
+.fp-found[hidden],
+.fp-hint[hidden],
+.fp-results[hidden],
+.fp-step [hidden] {
+  display: none;
+}
+
+.fp-step {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.fp-q {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--type-hi);
+}
+
+.fp-q:focus-visible {
+  outline: 2px solid var(--w-accent);
+  outline-offset: 4px;
+}
+
+.fp-ask {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.fp-ask-q {
+  margin: 0;
+  color: var(--type);
+  font-size: 0.95rem;
+}
+
+.fp-options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.fp-opt {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.3rem;
+  text-align: center;
+}
+
+.fp-opt[aria-pressed="true"] {
+  border-color: var(--w-accent);
+  color: var(--type-hi);
+  background: var(--w-accent-soft);
+}
+
+.fp-opt[aria-pressed="true"]:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.fp-step .ctrl {
+  min-height: 2.75rem;
+}
+
+.fp-go {
+  min-height: 3rem;
+  width: 100%;
+}
+
+.fp-found {
+  display: grid;
+  gap: 0.8rem;
+  border-left: 2px solid var(--w-accent);
+  padding: 0.1rem 0 0.1rem 0.8rem;
+}
+
+.fp-found .result-verdict {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.fp-period[data-state="good"],
+.fp-verdict[data-state="good"] {
+  border-left-color: #7cf0be;
+}
+
+.fp-period[data-state="bad"] {
+  border-left-color: #ff8f8f;
+}
+
+.fp-verdict {
+  border-left: 2px solid var(--rule-bright);
+  padding-left: 0.7rem;
+}
+
+.fp-verdict[data-state="warn"] {
+  border-left-color: #ffd27a;
+}
+
+.fp-text {
+  margin: 0;
+  color: var(--type);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.fp-formula {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--type-dim);
+  overflow-wrap: anywhere;
+}
+
+.fp-readouts {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.fp-hint {
+  border-left: 2px solid #ffd27a;
+  padding-left: 0.8rem;
+  color: var(--type);
+}
+
+.fp-skip {
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* A text link, but a 44 px tall target on a phone. */
+.fp-skip a {
+  display: inline-block;
+  padding: 0.8rem 0;
+}
+
+/* ---------- Results ---------- */
+
+.fp-score-line {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--type-hi);
+}
+
+.fp-scores {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.fp-pred {
+  border-left: 2px solid var(--rule-bright);
+  padding: 0.1rem 0 0.1rem 0.8rem;
+}
+
+.fp-pred[data-state="good"] { border-left-color: #7cf0be; }
+.fp-pred[data-state="bad"]  { border-left-color: #ff8f8f; }
+
+.fp-pred-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.fp-sizes {
+  margin: 1.5rem 0;
+}
+
+.fp-sizes svg {
+  display: block;
+  width: 100%;
+  max-width: 34rem;
+  height: auto;
+}
+
+.fp-sizes text {
+  fill: var(--type-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.fp-c-real {
+  fill: none;
+  stroke: var(--type-dim);
+  stroke-width: 1.5;
+}
+
+.fp-c-you {
+  fill: var(--w-accent-soft);
+  stroke: var(--w-accent);
+  stroke-width: 1.5;
+}
+
+.fp-sizes figcaption {
+  margin-top: 0.5rem;
+  color: var(--type-faint);
+  font-size: 0.8rem;
+}
+
+.fp-table th.num,
+.fp-table td.num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.fp-table th:last-child,
+.fp-table td:last-child {
+  padding-right: 1.1rem;
+}
+
+.fp-table tbody th {
+  font-weight: 500;
+  text-align: left;
+}
+
+.fp-table .fp-sep th {
+  padding-top: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.fp-table-note {
+  margin: 0.6rem 0 1.5rem;
+  color: var(--type-faint);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 880px) {
+  .fp-stage {
+    max-height: none;
+    min-height: 0;
+  }
+
+  /* On steps with a slider the plot stays at the top of the screen, so the
+     dip can be watched while the slider is moved. Shorter than the resting
+     plot, to leave room for the controls under it. */
+  .fp-stage[data-sticky] {
+    position: sticky;
+    top: 3.6rem;
+    z-index: 5;
+    aspect-ratio: auto;
+    height: min(42vh, 20rem);
+  }
+
+  .fp-step .fp-q,
+  .fp-step button,
+  .fp-step lab-control {
+    scroll-margin-top: calc(3.6rem + min(42vh, 20rem));
+  }
+
+  .fp-exhibit {
+    padding-top: 1rem;
+  }
+
+  .fp-q {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .fp-head {
+    padding-top: 1.75rem;
+  }
+
+  .fp-head .world-title {
+    font-size: 2.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .fp-head .world-lede {
+    font-size: 1rem;
+  }
+
+  /* Taller on a phone: the stacking view stacks two plots, and a 4:3 box
+     375 px wide leaves each of them too short to read. */
+  .fp-stage {
+    aspect-ratio: 1 / 1.05;
+  }
+
+  .fp-stage[data-sticky] {
+    aspect-ratio: auto;
+  }
+
+  .fp-scores {
+    grid-template-columns: 1fr;
+  }
+
+  .stage-caption {
+    font-size: 0.68rem;
+  }
+}

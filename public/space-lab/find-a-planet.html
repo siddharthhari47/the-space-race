@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find a planet — The Space Race</title>
+  <meta name="description" content="Find planets the way the Kepler telescope did: spot the dip in a star's light, measure how deep it is to get the planet's size, time the dips to get its year, and stack a year of data to find an Earth-size planet hidden in the noise." />
+  <link rel="icon" href="../assets/images/logo-header.webp" type="image/webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
+  <link rel="stylesheet" href="../assets/css/find-a-planet.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/systems/instruments.js"></script>
+  <script type="module" src="/assets/js/pages/find-a-planet.js" defer></script>
+</head>
+<body data-world="space">
+  <site-header current="space-lab"></site-header>
+
+  <main>
+    <section class="world-head frame fp-head">
+      <a class="back-link" href="index.html">&larr; Space</a>
+      <p class="tag tag-accent">S·09</p>
+      <h1 class="world-title">Find a planet</h1>
+      <p class="world-lede">
+        Most of the planets known around other stars were found the same way. A planet
+        crossing its star blocks a little of its light, and a telescope records the dip.
+      </p>
+    </section>
+
+    <!-- ================= EXHIBIT 01: THE HUNT ================= -->
+    <section class="exhibit frame fp-exhibit" id="hunt">
+      <div class="orbit-lab fp-lab">
+        <div class="stage fp-stage">
+          <canvas id="planet-canvas" role="img" aria-label="The Sun with Jupiter and Earth in front of it, to scale."></canvas>
+        </div>
+
+        <div class="panel fp-panel">
+          <div class="panel-head">
+            <span>Light curves</span>
+            <span data-status>Predict</span>
+          </div>
+          <div class="panel-body">
+
+            <div class="fp-step" data-step="predict">
+              <h2 class="fp-q" tabindex="-1">How much light does a planet block?</h2>
+              <p class="panel-note">
+                Guess first. Your answers are kept until the end.
+              </p>
+              <div class="fp-ask">
+                <p class="fp-ask-q" id="q-jupiter">Jupiter crossing the Sun dims it by about</p>
+                <div class="fp-options" role="group" aria-labelledby="q-jupiter">
+                  <button class="ctrl fp-opt" type="button" data-q="jupiter" data-v="0.0001" aria-pressed="false">0.01%</button>
+                  <button class="ctrl fp-opt" type="button" data-q="jupiter" data-v="0.001" aria-pressed="false">0.1%</button>
+                  <button class="ctrl fp-opt" type="button" data-q="jupiter" data-v="0.01" aria-pressed="false">1%</button>
+                  <button class="ctrl fp-opt" type="button" data-q="jupiter" data-v="0.1" aria-pressed="false">10%</button>
+                </div>
+              </div>
+              <div class="fp-ask">
+                <p class="fp-ask-q" id="q-earth">Earth crossing the Sun dims it by about</p>
+                <div class="fp-options" role="group" aria-labelledby="q-earth">
+                  <button class="ctrl fp-opt" type="button" data-q="earth" data-v="0.0001" aria-pressed="false">0.01%</button>
+                  <button class="ctrl fp-opt" type="button" data-q="earth" data-v="0.001" aria-pressed="false">0.1%</button>
+                  <button class="ctrl fp-opt" type="button" data-q="earth" data-v="0.01" aria-pressed="false">1%</button>
+                  <button class="ctrl fp-opt" type="button" data-q="earth" data-v="0.1" aria-pressed="false">10%</button>
+                </div>
+              </div>
+              <button class="ctrl ctrl-primary fp-go" type="button" data-start disabled>Start level 1</button>
+            </div>
+
+            <div class="fp-step" data-step="l1-find" hidden>
+              <h2 class="fp-q" tabindex="-1">Level 1: find the dip</h2>
+              <p class="panel-note">
+                Ten days of brightness readings from a star the size of the Sun. Once in
+                that time a planet the size of Jupiter crosses in front of it. Tap the dip.
+              </p>
+              <p class="panel-note fp-hint" data-hint hidden></p>
+              <lab-control name="t1" label="Time" unit="days" min="0" max="10" step="0.05" value="0"></lab-control>
+              <div class="ctrl-row">
+                <button class="ctrl" type="button" data-mark>Mark a dip here</button>
+                <button class="ctrl" type="button" data-showme hidden>Show me</button>
+              </div>
+              <div class="fp-found" data-found hidden>
+                <p class="result-verdict" data-state="good">Found it</p>
+                <p class="fp-text" data-found-text></p>
+                <button class="ctrl ctrl-primary fp-go" type="button" data-to-measure>Measure how deep it is</button>
+              </div>
+            </div>
+
+            <div class="fp-step" data-step="l1-measure" hidden>
+              <h2 class="fp-q" tabindex="-1">How deep is the dip?</h2>
+              <p class="panel-note">
+                Drag the yellow line to the bottom of the dip, through the middle of the low
+                readings. The planet's size under the plot changes as the line moves. The
+                Line slider moves it too.
+              </p>
+              <lab-control name="line" label="Line" unit="% dimmer" min="0" max="2" step="0.01" value="0.3"></lab-control>
+              <div class="readout-row fp-readouts">
+                <lab-readout data-out="rkm" label="Radius" unit="km" decimals="0"></lab-readout>
+                <lab-readout data-out="rj" label="Jupiter radii" decimals="2"></lab-readout>
+                <lab-readout data-out="re" label="Earth radii" decimals="1"></lab-readout>
+              </div>
+              <button class="ctrl ctrl-primary fp-go" type="button" data-measure>Lock in the line</button>
+              <div class="fp-found" data-measured hidden>
+                <p class="fp-text fp-formula" data-formula></p>
+                <p class="fp-text fp-verdict" data-measure-verdict></p>
+                <button class="ctrl ctrl-primary fp-go" type="button" data-to-l2>Next: level 2</button>
+              </div>
+            </div>
+
+            <div class="fp-step" data-step="l2-find" hidden>
+              <h2 class="fp-q" tabindex="-1">Level 2: how long is its year?</h2>
+              <p class="panel-note">
+                Twenty days of another star the size of the Sun. This planet crosses several
+                times, once each orbit. Mark two dips that come one after the other.
+              </p>
+              <p class="panel-note fp-hint" data-hint hidden></p>
+              <lab-control name="t2" label="Time" unit="days" min="0" max="20" step="0.05" value="0"></lab-control>
+              <div class="ctrl-row">
+                <button class="ctrl" type="button" data-mark>Mark a dip here</button>
+                <button class="ctrl" type="button" data-showme hidden>Show me</button>
+              </div>
+              <div class="fp-found fp-period" data-period hidden>
+                <p class="fp-text" data-period-text></p>
+                <button class="ctrl ctrl-primary fp-go" type="button" data-to-l3 hidden>Next: level 3</button>
+              </div>
+            </div>
+
+            <div class="fp-step" data-step="l3-raw" hidden>
+              <h2 class="fp-q" tabindex="-1">Level 3: a planet the size of Earth</h2>
+              <p class="panel-note">
+                400 days of a third Sun-size star. An Earth-size planet crosses it every
+                12.3 days, at each blue tick. Each crossing dims the star by 84 parts per
+                million; each reading scatters by about 250 parts per million. One dip is lost in the noise.
+              </p>
+              <button class="ctrl ctrl-primary fp-go" type="button" data-stack>Stack the transits</button>
+            </div>
+
+            <div class="fp-step" data-step="l3-fold" hidden>
+              <h2 class="fp-q" tabindex="-1">Stacking the transits</h2>
+              <p class="panel-note">
+                Each reading is moved to its time from the nearest crossing, so the crossings
+                pile up on top of each other. The blue line is the average for each three hours.
+              </p>
+              <lab-control name="count" label="Transits stacked" min="1" max="33" step="1" value="1"></lab-control>
+              <button class="ctrl" type="button" data-play>Play</button>
+              <div class="readout-row fp-readouts">
+                <lab-readout data-out="depth" label="Dip" unit="ppm" decimals="0"></lab-readout>
+                <lab-readout data-out="err" label="Noise &plusmn;" unit="ppm" decimals="0"></lab-readout>
+                <lab-readout data-out="rc" label="Earth radii" decimals="2"></lab-readout>
+              </div>
+              <p class="fp-text" data-fold-note></p>
+              <lab-control name="period" label="Fold at" unit="days" min="11.9" max="12.7" step="0.01" value="12.3"></lab-control>
+              <p class="panel-note">Try a wrong period and watch the dip smear out.</p>
+              <button class="ctrl ctrl-primary fp-go" type="button" data-finish>See what you found</button>
+            </div>
+
+            <div class="fp-step" data-step="done" hidden>
+              <h2 class="result-verdict fp-q" data-state="good" tabindex="-1">Three planets found</h2>
+              <p class="fp-text">
+                One the size of Jupiter, one with a 4.2-day year, and one the size of Earth
+                that only showed up once its transits were stacked.
+              </p>
+              <div class="ctrl-row">
+                <a class="ctrl ctrl-primary" href="#results">See the results</a>
+                <button class="ctrl" type="button" data-restart>Play again</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-caption">
+        <span><strong>Simulated</strong> every light curve here is made up; the dip sizes come from real radii</span>
+        <span><strong>Model</strong> an evenly bright star, white noise, one reading every 30 minutes</span>
+        <span><a href="/references/index.html#find-a-planet">Sources and constants</a></span>
+      </div>
+
+      <p class="fp-skip"><a href="#results" data-show-results>Skip the game and read the results</a></p>
+
+      <div class="visually-hidden" role="status" aria-live="polite" data-live></div>
+    </section>
+
+    <!-- ================= EXHIBIT 02: RESULTS ================= -->
+    <section class="exhibit frame fp-results" id="results" hidden>
+      <div class="exhibit-head">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title">What you found</h2>
+        </div>
+      </div>
+
+      <div class="exhibit-body">
+        <p class="fp-score-line" data-score-line></p>
+        <div class="fp-scores">
+          <div class="fp-pred" data-score="jupiter">
+            <span class="fp-pred-label">Jupiter crossing the Sun</span>
+            <p class="fp-text" data-score-text></p>
+          </div>
+          <div class="fp-pred" data-score="earth">
+            <span class="fp-pred-label">Earth crossing the Sun</span>
+            <p class="fp-text" data-score-text></p>
+          </div>
+        </div>
+
+        <p class="note" data-copy="depth"></p>
+
+        <figure class="fp-sizes">
+          <div data-sizes></div>
+          <figcaption>Radii to scale. Your planets are the ones you measured; anything under a pixel is drawn at a pixel and a half.</figcaption>
+        </figure>
+
+        <p class="note">
+          The depth gives the size. The time from one dip to the next gives the length of
+          the planet's year, as long as the two dips are neighbours: two dips with another
+          between them are two orbits apart. A planet with a long year may cross only once
+          while the telescope is watching, as in level 1, and then the year stays unknown.
+        </p>
+
+        <p class="note">
+          A small planet's dip can be smaller than the scatter in the readings, so one
+          crossing on its own shows nothing. Stacking many crossings averages the noise
+          down: the scatter in an average of N readings falls as one over the square root
+          of N, so 33 crossings cut it almost six times while the dip stays the same depth.
+          It only works at the right period. At a wrong one the crossings land in different
+          places and cancel out.
+        </p>
+
+        <div class="data-table-wrap">
+          <table class="data-table fp-table">
+            <caption class="visually-hidden">Your planets next to Earth, Jupiter and three real exoplanets</caption>
+            <thead>
+              <tr>
+                <th scope="col">Planet</th>
+                <th scope="col" class="num">Radius, km</th>
+                <th scope="col" class="num">Earth radii</th>
+                <th scope="col" class="num">Year, days</th>
+                <th scope="col" class="num">Measured dip</th>
+                <th scope="col" class="num">(R<sub>p</sub>/R<sub>&#9733;</sub>)&sup2;</th>
+              </tr>
+            </thead>
+            <tbody data-table></tbody>
+          </table>
+        </div>
+        <p class="fp-table-note">
+          The last column is worked out on this page from the radii: the planet's over its
+          star's, squared. For the real planets the radii, years and measured dips are from
+          the NASA Exoplanet Archive. Real dips differ a little from the simple formula, partly
+          because a real star is darker towards its edge, which this exhibit leaves out.
+          Planets A, B and C come from the simulated light curves above, not from a telescope.
+          Planet A's year is unknown because only one dip was seen in ten days.
+        </p>
+
+        <p class="note">
+          TRAPPIST-1 e is about the size of Earth, but its dip is 0.5%, sixty times Earth's
+          across the Sun. Its star is only about an eighth of the Sun's width, so the same
+          planet covers far more of it. Kepler-22 b is twice Earth's width around a star a
+          little smaller than the Sun, and its dip is about 0.05%.
+        </p>
+
+        <p class="note">
+          NASA's Kepler telescope, launched on 6 March 2009, watched about 150,000 stars
+          for dips like these and found more than 2,600 planets before it was retired on
+          30 October 2018. Most of the planets known around other stars were found this way.
+        </p>
+
+        <p class="finding">
+          How deep the dip is tells you how big the planet is. How often it comes back tells
+          you how long its year is.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

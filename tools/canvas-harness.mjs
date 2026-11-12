@@ -182,6 +182,57 @@ export function installDom({ width = 1280, height = 820, dpr = 2, reducedMotion 
 
 /* ---------- Runner ---------- */
 
+/* ---------- Find a planet canvas states ----------
+
+   The same shapes pages/find-a-planet.js hands its canvas, built here from
+   systems/transit.js, so a change to the transit module that broke a view
+   (a NaN depth, an empty fold) fails here without a browser. */
+const FP_STATES = {
+  "predict": 1, "level 1 found": 1, "level 1 measuring": 1, "level 2 two marked": 1,
+  "level 2 not neighbours": 1, "level 2 hint": 1, "level 3 raw": 1, "level 3 one stacked": 1,
+  "level 3 all stacked": 1, "level 3 wrong period": 1,
+};
+
+async function fpState(label) {
+  const T = await import("../public/assets/js/systems/transit.js");
+  const one = T.makeLevel("one");
+  const two = T.makeLevel("two");
+  const three = T.makeLevel("three");
+  const P3 = three.planet;
+  const fold = (period, count) => {
+    const f = T.fold(three, { period, t0: P3.t0, count, window: 1, binDays: 1 / 8 });
+    const d = T.stackedDepth(three, { ...P3, period, count });
+    return {
+      mode: "fold", curve: three, fold: { ...f, period, t0: P3.t0, count, depth: d },
+      title: "Level 3: stacking",
+      foldTitle: `${count} of 33 stacked, folded at ${period.toFixed(2)} days`,
+      stripRange: [-0.0012, 0.0009], yRange: [-0.00018, 0.0001],
+      clear: d.depth > 3 * d.err, halfDuration: P3.duration / 2,
+      measured: d.depth, measuredLabel: d.depth > 3 * d.err ? `dip ${T.ppm(d.depth)} ppm` : "",
+    };
+  };
+  const l1 = { mode: "raw", curve: one, yRange: [-0.02, 0.006], unit: "pct", title: "Level 1: 10 days" };
+  const l2 = { mode: "raw", curve: two, yRange: [-0.008, 0.004], unit: "pct", title: "Level 2: 20 days" };
+  const m2 = (a, b, ok, gap) => ({
+    ...l2,
+    marks: [{ t: two.transits[a], ok: true, label: "dip A" }, { t: two.transits[b], ok: true, label: "dip B" }],
+    span: { a: two.transits[a], b: two.transits[b], ok, label: ok ? `${gap} days` : `${gap} days, not one orbit` },
+  });
+  switch (label) {
+    case "predict": return { mode: "intro" };
+    case "level 1 found": return { ...l1, marks: [{ t: one.transits[0], ok: true, label: "dip" }, { t: 2.1, ok: false }], cursor: 6.3 };
+    case "level 1 measuring": return { ...l1, marks: [{ t: one.transits[0], ok: true, label: "dip" }], level: -0.0104, levelLabel: "your line: 1.04% dimmer" };
+    case "level 2 two marked": return m2(1, 2, true, "4.2");
+    case "level 2 not neighbours": return m2(0, 2, false, "8.4");
+    case "level 2 hint": return { ...l2, hint: true, marks: [{ t: 9.0, ok: false }], cursor: 9 };
+    case "level 3 raw": return { mode: "raw", curve: three, yRange: [-0.0012, 0.0009], unit: "ppm", title: "Level 3: 400 days", ticks: true };
+    case "level 3 one stacked": return fold(P3.period, 1);
+    case "level 3 all stacked": return fold(P3.period, 33);
+    case "level 3 wrong period": return fold(12.62, 33);
+    default: throw new Error(label);
+  }
+}
+
 async function run() {
   let failures = 0;
 
@@ -329,6 +380,17 @@ async function run() {
         },
       }));
     })(),
+    // Find a planet, in each view the page can show. States are built from
+    // the same transit module the page runs, with the same y ranges, so a
+    // change that produced a NaN depth or an empty fold shows up here.
+    ...Object.keys(FP_STATES).map((label) => ({
+      name: `find-a-planet (${label})`,
+      module: "../public/assets/js/experiences/find-a-planet.js",
+      mount: async (m, canvas) => {
+        const st = await fpState(label);
+        return m.mountFindPlanet(canvas, { getState: () => st }).stage;
+      },
+    })),
     {
       name: "atmosphere-column (sea level)",
       module: "../public/assets/js/experiences/atmosphere-column.js",
@@ -500,6 +562,64 @@ ok    Stage clamps a backwards frame timestamp (dt = ${seen.map((d) => d.toFixed
     }
     if (bad) failures += bad;
     else console.log(`ok    mars-window result labels: no overlaps or clipping across ${runs} layouts`);
+  }
+
+  /* ---------- Find a planet: labels must not overprint or clip ----------
+
+     The light-curve canvas carries a title, the SIMULATED DATA tag, axis
+     titles, tick numbers, dip labels and the measuring line's label. On a
+     phone the stage is about 343 px wide, and the tick numbers, the "days"
+     title and a dip label near the right edge all compete for the same strip.
+     This draws every page state at the phone stage size and at the stage
+     size a 1280 px window gives, and fails on any overlap, any label box
+     outside the canvas, or a light-curve view without its SIMULATED DATA
+     tag. */
+  {
+    const boxOf = (t) => {
+      const left = t.align === "center" ? t.x - t.width / 2 : t.align === "right" ? t.x - t.width : t.x;
+      const top = t.base === "middle" ? t.y - t.size / 2 : t.base === "top" ? t.y : t.y - t.size;
+      return { left, right: left + t.width, top, bottom: top + t.size, str: t.str };
+    };
+    let bad = 0;
+    let runs = 0;
+    // 375 px window: a 343 x 360 stage. 1280 px window: about 848 x 576.
+    for (const [w, h, label] of [[343, 360, "375"], [848, 576, "1280"]]) {
+      for (const state of Object.keys(FP_STATES)) {
+        const dom = installDom({ width: w, height: h, dpr: 1 });
+        const canvas = dom.makeCanvas(w, h);
+        const mod = await import("../public/assets/js/experiences/find-a-planet.js?lbl=" + Math.random());
+        const st = await fpState(state);
+        const stage = mod.mountFindPlanet(canvas, { getState: () => st }).stage;
+        for (let i = 0; i < 3; i++) dom.step(16.7);
+        // Only the last frame's labels.
+        const before = canvas._rec.texts.length;
+        dom.step(16.7);
+        const frame = canvas._rec.texts.slice(before).map(boxOf);
+        runs++;
+        if (frame.length === 0) { console.log(`FAIL  find-a-planet labels: no text drawn, ${state} @ ${label}`); bad++; }
+        if (st.mode !== "intro" && !frame.some((b) => b.str === "SIMULATED DATA")) {
+          console.log(`FAIL  find-a-planet ${state} @ ${label}: no SIMULATED DATA label`);
+          bad++;
+        }
+        for (let i = 0; i < frame.length; i++) {
+          const a = frame[i];
+          if (a.left < 0 || a.top < 0 || a.right > w || a.bottom > h) {
+            console.log(`FAIL  find-a-planet labels, ${state} @ ${label}: "${a.str}" leaves the canvas`);
+            bad++;
+          }
+          for (let j = i + 1; j < frame.length; j++) {
+            const b = frame[j];
+            if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) {
+              console.log(`FAIL  find-a-planet labels, ${state} @ ${label}: "${a.str}" overlaps "${b.str}"`);
+              bad++;
+            }
+          }
+        }
+        stage?.destroy?.();
+      }
+    }
+    if (bad) failures += bad;
+    else console.log(`ok    find-a-planet labels: no overlaps, clipping or missing SIMULATED tag across ${runs} layouts`);
   }
 
   console.log(failures === 0 ? "\nAll scenes clean." : `\n${failures} failing scene/size combinations.`);

@@ -733,6 +733,35 @@
       </info-card>
     </feature-grid>
 
+    <section-header id="find-a-planet" eyebrow="Checked 12 November 2026" title="Space Lab: Find a planet"></section-header>
+    <p class="lab-intro">Sources for the <a href="../space-lab/find-a-planet.html">Find a planet exhibit</a>. Every constant was opened on the date above and is stored, with the row or column it came from, in <code>systems/transit.js</code>; the depths, radii and the last column of the results table are computed from them and tested in <code>tools/find-a-planet-check.mjs</code>. The light curves themselves are simulated, and what the exhibit chooses is set out in the last card.</p>
+    <feature-grid columns="3">
+      <info-card title="Seager &amp; Mall&eacute;n-Ornelas 2003: the transit depth" href="https://arxiv.org/abs/astro-ph/0206228">
+        S. Seager and G. Mall&eacute;n-Ornelas, &ldquo;A Unique Solution of Planet and Star Parameters from an Extrasolar Planet Transit Light Curve&rdquo;, ApJ 585, 1038&ndash;1055 (2003); read as the arXiv <a href="https://arxiv.org/pdf/astro-ph/0206228">PDF</a>. Equation (1) gives the depth of a transit as the fraction of the star&rsquo;s light lost, &Delta;F = (R<sub>p</sub>/R<sub>&#9733;</sub>)&sup2;, for a flat-bottomed transit with limb darkening neglected. Their list of conditions includes that the period can be read from the light curve when two observed transits are consecutive, which is level 2&rsquo;s rule, and section 5 notes that limb darkening affects the depth.
+      </info-card>
+      <info-card title="NASA NSSDCA: Sun Fact Sheet" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html">
+        Last updated 9 May 2024. Volumetric mean radius 695,700 km. Used as the radius of every simulated star and in radius = R<sub>&#9733;</sub> &times; &radic;depth.
+      </info-card>
+      <info-card title="NASA NSSDCA: Earth Fact Sheet" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html">
+        Last updated 15 November 2024. Equatorial radius 6378.137 km and sidereal orbit period 365.256 days. Earth across the Sun: (6378.137 &divide; 695,700)&sup2; = 0.0084%, or 84 parts per million, computed. Level 3&rsquo;s planet has this radius.
+      </info-card>
+      <info-card title="NASA NSSDCA: Jupiter Fact Sheet" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html">
+        Last updated 2 October 2024. Equatorial radius at the 1 bar level 71,492 km and sidereal orbit period 4,332.589 days. Jupiter across the Sun: (71,492 &divide; 695,700)&sup2; = 1.06%, computed. Level 1&rsquo;s planet has this radius and level 2&rsquo;s has 0.6 of it.
+      </info-card>
+      <info-card title="NASA Exoplanet Archive: Planetary Systems Composite Parameters" href="https://exoplanetarchive.ipac.caltech.edu/docs/pscp_calc.html">
+        The <code>pscomppars</code> table, queried through the archive&rsquo;s <a href="https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name,pl_rade,pl_orbper,pl_trandep,st_rad+from+pscomppars+where+pl_name+in+('HD+209458+b','Kepler-22+b','TRAPPIST-1+e')&amp;format=json">TAP service</a>, with units from the <a href="https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html">column definitions</a> (transit depth in percent). HD 209458 b: 15.58 Earth radii, 3.5247 days, depth 1.5%, star 1.19 solar radii (Stassun et al. 2017). Kepler-22 b: 2.1 Earth radii, 289.86 days (Bonomo et al. 2023), depth 0.05019% from the Q1&ndash;Q17 DR24 KOI table, star 0.869 solar radii. TRAPPIST-1 e: 0.92 Earth radii, 6.1010 days, depth 0.5012%, star 0.1192 solar radii (Agol et al. 2021). The composite table takes each value from one reference, so a planet&rsquo;s values can come from different papers.
+      </info-card>
+      <info-card title="NASA Science: What&rsquo;s a transit?" href="https://science.nasa.gov/exoplanets/whats-a-transit/">
+        Modified 8 November 2024. Most known exoplanets were discovered with the transit method; a light curve is a graph of light received over time and dips while a planet passes in front of its star; the planet&rsquo;s size can be worked out from how much the star dims. Behind the page&rsquo;s lede and the explanation in the results.
+      </info-card>
+      <info-card title="NASA Science: Kepler / K2" href="https://science.nasa.gov/mission/kepler/">
+        Modified 5 January 2026. Kepler launched on 6 March 2009, watched about 150,000 stars, found planets by the small dips in brightness as they crossed, and was retired on 30 October 2018 after more than 2,600 planet discoveries. Behind the paragraph on Kepler in the results.
+      </info-card>
+      <info-card title="What the exhibit chooses or leaves out">
+        Every light curve is simulated with a seeded random generator, and labelled so on the canvas. The stars are the Sun&rsquo;s size and evenly bright to the edge (no limb darkening), the noise is white Gaussian noise with no stellar flicker or instrument drift, and each transit crosses the middle of the star with a flat bottom and straight-line ingress and egress. The planets, their periods (none given for level 1, 4.2 and 12.3 days), the transit lengths, the 30-minute cadence, the noise levels (0.12%, 0.08% and 250 ppm), the answer choices and the tap tolerance are this site&rsquo;s own teaching settings. No real star&rsquo;s noise is claimed. Orbit sizes from Kepler&rsquo;s third law are left out.
+      </info-card>
+    </feature-grid>
+
     <section-header eyebrow="Print &amp; Papers" title="Books"></section-header>
     <feature-grid columns="3">
       <info-card title="Book citations" status="coming-soon">
