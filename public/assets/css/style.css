@@ -291,6 +291,10 @@ header.site-header {
   margin: 3rem 0 1.5rem;
 }
 
+/* The top-level index pages write their own title as an h1 in this same
+   block, because <section-header> always emits an h2 and left those pages
+   with no h1 at all. It has to look exactly like the h2 it replaced. */
+.section-heading h1,
 .section-heading h2 {
   font-family: "Space Grotesk", sans-serif;
   font-size: var(--fs-h2);
@@ -1099,9 +1103,18 @@ footer.site-footer a {
 /* ---------- Feature grid ---------- */
 feature-grid {
   display: grid;
-  grid-template-columns: repeat(var(--fg-columns, auto-fit), minmax(220px, 1fr));
+  grid-template-columns: repeat(var(--fg-columns, auto-fit), minmax(min(220px, 100%), 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+}
+
+/* A fixed column count (columns="2" or "3") stops meaning anything once
+   that many 220px columns no longer fit: the grid overflowed the phone
+   instead of wrapping. Below this width let the cards decide how many fit. */
+@media (max-width: 700px) {
+  feature-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  }
 }
 
 /* ---------- Info card / interactive card ---------- */

@@ -1664,16 +1664,28 @@ body[data-world="atrium"] main {
   }
 }
 
-/* On a phone the planet is a texture behind text and nothing more. */
+/* On a phone the vehicle is lifted into the top of the frame (scene.js,
+   PORTRAIT_LIFT) and has to be seen there, so the canvas is nearly at full
+   strength. The glow behind it stays dimmed. What keeps the words readable
+   is the page wash over it, and in the two interludes a backing behind each
+   caption, since on a phone the captions run the whole width of the screen
+   and the desktop's feathered shade is switched off. */
 @media (max-width: 620px) {
-  .apollo-stage canvas,
   .apollo-stage::before {
     opacity: 0.55;
   }
 
   .apollo-stage[data-apollo-state="ready"] canvas,
   .apollo-stage[data-apollo-state="still"] canvas {
-    opacity: 0.55;
+    opacity: 0.92;
+  }
+}
+
+@media (max-width: 720px) {
+  .interlude .interlude-note {
+    padding: 0.9rem 1rem;
+    border-radius: 6px;
+    background: rgba(4, 6, 12, 0.74);
   }
 }
 
@@ -2538,6 +2550,10 @@ section-header[id] {
 .mission-explore{font-size:.85rem;color:var(--type-dim);text-underline-offset:4px}
 .mission-route{font:clamp(.65rem,1vw,.78rem)/1.7 var(--font-mono);color:var(--type);margin:0}
 .mission-route span{color:#e6bd79;margin:0 .3rem}
+/* The route is a row of chapter links; keep it looking like the plain mono line it was. */
+body[data-world] .mission-route a{color:inherit;text-decoration:none;border-bottom:1px dotted #596575;transition:color .2s,border-color .2s}
+body[data-world] .mission-route a:hover{color:#ffe0a7;border-bottom-color:#e6bd79}
+body[data-world] .mission-route a:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .mission-hint{font-size:.76rem;line-height:1.6;color:var(--type-dim);margin:0;max-width:34rem}
 .mission-controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:12px;width:max-content;max-width:calc(100% - 24px);padding:12px 16px;background:#0c1424f5;border:1px solid #596575;border-radius:10px;box-shadow:0 12px 50px #0009;color:#f1e8d7}
 .mission-controls[hidden]{display:none}

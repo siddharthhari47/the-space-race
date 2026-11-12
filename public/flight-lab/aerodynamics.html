@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aerodynamics — The Space Race</title>
   <meta name="description" content="An interactive wing challenge using measured NACA 0012 data. Predict, tilt, reach a lift target, reduce drag, and compare two saved trials." />
-  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="icon" href="../assets/images/logo-header.webp" type="image/webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -130,26 +130,20 @@
 
         <p class="note">
           It also runs backwards from the drag you would expect. Friction drag gets worse the
-          faster you go; induced drag gets worse the <em>slower</em> you go, because a slow wing
-          needs a big lift coefficient to hold the aircraft up. That is precisely why an
-          aeroplane feels most sluggish just after takeoff and just before landing — the two
-          moments it is flying slowest while asking the most of its wing.
+          faster you go. Induced drag depends on the square of the lift coefficient, and a wing
+          flying slowly has to run a bigger lift coefficient to hold the aircraft up, so induced
+          drag gets worse the <em>slower</em> you go.
+          <a href="../references/index.html#aero-history">NASA Glenn ↗</a>
         </p>
 
         <callout-box type="engineering-insight">
-          <p>The upturned wingtips on modern airliners are not styling. A winglet blocks part of
-          that spillage round the tip, which is nearly equivalent to simply making the wing
-          longer — the fix the induced-drag equation above actually calls for — <em>without</em>
-          the structural penalty a longer wing would bring. A longer span means a longer lever arm
-          for the root bending moment, which means a heavier spar to survive it; a winglet buys
-          most of the aerodynamic benefit while adding only a small amount of mass at the tip.
-          It also sidesteps the hard limit that a longer span can hit directly: many airports size
-          their gates to a maximum wingspan, and a winglet does not count against it. You can see
-          one up close on the <a href="interactive-aircraft.html">777-300ER model</a>, one of
-          eighteen parts you can click through.</p>
-          <p style="margin-top:0.75rem; font-size:0.85rem; opacity:0.75;">Source: NPTEL course
-          101101083, <em>Introduction to Aircraft Design</em>, Prof. Rajkumar S. Pant (IIT
-          Bombay), Lecture 27, "Winglets."</p>
+          <p>The upturned wingtips on modern airliners are not styling. NASA Glenn describes the
+          idea behind a winglet as weakening the tip vortex, so the flow across the wing is closer
+          to two-dimensional. Richard Whitcomb of NASA Langley tested and analysed winglets in the
+          mid-1970s, and NASA flight tests on a Boeing 707-type airliner found a 6.5% cut in fuel
+          use. You can see one up close on the <a href="interactive-aircraft.html">777-300ER model</a>.</p>
+          <p style="margin-top:0.75rem; font-size:0.85rem; opacity:0.75;">Source: NASA Glenn,
+          <a href="../references/index.html#aero-history">Winglets and Induced Drag Coefficient ↗</a>.</p>
         </callout-box>
       </div>
     </section>
@@ -167,9 +161,10 @@
         <p class="note">
           Most of us are told that a wing's curved top makes the air travel further, so it has to
           speed up to "catch up" with the air underneath, and faster air means lower pressure,
-          which pulls the wing up. It is neat, it is memorable, and it is wrong. The air going
-          over the top does not arrive at the trailing edge at the same moment as the air
-          underneath — it arrives <em>earlier</em>. There is nothing to catch up to.
+          which pulls the wing up. It is neat, it is memorable, and it is wrong. NASA Glenn
+          says the speed over a lifting wing's top is much higher than the "equal transit"
+          story would give, which means the air over the top gets to the trailing edge
+          <em>earlier</em>. There is nothing to catch up to. <a href="../references/index.html#aero-history">NASA Glenn ↗</a>
         </p>
 
         <p class="note">
@@ -180,9 +175,8 @@
 
         <p class="finding">
           What is actually happening is closer to Newton. A wing angled into the airflow shoves
-          air downwards, and the air shoves back, upwards, exactly as hard. Bernoulli had the
-          pressure side of it in 1738, more than a century before anyone built a working wing —
-          and <em>the pressure difference and the downward deflection are not competing
+          air downwards, and the air shoves back, upwards, exactly as hard. Bernoulli's <em>Hydrodynamica</em> of 1738 already tied pressure to speed
+          (<a href="../references/index.html#aero-history">Britannica ↗</a>) — and <em>the pressure difference and the downward deflection are not competing
           explanations.</em> They are one event described two ways.
         </p>
 
@@ -211,26 +205,29 @@
 
       <div class="exhibit-body reveal">
         <p class="note">
-          Sir George Cayley flew the first gliders carrying a person in 1849, and did it with a
-          cambered, not flat, wing — he had already reasoned his way to the shape from first
-          principles, decades before anyone could measure why it worked. Otto Lilienthal followed
-          with a wing built to flap like a bird's, and the Wright brothers built three gliders of
-          their own, testing wing-warping — twisting the whole wingtip to bank the aircraft,
-          the direct ancestor of the aileron — for the first time in July 1899.
+          Sir George Cayley spent fifty years building gliders. He kept changing the shape of
+          the wings so the air would flow over them properly, added a tail for stability, and
+          had a boy, whose name nobody recorded, fly one of them. Otto Lilienthal went further
+          and flew himself: sixteen types of glider and as many as two thousand glides in
+          five years, steering by shifting his weight. The Wright brothers built one kite in
+          1899 and three gliders after it. The 1899 kite, a biplane with a five-foot span,
+          was where they tried wing-warping first — twisting the wingtips to bank the aircraft,
+          the ancestor of the aileron.
         </p>
 
         <p class="finding">
-          They were also badly misled by their own test equipment. Early wind-tunnel work on thin
-          aerofoils was run at very low speed, and at those conditions the airflow <em>looked</em>
-          attached in the smoke traces while it was actually separating in reality. A generation
-          of designers drew real conclusions from data that was quietly wrong, for reasons that
-          would not become clear until Reynolds number was properly understood.
+          Even good data could mislead them. The Wrights' 1901 glider made only about a third
+          of the lift their calculations predicted, and when they fitted a model wing and a flat plate
+          to a wheel on the front of a bicycle, the wing needed an angle to the wind more than
+          three times what Lilienthal's data had predicted. They stopped trusting the published
+          tables and built their own wind tunnel in October 1901.
         </p>
 
         <callout-box type="did-you-know">
-          <p>Source: NPTEL course 101101079, <em>Introduction to Aerospace Engineering —
-          Flight</em>, Prof. Rajkumar S. Pant (IIT Bombay), Lecture 23, "Aerofoils: A Visit to
-          the Past."</p>
+          <p>Sources: <a href="../references/index.html#aero-history">Smithsonian National Air and Space
+          Museum and NASA Glenn on Cayley, Lilienthal and the Wrights</a>. Background reading:
+          NPTEL course 101101079, <em>Introduction to Aerospace Engineering — Flight</em>,
+          Prof. Rajkumar S. Pant (IIT Bombay), Lecture 23, "Aerofoils: A Visit to the Past."</p>
         </callout-box>
       </div>
     </section>

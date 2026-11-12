@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>References — The Space Race</title>
   <meta name="description" content="Sources behind the facts on this site — agencies, manufacturers, books, papers, and course material, organized and growing." />
-  <link rel="icon" href="../assets/images/logo.webp" />
+  <link rel="icon" href="../assets/images/logo-header.webp" type="image/webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -17,7 +17,12 @@
   <site-header current="references"></site-header>
 
   <main class="container lab-page">
-    <section-header eyebrow="A Living Bibliography" title="References"></section-header>
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow-label">A Living Bibliography</span>
+        <h1>References</h1>
+      </div>
+    </div>
     <p class="lab-intro">
       Every factual page on this site points back here. Some of these sections have real
       sources in them already; a lot are still empty, because "coming soon" is more honest
@@ -143,16 +148,36 @@
       </info-card>
     </feature-grid>
 
-    <p class="lab-intro">
+    <p class="lab-intro" id="apollo-landing">
       The last act of the homepage flight, from undocking behind the Moon to Eagle on the
       ground at Tranquility Base, is timed and placed from these. Every ground-elapsed time,
       height and angle it uses was read off the page cited, not remembered.
     </p>
     <feature-grid columns="3">
       <info-card title="Apollo by the Numbers" href="https://www.nasa.gov/wp-content/uploads/2023/04/sp-4029.pdf">
-        Orloff's Apollo 11 Timeline and &ldquo;LM Lunar Landing&rdquo; table, NASA SP-4029 pages
-        105&ndash;107 and 294, give this site the lunar-module ground-elapsed times from
-        translunar injection through touchdown and the 10.8-degree Sun angle at landing.
+        Orloff's Apollo 11 Timeline and &ldquo;LM Lunar Landing&rdquo; table, NASA SP-4029, give
+        this site the lunar-module ground-elapsed times from undocking (100:12:00.0) to the
+        30-second descent-orbit-insertion burn (101:36:14.0) and the 10.8-degree Sun angle
+        listed for the landing. The Apollo 11 chapter's launch-window passage gives the
+        range of acceptable Sun elevation at a landing site, 5 to 14 degrees, the 16-degree
+        mean descent angle at which reflected glare washes out contrast, and the 0.5 degrees
+        an hour the Sun climbs. I did not record page numbers for these.
+      </info-card>
+      <info-card title="Mission Report: dust, the fuel light and the Sun" href="https://www.nasa.gov/wp-content/uploads/static/apollo50th/pdf/A11_MissionReport.pdf">
+        MSC-00171 says surface obscuration from blowing dust was apparent at 100 feet and
+        became increasingly severe as the altitude decreased. Its descent event table lists
+        the red-line low-level sensor light at 102:44:28 and landing at 102:45:40, 72 seconds
+        apart; the propulsion section puts the light at 102:44:30.4, so &ldquo;about 70
+        seconds&rdquo; is what the two figures support. The report says that during the
+        extravehicular activity the Sun angle ranged from 14&frac12; to 16 degrees. It also
+        gives first contact with the surface, the first step, at 109:24:15 (9:56:15 p.m.
+        EST, 20 July 1969), which is 02:56:15 UTC on 21 July.
+      </info-card>
+      <info-card title="NASA Moon Fact Sheet" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html">
+        The Moon's semimajor axis, 384,400 km, is where the interlude's &ldquo;about 384,000
+        kilometres&rdquo; comes from. It is an average: the same sheet gives a perigee of
+        363,300 km and an apogee of 405,500 km, and this site did not look up the distance on
+        the day.
       </info-card>
       <info-card title="Apollo 11 Mission Report" href="https://www.nasa.gov/wp-content/uploads/static/apollo50th/pdf/A11_MissionReport.pdf">
         Mission Report MSC-00171 Tables 3-I, 5-I, 7-II and 7-V, Figure 5-5, and Sections 4.9,
@@ -176,7 +201,10 @@
       <info-card title="Apollo Flight Journal, Day 5" href="https://apollojournals.org/afj/ap11fj/17day5-undock-doi.html">
         The Apollo Flight Journal's Day 5, part 2, gives this site Armstrong's onboard call at
         GET 100:19:05, &ldquo;ready to start my yaw maneuver,&rdquo; most likely the start of the
-        360-degree landing-gear inspection yaw.
+        360-degree landing-gear inspection yaw. Its commentary on the undocking says Armstrong
+        rotated the lander so Collins could inspect it and check that the four landing gear
+        were deployed, and Collins's onboard call at 100:17:06 is &ldquo;the gear are looking
+        good.&rdquo;
       </info-card>
       <info-card title="Apollo 11 Flight Plan" href="https://apollojournals.org/alsj/a11/a11fp67.gif">
         The Apollo 11 Flight Plan, Final Edition, page 3-67, gives this site the planned
@@ -422,15 +450,15 @@
     </p>
     <p class="post-body">
       <strong>Which way is lunar north.</strong> The Moon's rotation axis is neither the
-      Earth's nor the normal to its own orbit. It sits 1.54&deg; from the pole of the ecliptic,
+      Earth's nor the normal to its own orbit. It sits about 1.5&deg; from the pole of the ecliptic (<a href="https://www.britannica.com/science/Cassinis-laws">Britannica puts the tilt at 1&deg;32&prime;</a>),
       and unlike most things about the Moon that angle stays put, so this site takes lunar
       north to be the ecliptic pole exactly &mdash; right ascension 270&deg;, declination
       90&deg; minus the obliquity, 23.4393&deg; at J2000 &mdash; and drops the degree and a
       half. The Moon is drawn tidally locked, near side to the Earth, using the orientation
       convention recovered in <code>tools/build-moon-texture.py</code> and confirmed there
       against Tycho and Mare&nbsp;Crisium. Libration is not modelled: the real Moon rocks about
-      eight degrees in longitude and seven in latitude over a month, which is how we see 59% of
-      the surface instead of half of it.
+      eight degrees in longitude and seven in latitude over a month, which is how we see about 59% of
+      the surface instead of half of it (<a href="https://svs.gsfc.nasa.gov/10836/">NASA SVS, Moon Wobble</a>).
     </p>
     <p class="post-body">
       <strong>Checking a transcription.</strong> Transcribed numbers cannot be checked against
@@ -450,7 +478,7 @@
     <p class="post-body">
       <strong>Why the Moon is not a shaded ball.</strong> The full Moon is not brightest in the
       middle and dimmer at the edges; it is close to flat, bright right out to the limb, and it
-      is about ten times brighter at full than at half rather than twice. That is lunar
+      is much brighter at full than the lit fraction alone would suggest. That is lunar
       regolith: a deep, porous layer whose shadows hide behind the grains casting them as the
       phase angle closes, which astronomers call the opposition effect. So the Moon here is
       shaded with a Lommel-Seeliger term &mdash; brightness going as
@@ -458,9 +486,8 @@
       law for a semi-infinite particulate surface and the standard base for lunar photometry
       &mdash; blended with a little Lambert in the manner of the "lunar-Lambert" correction
       used on spacecraft imagery. The blend is tuned by eye, not fitted, and the code says that
-      too. Earthshine on the dark limb is real and is drawn far brighter than it is: it runs
-      some fourteen magnitudes below direct sunlight, a few hundred thousand to one, which on a
-      screen is black.
+      too. Earthshine on the dark limb is real and is drawn far brighter than it is: it is
+      far fainter than direct sunlight, which on a screen is black.
     </p>
     <p class="post-body">
       <strong>Close to the lunar surface.</strong> Desktop crater shading comes from the
@@ -573,8 +600,8 @@
         during reentry. Behind the Space Stations page.
       </info-card>
       <info-card title="ESA: the flight of Vostok 1" href="https://www.esa.int/About_Us/50_years_of_ESA/50_years_of_humans_in_space/The_flight_of_Vostok_1">
-        Gagarin's flight on 12 April 1961, the first human in orbit. Behind the Spacecraft page's
-        1961 figure.
+        Gagarin's flight on 12 April 1961, the first human in orbit. Behind the Timeline's Vostok 1
+        entry and the opening of the blog post on the space race.
       </info-card>
       <info-card title="ESA: types of orbits" href="https://www.esa.int/Enabling_Support/Space_Transportation/Types_of_orbits">
         Geostationary altitude of 35,786 km and the roughly 90-minute low Earth orbit period,
@@ -630,8 +657,8 @@
         Satellites page and the opening date on the Timeline.
       </info-card>
       <info-card title="ESA: the Russian Soyuz spacecraft" href="https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/The_Russian_Soyuz_spacecraft">
-        Soyuz first flying in 1967 and still in service, which is the claim the Spacecraft page
-        makes about it being the longest-running crewed spacecraft programme.
+        Soyuz first flying in 1967 and still in service. No page quotes this at the moment; it is
+        kept here as the source if one does.
       </info-card>
       <info-card title="Britannica: the Kármán line" href="https://www.britannica.com/science/Karman-line">
         The 100 km convention used on the Atmosphere &amp; Altitude page. Worth knowing that the
@@ -654,6 +681,29 @@
       </info-card>
       <info-card title="NASA: Artemis I heat-shield findings" href="https://www.nasa.gov/missions/artemis/nasa-identifies-cause-of-artemis-i-orion-heat-shield-char-loss/">
         Published 5 December 2024. Source for the Spacecraft case study of Avcoat permeability, gas pressure, char loss and the difference between ground-test and flight heating environments. Used as a historical investigation, not as a current readiness assessment.
+      </info-card>
+    </feature-grid>
+
+    <section-header id="mars-window" eyebrow="Checked 17 October 2026" title="Space Lab: Hit the window to Mars"></section-header>
+    <p class="lab-intro">Sources for the <a href="../space-lab/mars-window.html">Mars window exhibit</a>. Every constant is a NASA figure opened on the date above; every other number on that page is computed from them by <code>systems/transfer.js</code> and tested in <code>tools/mars-window-check.mjs</code>. What the exhibit simplifies or chooses itself is set out in the last card.</p>
+    <feature-grid columns="3">
+      <info-card title="NASA Planetary Fact Sheet: Mars" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html">
+        Last updated 19 May 2025. Semimajor axis 227.956 million km (Earth 149.598), sidereal orbit period 686.980 days (Earth 365.256), orbit eccentricity 0.0935, inclination 1.848&deg;, perihelion 206.650 and aphelion 249.261 million km, and a synodic period of 779.94 days. The exhibit uses the two semimajor axes and two periods as inputs. It derives its own synodic period (779.93 days) and the check compares it with the published 779.94.
+      </info-card>
+      <info-card title="NASA Planetary Fact Sheet: Earth and Sun" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html">
+        Earth page last updated 15 November 2024: semimajor axis 149.598 million km, sidereal orbit period 365.256 days, eccentricity 0.0167. The Sun&rsquo;s gravitational parameter, GM = 132,712 &times; 10<sup>6</sup> km&sup3;/s&sup2;, is from the <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html">Sun fact sheet</a>, last updated 9 May 2024. Together with the semimajor axes it gives the 258.9-day Hohmann transfer time.
+      </info-card>
+      <info-card title="NASA JPL: Basics of Space Flight, Chapter 4: Trajectories" href="https://science.nasa.gov/learn/basics-of-space-flight/chapter4-1/">
+        The Hohmann transfer (leaving Earth along its direction of travel at Earth&rsquo;s distance from the Sun, using the least propellant), the statement that a minimum-energy transfer opportunity to Mars comes about every 25 months, and the definition of Type I (less than 180&deg; around the Sun) and Type II trajectories. The chapter gives no flight times or phase angles; those on the exhibit are computed.
+      </info-card>
+      <info-card title="NASA: Mars 2020 Perseverance, and the JPL landing press kit" href="https://www.jpl.nasa.gov/news/press_kits/mars_2020/landing/mission/">
+        <a href="https://science.nasa.gov/mission/mars-2020-perseverance/">The NASA mission page</a> gives launch 30 July 2020 and landing 18 February 2021. The press kit&rsquo;s Interplanetary Cruise section gives 203 days and about 293 million miles (471 million km) from Earth to Mars, and says the team planned four trajectory correction maneuvers. The 203 days on the exhibit is the difference of the two dates, which agrees with the press kit.
+      </info-card>
+      <info-card title="NASA: Mars Science Laboratory, Curiosity" href="https://science.nasa.gov/mission/msl-curiosity/">
+        Launch 26 November 2011. The <a href="https://science.nasa.gov/mission/msl-curiosity/">NASA mission page</a> lists landing as 6 August 2012; the <a href="https://www.jpl.nasa.gov/missions/mars-science-laboratory-curiosity-rover-msl/">JPL mission page</a> gives the evening of 5 August Pacific time, which is the morning of 6 August Eastern. The exhibit counts 254 days between the two calendar dates. Neither page states a cruise distance, so none is shown.
+      </info-card>
+      <info-card title="What the exhibit chooses or leaves out">
+        Circular orbits in one plane, at the mean distances above; no gravity of Earth or Mars; the transfer is a pure two-body ellipse. Real orbits are slightly elliptical and tilted, and real missions fly faster than the Hohmann path, so real flight times and window dates differ. The 2.5 million km hit threshold, the two starting angles (Mars 100&deg; or 20&deg; ahead of Earth on day 0) and the day numbers are this site&rsquo;s own teaching settings, not mission data. The 44.3&deg; lead, 258.9-day transfer, 779.9-day synodic period and the 587 million km length of the half ellipse are computed, not quoted. No delta-v is shown.
       </info-card>
     </feature-grid>
 
@@ -811,6 +861,69 @@
       <p>The separate static pitch illustration assumes an initially trimmed reference and a small +5° angle-of-attack disturbance. An assumed incremental lift acting at a fixed neutral point gives ΔCₘ = a(xCG − xNP)Δα/c, using radians, with a = 4.5 rad⁻¹, xNP = 2.80 m and c = 2 m. Negative is an initial nose-down restoring tendency. The formula is a simplified moment-arm model consistent with the NPTEL neutral-point explanation; its chosen parameters are not measured course data. No time history, recovery rate or real-aircraft handling claim is made.</p>
     </section>
 
+    <section id="runway-challenge" class="post-body">
+      <h2>Runway challenge — sources and conditions</h2>
+      <ul><li><a href="https://drive.google.com/file/d/1hR4WS9lew7VFH5ig3howrj0enXPTHN06/view">NPTEL Flight Lecture 61: Take-off Performance, Part I</a>, PDF p. 2: ground force balance and distance/time integrals; pp. 16–19: lift-off and separate ground, transition and climb phases.</li>
+        <li><a href="https://drive.google.com/file/d/1DhYAh9ujwJQkyTl7NjzF05zb_rxUuhKa/view">NPTEL Flight Lecture 62: Take-off Performance, Part II</a>, PDF pp. 2–5: density and accelerating-force dependence; pp. 14–16: transition/climb and total take-off distance, excluded here.</li>
+        <li><a href="https://drive.google.com/file/d/1EnOhjFHmuosaLo3SeiSfAvgU63fmMuIj/view">NPTEL Flight Lecture 3: Pressure, Temperature, Density and Viscosity Variation with Altitude in ISA</a>, PDF pp. 4–6: pressure/density altitude; p. 13: tropospheric lapse rate; p. 16: ideal-gas and gradient-layer pressure relations.</li>
+      </ul><p>Read from the supplied course collection on 2 October 2026. Page numbers count PDF pages from 1; embedded slide lecture numbers differ from folder lecture numbers. Original explanations paraphrase these concepts; the lecture artwork is not reproduced.</p>
+      <p>Fictional model v1: S=16 m², ground CL=0.60, CD=0.055, CLmax=1.60, μ=0.025, reference thrust=2400 N at density 1.225 kg/m³, thrust proportional to density and control setting. Vlift=1.20√(2mg/(ρSCLmax)); instantaneous rotation assumed. These coefficients, thrust law, speed factor and game limits are author-selected teaching assumptions, not measured data or a real aircraft specification. Uses the site's standard atmosphere for pressure, p/(RT) for dry-air density. Zero wind, level runway, fixed coefficients; analytic integration of the ground equation. No transition, climb, braking or obstacle-clearance prediction. Mass 700–1500 kg, pressure altitude 0–3000 m, temperature −10 to 45°C, runway 150–1500 m, thrust setting 0–100%. Challenge: 450 m runway, 1500 m pressure altitude, full thrust setting, at least 900 kg total mass. Not for flight planning.</p>
+    </section>
+
+    <section id="cargo-mission" class="post-body">
+      <h2>Connected cargo mission</h2>
+      <p>The cargo mission combines the existing <a href="#loading-challenge">loading mass-moment calculation</a> and <a href="#runway-challenge">ground-run model</a>. The manifest's calculated total mass is passed unchanged into the runway equation. CG acceptance and ground-run acceptance remain separate. Moving cargo without changing mass therefore changes CG but not this model's required ground run.</p>
+      <p>Primary sources already read for those models: NPTEL Flight Lecture 51, PDF p.13 (CG and mass distribution); Lecture 61, PDF p.2 (ground force balance), pp.16–19 (lift-off and phases); Lecture 62, pp.2–5 (density/accelerating-force dependence), pp.14–16 (excluded transition/climb); Lecture 3, pp.4–6,13,16 (pressure altitude and atmosphere relations). Exact source links and complete parameter declarations are in the sections linked above. The connected-mission copy introduces no additional aircraft-design theory or source-derived aircraft specification.</p>
+      <p>All mission settings are author-selected teaching assumptions: empty aircraft 700 kg at 2.40 m; pilot 80 kg at 1.80 m; passenger 80 kg; fuel 80 kg; selectable stations from the loading exercise; adjustable cargo 0–200 kg, initial 160 kg; minimum payload 180 kg including the passenger; maximum total mass 1100 kg; CG 2.35–2.60 m. Fixed airport pressure altitude 1500 m, temperature 35°C, runway 450 m, full thrust setting. Fuel mass is a game requirement, not a range/endurance guarantee. No structural capacities, fuel consumption, CG-dependent rotation, climb, obstacle clearance or real-aircraft performance is calculated. Measured NACA 0012 airfoil data are not used in this mission.</p>
+    </section>
+
+    <section class="post-body" id="departure-window">
+      <h2>Departure window · Mission 02</h2>
+      <p>Primary source: supplied NPTEL Introduction to Flight, lecture 62, PDF pages 2–5 (density and accelerating force in ground run), read 6 October 2026. <a href="https://drive.google.com/file/d/1DhYAh9ujwJQkyTl7NjzF05zb_rxUuhKa/view">Lecture 62 PDF</a>. <a href="#cargo-mission">Existing cargo and runway model sources and assumptions</a> apply unchanged.</p>
+      <p>Fictional game conditions: total mass 1,100 kg, payload 240 kg, fuel 80 kg, CG 2.560 m. Pressure altitude 2,500 m, runway 650 m, full thrust, temperatures 15 / 25 / 40°C. These are independent test conditions, not a forecast, schedule or safe departure recommendation. Ground-run distance only; no waiting fuel burn, wind, slope, obstacle clearance or climb. The same fictional-runway-v1 evaluator is used; no measured airfoil data are used.</p>
+    </section>
+
+    <section id="flight-records" class="post-body">
+      <h2>Flight Lab: endurance records</h2>
+      <p>The records paragraph on <a href="../flight-lab/flight-dynamics.html">Flight Dynamics</a> rests on three museum and federation pages. Distances and times are as those pages give them.</p>
+      <ul>
+        <li><a href="https://airandspace.si.edu/collection-objects/virgin-atlantic-global-flyer/nasm_A20070018000">NASM, Virgin Atlantic GlobalFlyer</a>: the absolute distance record of 41,467 km, flown from Kennedy Space Center around the world to Bournemouth, 8&ndash;11 February 2006, in just under 77 hours. The same page covers Steve Fossett&rsquo;s 2005 solo nonstop circumnavigation from Salina, just over 67 hours.</li>
+        <li><a href="https://airandspace.si.edu/collection-objects/rutan-voyager/nasm_A19880548000">NASM, Rutan Voyager</a>: the first nonstop flight around the world without refuelling, completed 23 December 1986, 216 hours 3 minutes 44 seconds.</li>
+        <li><a href="https://www.fai.org/news/10-years-solar-impulse-2-circumnavigation-complete">FAI, ten years since the Solar Impulse 2 circumnavigation</a>: Andr&eacute; Borschberg&rsquo;s Nagoya to Hawaii leg, 117 hours 52 minutes, called the longest solo flight ever.</li>
+      </ul>
+    </section>
+
+    <section id="aero-history" class="post-body">
+      <h2>Flight Lab: aerodynamics history, lift and wings</h2>
+      <ul>
+        <li><a href="https://airandspace.si.edu/explore/stories/flight-airplane">NASM, Flight before the airplane</a> and <a href="https://www.grc.nasa.gov/www/k-12/UEET/StudentSite/historyofflight.html">NASA Glenn, History of Flight</a>: Cayley&rsquo;s fifty years of work and his glider flown by a boy whose name is not recorded; Lilienthal&rsquo;s gliders and his weight-shift control.</li>
+        <li><a href="https://airandspace.si.edu/collection-objects/1899-wright-kite-reproduction/nasm_I20031236002">NASM, 1899 Wright kite reproduction</a> and <a href="https://airandspace.si.edu/explore/stories/researching-wright-way">Researching the Wright Way</a>: the 1899 machine was a kite, not a glider; the 1901 glider made only about a third of the lift expected, and the bicycle-wheel test and October 1901 wind tunnel followed.</li>
+        <li><a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/lift-3/">NASA Glenn, Lift</a> and <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/bernoulli-and-newton/">Bernoulli and Newton</a>: lift explanations and why the &ldquo;equal transit time&rdquo; story fails.</li>
+        <li><a href="https://www.britannica.com/topic/Hydrodynamica">Britannica, Hydrodynamica</a>: Daniel Bernoulli&rsquo;s book of 1738.</li>
+        <li><a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/induced-drag-coefficient/">NASA Glenn, Induced Drag</a> and <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/winglets/">Winglets</a>: span and aspect ratio in the drag formula, and Whitcomb&rsquo;s winglet flight tests with a roughly 6.5% fuel saving on a 707-type aircraft.</li>
+      </ul>
+    </section>
+
+    <section id="space-lab-facts" class="post-body">
+      <h2>Space Lab: figures quoted on the CubeSat, rocket and satellite pages</h2>
+      <ul>
+        <li><a href="https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf">NASA, CubeSat 101</a>: 1U is a 10 cm cube of roughly 1 to 1.33 kg; the standard dates from 1999 work by Jordi Puig-Suari (Cal Poly) and Bob Twiggs; the P-POD deployer.</li>
+        <li><a href="https://www.jpl.nasa.gov/news/press_kits/insight/landing/appendix/mars-cube-one/">JPL, InSight press kit: Mars Cube One</a>: MarCO as the first CubeSats to fly to deep space. The 6U size and 2018 launch with InSight are from the same press kit and the <a href="https://www.jpl.nasa.gov/missions/mars-cube-one-marco/">JPL mission page</a>.</li>
+        <li><a href="https://docs.planet.com/data/imagery/planetscope/">Planet documentation, PlanetScope</a>: Dove satellites on the 3U form factor, 10 &times; 10 &times; 30 cm, and near-daily coverage of all landmasses since 2017.</li>
+        <li><a href="https://www.nasa.gov/learning-resources/for-kids-and-students/what-was-the-saturn-v-grades-5-8/">NASA, What Was the Saturn V?</a>: about 118,000 kg to Earth orbit. The thirteen flights are counted from the same page: Apollo 4 and 6, Apollo 8 to 17, and the Skylab launch.</li>
+        <li><a href="https://www.nasa.gov/wp-content/uploads/2016/08/sp-2014-617.pdf">NASA SP-2014-617, Commercial Orbital Transportation Services</a>: the first Falcon 9 launch, 4 June 2010. <a href="https://www.spacex.com/vehicles/falcon-9">SpaceX, Falcon 9</a>: 22,800 kg to LEO and a reusable first stage.</li>
+        <li><a href="https://www.grc.nasa.gov/www/k-12/rocket/BottleRocket/20thBeyond.htm">NASA Glenn, Rocket History</a>: Tsiolkovsky&rsquo;s 1903 report on rocket-propelled vehicles.</li>
+        <li><a href="https://www.spacex.com/assets/media/falcon-users-guide-2025-05-09.pdf">SpaceX, Falcon Payload User&rsquo;s Guide</a>: 28.5&deg; as the lowest inclination from the Eastern Range. That this equals Cape Canaveral&rsquo;s latitude is geometry. The 51.6&deg; slider default and the structure fractions on the Rockets page are teaching values, not sourced figures.</li>
+        <li><a href="https://www.itu.int/itunews/manager/display.asp?lang=en&amp;year=2008&amp;issue=03&amp;ipage=Arthur-Clarke&amp;ext=html">ITU News, Arthur C. Clarke</a> and <a href="https://www.britannica.com/science/geostationary-orbit">Britannica, geostationary orbit</a>: the 1945 Wireless World article and a 42,000 km orbit with a 24-hour period.</li>
+      </ul>
+    </section>
+
+    <section id="rocket-timeline" class="post-body">
+      <h2>Rocket and Shuttle timeline: what each source was checked for</h2>
+      <p>All fourteen events on the <a href="../timeline/rocket-development.html">development timeline</a> list their sources beside them and in a references list at the foot of that page. Checked 17 October 2026: Goddard (16 March 1926, 2.5-second flight), the first successful A-4 (3 October 1942, fourth test vehicle), Sputnik 1 (4 October 1957), Apollo 4 (9 November 1967, all objectives achieved), the Shuttle decision (5 January 1972), Enterprise (12 August 1977), STS-1 (12 April 1981, Young and Crippen), Challenger (28 January 1986, 73 seconds), STS-26 (29 September 1988), Columbia (1 February 2003, seven crew), STS-114 (26 July 2005), STS-135 (21 July 2011; 135 missions over 30 years), SES-10 (30 March 2017) and Artemis I (16 November 2022).</p>
+      <p>For SES-10 the three sources do different jobs. The SpaceX mission page supports the launch date only. The SES half-year 2017 results give 30 March 2017 and call it the first geostationary satellite launched on a flight-proven first-stage booster. SpaceX’s Falcon Payload User’s Guide, in its reusability paragraph, says SpaceX pioneered reusability with the first re-flight of an orbital class rocket in 2017.</p>
+    </section>
+
     <div class="continue-explore">
       <h2>Next Steps</h2>
       <ul>
@@ -818,7 +931,7 @@
         <li><a href="../about/index.html">About This Site</a></li>
       </ul>
     </div>
-  <section id="runway-challenge"><h2>Runway challenge — sources and conditions</h2><ul><li><a href="https://drive.google.com/file/d/1hR4WS9lew7VFH5ig3howrj0enXPTHN06/view">NPTEL Flight Lecture 61: Take-off Performance, Part I</a>, PDF p. 2: ground force balance and distance/time integrals; pp. 16–19: lift-off and separate ground, transition and climb phases.</li><li><a href="https://drive.google.com/file/d/1DhYAh9ujwJQkyTl7NjzF05zb_rxUuhKa/view">NPTEL Flight Lecture 62: Take-off Performance, Part II</a>, PDF pp. 2–5: density and accelerating-force dependence; pp. 14–16: transition/climb and total take-off distance, excluded here.</li><li><a href="https://drive.google.com/file/d/1EnOhjFHmuosaLo3SeiSfAvgU63fmMuIj/view">NPTEL Flight Lecture 3: Pressure, Temperature, Density and Viscosity Variation with Altitude in ISA</a>, PDF pp. 4–6: pressure/density altitude; p. 13: tropospheric lapse rate; p. 16: ideal-gas and gradient-layer pressure relations.</li></ul><p>Read from the supplied course collection on 2 October 2026. Page numbers count PDF pages from 1; embedded slide lecture numbers differ from folder lecture numbers. Original explanations paraphrase these concepts; the lecture artwork is not reproduced.</p><p>Fictional model v1: S=16 m², ground CL=0.60, CD=0.055, CLmax=1.60, μ=0.025, reference thrust=2400 N at density 1.225 kg/m³, thrust proportional to density and control setting. Vlift=1.20√(2mg/(ρSCLmax)); instantaneous rotation assumed. These coefficients, thrust law, speed factor and game limits are author-selected teaching assumptions, not measured data or a real aircraft specification. Uses the site's standard atmosphere for pressure, p/(RT) for dry-air density. Zero wind, level runway, fixed coefficients; analytic integration of the ground equation. No transition, climb, braking or obstacle-clearance prediction. Mass 700–1500 kg, pressure altitude 0–3000 m, temperature −10 to 45°C, runway 150–1500 m, thrust setting 0–100%. Challenge: 450 m runway, 1500 m pressure altitude, full thrust setting, at least 900 kg total mass. Not for flight planning.</p></section><section id="cargo-mission" class="post-body"><h2>Connected cargo mission</h2><p>The cargo mission combines the existing <a href="#loading-challenge">loading mass-moment calculation</a> and <a href="#runway-challenge">ground-run model</a>. The manifest's calculated total mass is passed unchanged into the runway equation. CG acceptance and ground-run acceptance remain separate. Moving cargo without changing mass therefore changes CG but not this model's required ground run.</p><p>Primary sources already read for those models: NPTEL Flight Lecture 51, PDF p.13 (CG and mass distribution); Lecture 61, PDF p.2 (ground force balance), pp.16–19 (lift-off and phases); Lecture 62, pp.2–5 (density/accelerating-force dependence), pp.14–16 (excluded transition/climb); Lecture 3, pp.4–6,13,16 (pressure altitude and atmosphere relations). Exact source links and complete parameter declarations are in the sections linked above. The connected-mission copy introduces no additional aircraft-design theory or source-derived aircraft specification.</p><p>All mission settings are author-selected teaching assumptions: empty aircraft700 kg at2.40 m; pilot80 kg at1.80 m; passenger80 kg; fuel80 kg; selectable stations from the loading exercise; adjustable cargo0–200 kg, initial160 kg; minimum payload180 kg including the passenger; maximum total mass1100 kg; CG2.35–2.60 m. Fixed airport pressure altitude1500 m, temperature35°C, runway450 m, full thrust setting. Fuel mass is a game requirement, not a range/endurance guarantee. No structural capacities, fuel consumption, CG-dependent rotation, climb, obstacle clearance or real-aircraft performance is calculated. Measured NACA0012 airfoil data are not used in this mission.</p></section><section class="frame" id="departure-window"><h2>Departure window · Mission 02</h2><p>Primary source: supplied NPTEL Introduction to Flight, lecture 62, PDF pages 2–5 (density and accelerating force in ground run), read 6 October 2026. <a href="https://drive.google.com/file/d/1DhYAh9ujwJQkyTl7NjzF05zb_rxUuhKa/view">Lecture 62 PDF</a>. <a href="#cargo-mission">Existing cargo and runway model sources and assumptions</a> apply unchanged.</p><p>Fictional game conditions: total mass 1,100 kg, payload 240 kg, fuel 80 kg, CG 2.560 m. Pressure altitude 2,500 m, runway 650 m, full thrust, temperatures 15 / 25 / 40°C. These are independent test conditions, not a forecast, schedule or safe departure recommendation. Ground-run distance only; no waiting fuel burn, wind, slope, obstacle clearance or climb. The same fictional-runway-v1 evaluator is used; no measured airfoil data are used.</p></section></main>
+</main>
 
   <site-footer></site-footer>
 </body>

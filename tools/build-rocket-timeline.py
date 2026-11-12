@@ -8,9 +8,16 @@ events = json.loads((root / 'public/assets/data/rocket-development.json').read_t
 assert events == sorted(events, key=lambda e: e['date'])
 assert len({e['id'] for e in events}) == len(events)
 cards = []
+refs = []
 for e in events:
     esc = lambda key: escape(e[key], quote=True)
-    extra = f'<a href="{esc("extraSource")}">{esc("extraLabel")} ↗</a>' if e.get('extraSource') else ''
+    links = [(e['source'], e['sourceLabel'])]
+    for src, lab in (('extraSource', 'extraLabel'), ('thirdSource', 'thirdLabel')):
+        if e.get(src):
+            links.append((e[src], e[lab]))
+    link_html = [f'<a href="{escape(u, quote=True)}">{escape(l, quote=True)} ↗</a>' for u, l in links]
+    extra = ''.join(link_html[1:])
+    refs.append(f'        <li><strong>{esc("label")}</strong> {esc("title")}<span class="development-ref-links">{"".join(link_html)}</span></li>')
     cards.append(f'''      <li class="development-event" data-track="{esc('track')}" id="{esc('id')}" data-model-key="{esc('model')}">
         <div class="development-date"><span>{esc('date')[:4]}</span><time datetime="{esc('date')}">{esc('label')}</time></div>
         <article class="development-card">
@@ -18,7 +25,7 @@ for e in events:
           <h2>{esc('title')}</h2>
           <p>{esc('text')}</p>
           <div class="development-lesson"><span>What to notice</span><p>{esc('lesson')}</p></div>
-          <details><summary>Read the source</summary><div class="development-sources"><a href="{esc('source')}">{esc('sourceLabel')} ↗</a>{extra}</div></details>
+          <details><summary>Read the source</summary><div class="development-sources">{link_html[0]}{extra}</div></details>
           <a class="development-permalink" href="#{esc('id')}" aria-label="Link to {esc('title')}">#{esc('id')}</a>
         </article>
       </li>''')
@@ -50,7 +57,7 @@ page = '''<!DOCTYPE html>
       <p class="development-deck">Rocket &amp; Space Shuttle development</p>
       <p>Experiments become launch systems. Prototypes become spacecraft. Reuse becomes something to demonstrate in flight. Follow fourteen milestones—and the setbacks between them.</p>
       <div class="development-range" aria-label="Timeline spans 1926 to 2022"><span>1926</span><span class="development-range-line" aria-hidden="true"></span><span>2022</span></div>
-      <p class="development-scope">A selected history of early rocketry, the US–Soviet space race, NASA’s Shuttle and later launch systems. This is not a complete world history. Dates distinguish programme decisions, tests, launches and landings. Sources checked 25 September 2026.</p>
+      <p class="development-scope">A selected history of early rocketry, the US–Soviet space race, NASA’s Shuttle and later launch systems. This is not a complete world history. Dates distinguish programme decisions, tests, launches and landings. Sources checked 17 October 2026.</p>
     </header>
     <nav class="development-filter" aria-label="Filter development timeline" hidden>
       <button type="button" data-filter="all" aria-pressed="true">All milestones</button>
@@ -61,6 +68,13 @@ page = '''<!DOCTYPE html>
     <ol class="development-list" aria-label="Development milestones">
 ''' + '\n'.join(cards) + '''
     </ol>
+    <section class="development-references" id="references" aria-labelledby="development-references-title">
+      <h2 id="development-references-title">References</h2>
+      <p>Every date and figure on this page comes from one of these sources. The same list is on the <a href="../references/index.html#rocket-timeline">references page</a>.</p>
+      <ul>
+''' + chr(10).join(refs) + '''
+      </ul>
+    </section>
     <footer class="development-footer">
       <h2>Keep exploring</h2>
       <a href="../space-lab/rockets.html">Try the rocket launch bench →</a>
@@ -73,5 +87,6 @@ page = '''<!DOCTYPE html>
 </body>
 </html>
 '''
-(root / 'public/timeline/rocket-development.html').write_text(page, encoding='utf-8')
+with open(root / 'public/timeline/rocket-development.html', 'w', encoding='utf-8', newline=chr(10)) as f:
+    f.write(page)
 print(f'Rendered {len(events)} sourced milestones.')

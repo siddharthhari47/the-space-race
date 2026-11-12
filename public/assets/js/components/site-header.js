@@ -35,14 +35,24 @@ function renderItem(item, current) {
 class SiteHeader extends HTMLElement {
   connectedCallback() {
     const current = this.getAttribute("current") || "";
-    const logo = this.getAttribute("logo") || "/assets/images/logo.webp";
+    // The header draws the logo 32px tall. The full 1280x720 file was 125 KB
+    // on every page for that, so the header gets a 114x64 copy (twice the
+    // drawn size for dense screens) with a PNG for browsers without WebP. A
+    // page that passes its own logo attribute still gets exactly that file.
+    const logo = this.getAttribute("logo");
+    const logoImg = logo
+      ? `<img src="${logo}" alt="The Space Race logo" />`
+      : `<picture>
+              <source srcset="/assets/images/logo-header.webp" type="image/webp" />
+              <img src="/assets/images/logo-header.png" width="114" height="64" alt="The Space Race logo" />
+            </picture>`;
     const brandHref = this.getAttribute("brand-href") || "/index.html";
 
     this.innerHTML = `
       <header class="site-header">
         <div class="nav-inner">
           <a class="brand" href="${brandHref}">
-            <img src="${logo}" alt="The Space Race logo" />
+            ${logoImg}
             <span>The Space Race</span>
           </a>
           <button

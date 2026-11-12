@@ -1,0 +1,245 @@
+/* Hit the window to Mars.
+
+   Everything shared (the stage frame, the panel, the instruments, the exhibit
+   headings) comes from museum.css. This file only adds what this one page
+   needs: tighter spacing so the canvas and its controls share a phone
+   screen, the stacked prediction buttons, and the way the panel swaps steps. */
+
+/* The exhibit starts straight away. The page's lede is already the
+   introduction, so the exhibit's usual four-to-seven rem of top padding
+   would push the canvas below the fold on a phone. */
+.mw-head {
+  padding-top: clamp(1rem, 2.5vh, 1.75rem);
+  padding-bottom: 0;
+}
+
+/* On a desktop window the hero is kept to a title and two lines so the whole
+   square canvas, orbit and all, is on the first screen at 900 px high. */
+.mw-head .world-title {
+  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+  margin: 0.2rem 0 0.4rem;
+}
+
+.mw-head .world-lede {
+  max-width: 100ch;
+}
+
+/* The back link and the exhibit tag share one line on a wide screen. */
+@media (min-width: 881px) {
+  .mw-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1.2rem;
+  }
+
+  .mw-head .back-link,
+  .mw-head .tag {
+    margin: 0;
+  }
+
+  .mw-head .world-title,
+  .mw-head .world-lede {
+    flex: 1 1 100%;
+  }
+}
+
+.mw-exhibit {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  border-top: 0;
+}
+
+/* The stage keeps the shared square, but is capped so a tall desktop window
+   does not make the panel sit a screen below its picture. */
+.mw-stage {
+  aspect-ratio: 1 / 1;
+  max-height: min(72vh, calc(100vh - 17.5rem));
+  border: 0;
+}
+
+.mw-panel {
+  border: 0;
+  background: var(--ink-panel);
+}
+
+/* One step of the exercise is visible at a time. [hidden] alone is not
+   enough, because .panel-body is a grid and the step blocks set their own
+   display below. */
+.mw-step[hidden] {
+  display: none;
+}
+
+.mw-step {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.mw-q {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--type-hi);
+}
+
+.mw-q:focus-visible,
+.mw-verdict:focus-visible {
+  outline: 2px solid var(--w-accent);
+  outline-offset: 4px;
+}
+
+.mw-options {
+  display: grid;
+  gap: 0.6rem;
+}
+
+/* The three predictions are sentences, not labels, so they wrap and sit
+   left-aligned at a comfortable tap height. */
+.mw-opt {
+  text-align: left;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  padding: 0.8rem 0.95rem;
+  min-height: 3rem;
+}
+
+.mw-nudge .ctrl {
+  flex: 1 1 0;
+  min-width: 3rem;
+  min-height: 2.75rem;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  text-align: center;
+}
+
+.mw-go {
+  min-height: 3rem;
+  width: 100%;
+}
+
+.mw-readouts {
+  grid-template-columns: 1fr 1fr;
+}
+
+.mw-text {
+  margin: 0;
+  color: var(--type);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.mw-why {
+  color: var(--type-dim);
+}
+
+.mw-pred {
+  border-left: 2px solid var(--w-accent);
+  padding: 0.1rem 0 0.1rem 0.8rem;
+}
+
+.mw-pred[hidden] {
+  display: none;
+}
+
+.mw-pred-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.mw-verdict {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.mw-skip {
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+}
+
+.mw-table th.num,
+.mw-table td.num {
+  text-align: right;
+}
+
+/* The last column sat flush against the card edge and read as clipped. */
+.mw-table th:last-child,
+.mw-table td:last-child {
+  padding-right: 1.1rem;
+}
+
+.mw-hint {
+  border-left: 2px solid var(--w-accent);
+  padding-left: 0.8rem;
+  color: var(--type);
+}
+
+.mw-hint[hidden] {
+  display: none;
+}
+
+.mw-numbers[hidden] {
+  display: none;
+}
+
+.mw-caption-link {
+  white-space: nowrap;
+}
+
+/* On a phone the stage is the page width, the panel sits straight under it,
+   and the exhibit gives up its side padding to the .frame gutter alone. */
+@media (max-width: 880px) {
+  .mw-stage {
+    max-height: none;
+  }
+
+  .mw-exhibit {
+    padding-top: 1rem;
+  }
+
+  .mw-q {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Six step buttons in two even rows of three rather than five and one. */
+  .mw-nudge {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* The title block is most of a phone screen before the canvas. Trim it so
+     the picture starts higher and the first controls are not far below. */
+  .mw-head {
+    padding-top: 1.75rem;
+  }
+
+  .mw-head .world-title {
+    font-size: 2.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .mw-head .world-lede {
+    font-size: 1rem;
+  }
+
+  .mw-stage {
+    aspect-ratio: 1 / 1;
+  }
+
+  .stage-caption {
+    font-size: 0.68rem;
+  }
+}

@@ -45,3 +45,7 @@
   #development-count { width: 100%; margin: .5rem 0 0; }
   .development-hero { padding-top: 3rem; }
 }
+
+.development-references { border-top: 1px solid #293247; padding: 2rem 0; }
+.development-references ul { list-style: none; padding: 0; display: grid; gap: .9rem; font-size: .85rem; line-height: 1.6; }
+.development-references .development-ref-links { display: flex; flex-wrap: wrap; gap: .3rem 1rem; overflow-wrap: anywhere; }

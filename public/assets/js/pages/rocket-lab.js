@@ -13,6 +13,7 @@ import {
   deltaV,
   simulate,
   circularVelocity,
+  PITCH_EXPONENT,
 } from "../systems/rocketry.js";
 import { prefersReducedMotion } from "../systems/stage.js";
 
@@ -26,6 +27,7 @@ const cfg = {
   payload: 12000,
   turnStart: 1200,
   turnEnd: 110000,
+  pitchExp: PITCH_EXPONENT,
   targetAlt: 250000,
 };
 
@@ -62,6 +64,12 @@ function refreshDesign() {
   if (stat) {
     if (v.twr < 1) stat.textContent = "Will not lift off";
     else if (dv.total < 9000) stat.textContent = "Short on delta-v";
+    // Delta-v is necessary, not sufficient. A vehicle that only just lifts
+    // off climbs slowly, spends longer in thick air and loses more to
+    // gravity, and a fixed pitch program turns it over too early. Saying
+    // "looks flyable" about that and then showing a failed launch read as
+    // the physics being wrong.
+    else if (v.twr < 1.25) stat.textContent = "Enough delta-v, but a slow climb off the pad. Check the ascent profile.";
     else stat.textContent = "Looks flyable";
   }
 }
@@ -198,6 +206,17 @@ function finish() {
     detail.textContent =
       `It reached ${(r.peakAltitude / 1000).toFixed(0)} km, which is space, and then fell back — because height was never the problem. ` +
       `It needed about ${(shortfall / 1000).toFixed(2)} km/s more sideways speed to keep missing the ground.`;
+    // Drag loss in the km/s range is not thin-air friction, it is the
+    // vehicle flying fast through thick air on a path that has already
+    // turned over. That is the fixed pitch program meeting a low
+    // thrust-to-weight ratio, which is a limit of this model rather than
+    // of the rocket, so say so.
+    if (r.dragLoss > 1000) {
+      detail.textContent +=
+        ` Drag took ${(r.dragLoss / 1000).toFixed(1)} km/s, far more than a normal ascent. ` +
+        `The model flies one fixed pitch curve for stage one, and a slow climb meets it while the vehicle is still low and fast. ` +
+        `A real flight computer would steer differently, so read this as a limit of the model.`;
+    }
   }
 
   rows.innerHTML = `
@@ -230,10 +249,22 @@ $("[data-abort]")?.addEventListener("click", () => {
    Real vehicles, so the sandbox has somewhere to start that is known to
    work — and so the numbers can be checked against something. */
 
+// Presets set the ascent profile too, so one that needs a gentler curve does
+// not leave the next preset flying it.
+const DEFAULT_ASCENT = { turnStart: 1200, turnEnd: 110000, pitchExp: PITCH_EXPONENT };
+
 const PRESETS = {
-  falcon9: { engine1: "merlin1d", engines1: 9, prop1: 411000, engine2: "mvac", engines2: 1, prop2: 107500, payload: 12000 },
-  saturnv: { engine1: "f1", engines1: 5, prop1: 2077000, engine2: "j2", engines2: 5, prop2: 444000, payload: 45000 },
-  atlas: { engine1: "rd180", engines1: 1, prop1: 284000, engine2: "rl10", engines2: 1, prop2: 20800, payload: 8000 },
+  falcon9: { engine1: "merlin1d", engines1: 9, prop1: 411000, engine2: "mvac", engines2: 1, prop2: 107500, payload: 12000, ...DEFAULT_ASCENT },
+  saturnv: { engine1: "f1", engines1: 5, prop1: 2077000, engine2: "j2", engines2: 5, prop2: 444000, payload: 45000, ...DEFAULT_ASCENT },
+  // Atlas V lifts off at a thrust-to-weight ratio near 1.2, so the default
+  // pitch curve turns it over while it is still slow and it never recovers:
+  // at 8 t it ended suborbital with 6.9 km/s of drag loss. This model has no
+  // strap-on boosters, which is the usual way a heavier Atlas gets off the
+  // pad harder. What it can do is fly a gentler pitch curve, so the preset
+  // does that, and carries the 6 t the model can put into a 170 by ~300 km
+  // orbit with it. Found by running simulate() over turn programs; the
+  // number is what the model gives, not what the real vehicle lifts.
+  atlas: { engine1: "rd180", engines1: 1, prop1: 284000, engine2: "rl10", engines2: 1, prop2: 20800, payload: 6000, turnStart: 1200, turnEnd: 260000, pitchExp: 3 },
 };
 
 document.querySelectorAll("[data-preset]").forEach((btn) => {

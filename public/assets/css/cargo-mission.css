@@ -3,3 +3,8 @@
 .manifest-load.is-aft{transform:translateX(-100%)}.manifest-load.is-aft:after{left:100%}.manifest-load.is-front{transform:none}.manifest-load.is-front:after{left:0}.mission-card .ctrl{display:inline-flex;align-items:center;justify-content:center;max-width:100%;box-sizing:border-box;white-space:normal;line-height:1.5}.mission-card .ctrl-row{gap:.6rem;margin:1rem 0}
 
 .mission-card .mission-motion{display:flex;gap:.7rem;align-items:center}.mission-card .mission-motion input{width:20px;min-height:20px}
+
+/* On a phone the ground run and outcome columns sit past the right edge; same hint the departure page uses. */
+.mission-table-hint{font-size:.85rem;color:#bfccdc}
+@media(min-width:761px){.mission-table-hint{display:none}}
+.runway-table:focus-visible{outline:2px solid #a4ddff;outline-offset:3px}

@@ -51,7 +51,7 @@ export const SIMULATOR_REGISTRY = {
   },
   "orbit-simulator": {
     title: "Satellite Orbit Simulator",
-    description: "Adjust altitude and inclination and watch how the orbit and ground track change.",
+    description: "Adjust altitude, out to geostationary, and inclination, and watch the orbit and its period change.",
     module: "/assets/js/simulators/orbit-simulator.js",
     page: "/playground/orbit-simulator.html",
     status: "live",

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Space Race</title>
   <meta name="description" content="An interactive aerospace museum. Two wings — SPACE and AIRCRAFT — separated by one variable: altitude. Build a rocket, fly a wind tunnel, take an airliner apart." />
-  <link rel="icon" href="assets/images/logo.webp" />
+  <link rel="icon" href="assets/images/logo-header.webp" type="image/webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -44,7 +44,7 @@
             <a class="mission-start" href="#saturn-v" data-tour-start>Take me to the Moon <span aria-hidden="true">↗</span></a>
             <a class="mission-explore" href="/playground/index.html">I want to press buttons instead →</a>
             <a class="mission-explore" href="/flight-lab/cargo-mission.html" data-mission-entry>Take the cargo mission →</a>
-            <p class="mission-route">Launch <span>→</span> Saturn V <span>→</span> Lunar approach <span>→</span> Landing</p>
+            <p class="mission-route"><a href="#top">Launch</a> <span aria-hidden="true">→</span> <a href="#saturn-v">Saturn V</a> <span aria-hidden="true">→</span> <a href="#the-moon">Lunar approach</a> <span aria-hidden="true">→</span> <a href="#first-step">Landing</a></p>
             <p class="mission-hint" data-tour-hint>About 3 minutes on autopilot. Or scroll down to fly at your own pace. No spacesuit required.</p>
           </div>
         </div>
@@ -94,8 +94,9 @@
         <div>
           <h2 class="exhibit-title">Directory</h2>
           <p class="exhibit-sub">
-            <span data-count-interactive>14</span> interactive exhibits and sixteen written rooms,
-            arranged by altitude. Anything marked <em>interactive</em> is something you operate,
+            <span data-count-interactive>9</span> interactive exhibits and
+            <span data-count-written>5</span> written entries, arranged by altitude. The last
+            one opens six more rooms. Anything marked <em>interactive</em> is something you operate,
             not something you read.
           </p>
         </div>
@@ -424,7 +425,7 @@
         Figures from Roger E. Bilstein, <cite>Stages to Saturn</cite>, NASA
         SP&#8209;4206 &mdash; page 5 and the Appendix&nbsp;A schematic. The
         height is measured off NASA's own model of the vehicle, not taken
-        from the book. <a href="/references/#apollo">Where these come
+        from the book. <a href="/references/#stages-to-saturn">Where these come
         from</a>.
       </p>
     </section>
@@ -631,12 +632,12 @@
         <li class="interlude-note interlude-note--undock reveal">
           <p class="tag">100:12:00 &middot; Undocking</p>
           <p>
-            <i>Eagle</i> undocked from <i>Columbia</i> and turned a full
-            circle so Collins could check that its legs were down. An hour
-            and 24 minutes later it made a 30&#8209;second burn to drop the
-            low point of its orbit toward the surface. Collins stayed with
-            the command module. He is the reason there is a photograph of
-            everything.
+            <i>Eagle</i> undocked from <i>Columbia</i> and Armstrong
+            rotated it so Collins could look it over and check that all four
+            landing legs were out. An hour and 24 minutes later it made a
+            30&#8209;second burn to drop the low point of its orbit toward
+            the surface. Collins stayed with the command module. He is the
+            reason there are photographs of <i>Eagle</i> in lunar orbit.
           </p>
         </li>
 
@@ -649,16 +650,17 @@
             finish &mdash; four 1202s and a 1201 &mdash; and five times it
             shed the low priority work and kept flying. It was designed to do
             that. The people who had to decide, in seconds, that it was
-            designed to do that were more than 380,000 kilometres away.
+            designed to do that were about 384,000 kilometres away.
           </p>
         </li>
 
         <li class="interlude-note interlude-note--contact reveal">
           <p class="tag">102:45:40 &middot; Contact</p>
           <p>
-            The engine was blowing dust across the ground from about 100 feet
-            up, a minute before the footpads touched. The fuel
-            low&#8209;level light had come on 72 seconds before landing.
+            The engine was blowing dust across the ground from about 100
+            feet up, and the lower they came the thicker it got. The fuel
+            low&#8209;level light had come on about 70 seconds before the
+            footpads touched.
           </p>
         </li>
       </ol>
@@ -667,8 +669,9 @@
         The times in this act are from Richard&nbsp;W. Orloff,
         <cite>Apollo by the Numbers: A Statistical Reference</cite>, NASA
         SP&#8209;4029, checked against NASA&rsquo;s <cite>Apollo&nbsp;11
-        Mission Report</cite> (MSC&#8209;00171).
-        <a href="/references/#apollo">Where these come from</a>.
+        Mission Report</cite> (MSC&#8209;00171) and the Apollo&nbsp;11 Flight
+        Journal and Lunar Surface Journal.
+        <a href="/references/#apollo-landing">Where these come from</a>.
       </p>
     </section>
 
@@ -703,10 +706,13 @@
         ></video>
         <figcaption>
           NASA television from the lunar surface, partially restored. The
-          Sun was low, between 14&frac12; and 16 degrees above the horizon
-          while they walked, and that was planned: the launch was timed so
-          that at landing it would be low enough for shadows to show the
-          shape of the ground, and not so low that they hid it.
+          Sun was low while they walked: 10.8 degrees above the horizon at
+          landing by Orloff&rsquo;s table, and between 14&frac12; and 16 degrees
+          during the moonwalk by the Mission Report. A low Sun at landing was planned.
+          NASA wanted the Sun between 5 and 14 degrees at the landing, low
+          enough that crater shadows show the shape of the ground, and not
+          near the 16&nbsp;degrees of the descent path, where glare off the
+          surface washes out the contrast.
           <span class="first-step-credit">
             NASA, <cite>Apollo 11 moonwalk montage</cite> (NASA Image and
             Video Library, <code>Apollo_11_moonwalk_montage_720p</code>),
@@ -714,7 +720,7 @@
             (Scientific Visualization Studio, item 10451). NASA material is
             generally not subject to copyright in the United States. Served
             from NASA's own library rather than copied here.
-            <a href="/references/#apollo">References</a>.
+            <a href="/references/#apollo-landing">References</a>.
           </span>
         </figcaption>
       </figure>

@@ -41,9 +41,12 @@ function refresh() {
   text('#plot-summary',`${measured()?'Measured section':'Theoretical wing'}: at ${state.alpha.toFixed(2)}°, Cₗ ${result.cl.toFixed(4)}, Cᴅ ${result.cd.toFixed(5)}, L/D ${result.ld.toFixed(1)}. ${measured()?'The lift curve peaks at 17.13°, then falls to 0.9967 at 18.02°.':'Current curves use the adjustable finite-wing model with an illustrative stall blend.'} ${$('#drag-zoom').checked?'Drag axis zoomed to 0–0.03; higher values are clipped. ':''}Saved trial values are in the table below. Dashed horizontal lines are game objectives.`);
   text('[data-live-goal]',measured() && state.stage ? `Stage ${state.stage} · Cₗ ≥ ${goal.liftTarget.toFixed(5)}${state.stage===2?` · Cᴅ ≤ ${goal.dragLimit.toFixed(7)}`:''} · stay at or before 17.13°` : 'Start with your prediction above.');
   show('[data-next]',false);
+  delete $('[data-feedback]').dataset.good;
   if(measured() && state.stage) {
     const code=verdict(result,goal,state.stage), [headline,why]=feedback[code];
     text('[data-feedback]',code==='reached' && state.stage===2?'Both targets reached. Same lift requirement. Less drama.':headline);
+    // Same flag loading.js sets, so a miss is amber instead of success green.
+    $('[data-feedback]').dataset.good=String(code==='reached');
     text('[data-why]',code==='reached' && state.stage===2?'You kept lift at or above the target and drag within 110% of the minimum that satisfies it on the rising branch. That margin is our game setting. Save this trial and compare it with a steeper angle.':why);
     show('[data-next]',state.stage===1 && code==='reached');
   }

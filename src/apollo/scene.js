@@ -266,7 +266,7 @@ export function createApolloScene(canvas, options = {}) {
      which is every page of this site except the homepage. notes is each
      caption and the moment it belongs to, filled in by measureSections()
      from where the stylesheet actually put it. */
-  const makeInterlude = (id) => ({ el: document.getElementById(id), from: -1, to: -1, notes: [] });
+  const makeInterlude = (id) => ({ el: document.getElementById(id), from: -1, to: -1, notes: [], knots: null });
   const tour = makeInterlude("saturn-v");
   const lunar = makeInterlude("the-moon");
   const INTERLUDES = [tour, lunar];
@@ -284,6 +284,33 @@ export function createApolloScene(canvas, options = {}) {
   const LIT_AT = 0.62;
   const NOTE_FULL = 0.045;
   const NOTE_GONE = 0.1;
+
+  /* Portrait framing. Every shot in the mission was composed for a wide
+     window: the lens shift pushes the subject right and down to leave the
+     top left clear for the words, and the Saturn V's and lander's own shifts
+     do the same. In a 390 by 844 window that shift is more than the frame is
+     tall, and the vehicle sat between 1.1 and 2.5 half-heights below the
+     bottom edge for the whole of the mission, with the Earth and Moon a
+     corner glow. Below an aspect of 1 the shift is traded for a lift
+     instead: centred across, and PORTRAIT_LIFT of a half-height above the
+     middle so the vehicle sits in the upper part of the screen. The weight
+     ramps from 0 at aspect 1 to 1 at 0.7, so no desktop or 4:3 window
+     changes at all. Before the tour the camera is the Earth's and not the
+     vehicle's, so there the lens is moved each frame to put the vehicle
+     itself at that spot; see liftVehicleInPortrait. */
+  const PORTRAIT_LIFT = 0.42;
+  const PHONE_LIGHT = 0.75;
+  const portraitWeight = aspect => clamp((1 - aspect) / 0.3, 0, 1);
+
+  // Phone captions flow down the page as a list, and are not placed at the
+  // moment they belong to the way the desktop ones are. These are those
+  // moments, copied from the comments beside .interlude-note--* in
+  // museum.css, and measureInterlude() uses them to stretch the phone's
+  // scroll position onto them so each caption still lands with its event.
+  const NOTE_MOMENTS = {
+    "saturn-v": [0.38, 0.49, 0.64, 0.75, 0.85],
+    "the-moon": [0.10, 0.32, 0.54, 0.76, 0.94],
+  };
 
   let earth = null;
   let moon = null;
@@ -609,16 +636,14 @@ export function createApolloScene(canvas, options = {}) {
     section.from = -1;
     section.to = -1;
     section.notes.length = 0;
+    section.knots = null;
     if (!section.el) return;
 
     const doc = document.documentElement;
     for (const note of section.el.querySelectorAll(".interlude-note")) {
       section.notes.push({ el: note, u: 0 });
     }
-    // Phone captions flow as an ordinary list. That list can still be taller
-    // than the viewport, so its height alone cannot disable desktop timing.
-    // Keep the notes registered so resizing also restores their visibility.
-    if (doc.clientWidth <= 720) return;
+    const phone = doc.clientWidth <= 720;
     const scrollable = missionSpanPx;
     if (scrollable <= 0) return;
 
@@ -649,6 +674,19 @@ export function createApolloScene(canvas, options = {}) {
       const within = box.top + window.scrollY - top;
       note.u = (within - LIT_AT * doc.clientHeight) / travel;
     }
+
+    /* On a phone the captions are a list, so those u values are wherever the
+       list happened to put them, not the moments the captions are about.
+       Pair each one with its moment and interpolate between the pairs; if
+       the list ever came out in an order that cannot be a monotone map
+       (a caption removed, a section reordered) fall back to plain scrolling
+       rather than make the mission run backwards. */
+    const moments = NOTE_MOMENTS[section.el.id];
+    if (phone && moments && moments.length === section.notes.length) {
+      const knots = [[0, 0], ...section.notes.map((note, i) => [note.u, moments[i]]), [1, 1]];
+      const ordered = knots.every((k, i) => i === 0 || (k[0] > knots[i - 1][0] && k[1] > knots[i - 1][1]));
+      if (ordered) section.knots = knots;
+    }
   }
 
   /* How far down the window a caption sits at its own moment, as a fraction.
@@ -666,8 +704,10 @@ export function createApolloScene(canvas, options = {}) {
      caption at a time and a clear moment between them. */
   function litNotes(section, u) {
     if (!section.notes.length) return;
+    // A phone list is read in place, so nothing on it ever fades.
+    const flowed = section.el && document.documentElement.clientWidth <= 720;
     for (const note of section.notes) {
-      const lit = u < 0 ? 1 : 1 - smootherstep(NOTE_FULL, NOTE_GONE, Math.abs(u - note.u));
+      const lit = u < 0 || flowed ? 1 : 1 - smootherstep(NOTE_FULL, NOTE_GONE, Math.abs(u - note.u));
       note.el.style.setProperty("--note-lit", lit.toFixed(3));
     }
   }
@@ -678,7 +718,13 @@ export function createApolloScene(canvas, options = {}) {
   // by a frame.
   function interludeProgress(section) {
     if (section.to <= section.from) return -1;
-    return clamp((state.progress - section.from) / (section.to - section.from), 0, 1);
+    const u = clamp((state.progress - section.from) / (section.to - section.from), 0, 1);
+    if (!section.knots) return u;
+    let i = 1;
+    while (i < section.knots.length - 1 && u > section.knots[i][0]) i++;
+    const [u0, m0] = section.knots[i - 1];
+    const [u1, m1] = section.knots[i];
+    return m0 + ((u - u0) / (u1 - u0)) * (m1 - m0);
   }
 
   function documentProgress() {
@@ -898,6 +944,43 @@ export function createApolloScene(canvas, options = {}) {
      when it should; see the comment above that section for what was done
      and reverted. Once acquired, the journey camera keeps weight 1 through
      coast and landing; it never hands the view back to the Earth camera. */
+  const liftProbe = new THREE.Vector3();
+
+  /* The mission camera is aimed at the planet, not at the spacecraft, and
+     the lens shifts authored for it assume a wide window: the vehicle ends
+     up wherever the ascent and the coast happen to put it, which on a phone
+     is below the bottom of the frame through the back half of the page. So
+     in portrait the lens is nudged, every frame, by exactly the amount that
+     puts the vehicle at the middle of the screen across and PORTRAIT_LIFT
+     above it. The camera does not turn, so the Earth, the horizon and the
+     sunlight are the same ones the mission shots composed.
+
+     It fades in over the first screen after the hero, so the opening shot
+     of the pad is the one that was composed, and fades out as the vehicle
+     camera takes over, which is subject-locked already and gets the same
+     spot from its own shift. */
+  function liftVehicleInPortrait(journeyWeight) {
+    const k = portraitWeight(state.width / Math.max(state.height, 1))
+      * smootherstep(0.05, 0.11, state.progress) * (1 - journeyWeight);
+    if (k <= 0 || !vehicle || !vehicle.stack) return;
+
+    camera.updateMatrixWorld();
+    vehicle.stack.getWorldPosition(liftProbe);
+    // Behind the camera there is no screen position to ask about.
+    if (liftProbe.clone().applyMatrix4(camera.matrixWorldInverse).z >= 0) return;
+    liftProbe.project(camera);
+
+    const dx = clamp(-liftProbe.x, -4, 4);
+    const dy = clamp(PORTRAIT_LIFT - liftProbe.y, -4, 4);
+    const view = camera.view;
+    camera.setViewOffset(
+      state.width, state.height,
+      view.offsetX - (dx * k * state.width) / 2,
+      view.offsetY + (dy * k * state.height) / 2,
+      state.width, state.height);
+    camera.updateProjectionMatrix();
+  }
+
   function applyVehicleCamera(weight, flight, frame, rig, place) {
     missionPos.copy(camera.position);
     missionQuat.copy(camera.quaternion);
@@ -983,8 +1066,11 @@ export function createApolloScene(canvas, options = {}) {
     // setViewOffset call exactly at its own end of the blend.
     const missionShiftX = 2 * rig.offsetX;
     const missionShiftY = -2 * rig.offsetY;
-    const shiftX = missionShiftX + (shot.shiftX - missionShiftX) * weight;
-    const shiftY = missionShiftY + (shot.shiftY - missionShiftY) * weight;
+    const portrait = portraitWeight(state.width / Math.max(state.height, 1));
+    const tourShiftX = shot.shiftX * (1 - portrait);
+    const tourShiftY = shot.shiftY * (1 - portrait) + PORTRAIT_LIFT * portrait;
+    const shiftX = missionShiftX + (tourShiftX - missionShiftX) * weight;
+    const shiftY = missionShiftY + (tourShiftY - missionShiftY) * weight;
 
     const w = state.width;
     const h = state.height;
@@ -1053,10 +1139,13 @@ export function createApolloScene(canvas, options = {}) {
       ? Math.max(tourWeightAt(state.tourU), lunarWeightAt(state.lunarU)).toFixed(3) : "0");
     // The directory needs a heavy readability wash; the close-up exhibit
     // has empty sky reserved around its captions and can let the model show.
-    if (main) main.style.setProperty("--tour-light", state.width > 720
-      ? Math.max(tourWeightAt(state.tourU), 0.55 * journeyWeightAt(state.tourU)).toFixed(3) : "0");
-    if (main) main.style.setProperty("--lunar-light", state.width > 720 && lunar.to > lunar.from
-      ? smootherstep(lunar.from - 0.08, lunar.from + 0.01, state.progress).toFixed(3) : "0");
+    // On a phone the wash opens by PHONE_LIGHT of what it does on a desktop:
+    // the words run the full width of the screen there, not down one side.
+    const light = state.width > 720 ? 1 : PHONE_LIGHT;
+    if (main) main.style.setProperty("--tour-light", (light
+      * Math.max(tourWeightAt(state.tourU), 0.55 * journeyWeightAt(state.tourU))).toFixed(3));
+    if (main) main.style.setProperty("--lunar-light", (lunar.to > lunar.from
+      ? light * smootherstep(lunar.from - 0.08, lunar.from + 0.01, state.progress) : 0).toFixed(3));
     state.missionP = state.lunarU > 0 ? lunarMissionP(state.lunarU, lunar.from) : state.progress;
     state.phase = phaseAt(state.missionP);
 
@@ -1238,7 +1327,7 @@ export function createApolloScene(canvas, options = {}) {
       // Acquire the flying vehicle during the tour, then keep following it
       // continuously through coast and landing. Returning to the Earth
       // camera between sections loses the spacecraft in empty sky.
-      const journeyWeight = state.width > 720 ? journeyWeightAt(state.tourU) : 0;
+      const journeyWeight = journeyWeightAt(state.tourU);
       if (journeyWeight > 0) {
         /* The track direction, wound the other way -- out of earthGroup's
            spinning frame and into the world the camera is placed in. This
@@ -1272,6 +1361,7 @@ export function createApolloScene(canvas, options = {}) {
           })
         );
       }
+      liftVehicleInPortrait(journeyWeight);
     }
 
     /* Now that the camera has finished moving -- the mission shot, then

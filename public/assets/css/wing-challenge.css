@@ -6,7 +6,10 @@
 .wing-mission { border:1px solid #596070; border-left:3px solid #ffab40; border-radius:12px; padding:clamp(1rem,3vw,2rem); background:linear-gradient(120deg,#172132,#10151e); }
 .wing-mission h3 { font-size:clamp(1.3rem,3vw,2rem); margin:.5rem 0 1rem; }
 .wing-mission p { line-height:1.6; }
-.wing-feedback { font-size:1.1rem; color:#a8f3ce; min-height:1.8em; }
+/* Neutral until a trial is judged; success green and failure amber match loading.css. */
+.wing-feedback { font-size:1.1rem; color:#dbe4ef; min-height:1.8em; }
+.wing-feedback[data-good="true"] { color:#a8f3ce; }
+.wing-feedback[data-good="false"] { color:#ffd397; }
 .wing-mission details { margin-top:1rem; max-width:75ch; }
 .wing-mission summary { cursor:pointer; padding:.5rem 0; }
 .wing-scene { min-width:0; }

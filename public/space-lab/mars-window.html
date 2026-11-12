@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hit the window to Mars — The Space Race</title>
+  <meta name="description" content="Pick a launch day, fly the Hohmann transfer to Mars, and find out why a ship can't aim at where Mars is. Learn why Mars launch windows come about every 26 months and the trip takes about 8.5 months." />
+  <link rel="icon" href="../assets/images/logo-header.webp" type="image/webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
+  <link rel="stylesheet" href="../assets/css/mars-window.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/systems/instruments.js"></script>
+  <script type="module" src="/assets/js/pages/mars-window.js" defer></script>
+</head>
+<body data-world="space">
+  <site-header current="space-lab"></site-header>
+
+  <main>
+    <section class="world-head frame mw-head">
+      <a class="back-link" href="index.html">&larr; Space</a>
+      <p class="tag tag-accent">S·07</p>
+      <h1 class="world-title">Hit the window to Mars</h1>
+      <p class="world-lede">
+        A ship can't fly straight at Mars, because Mars won't be there when it arrives. Pick
+        the day to leave and see what that costs.
+      </p>
+    </section>
+
+    <!-- ================= EXHIBIT 01: THE WINDOW ================= -->
+    <section class="exhibit frame mw-exhibit" id="window">
+      <div class="orbit-lab mw-lab">
+        <div class="stage mw-stage">
+          <canvas id="mars-canvas" role="img" aria-label="Top-down view of the Sun with Earth and Mars on circular orbits."></canvas>
+        </div>
+
+        <div class="panel mw-panel">
+          <div class="panel-head">
+            <span>Mission</span>
+            <span data-status>Predict</span>
+          </div>
+          <div class="panel-body">
+
+            <div class="mw-step" data-step="predict">
+              <h2 class="mw-q" tabindex="-1">If you launch today, will you reach Mars?</h2>
+              <p class="panel-note">
+                Day 0, leaving on the cheapest path: half an ellipse around the Sun. Choose
+                before you fly.
+              </p>
+              <div class="mw-options" role="group" aria-label="Your prediction">
+                <button class="ctrl mw-opt" type="button" data-predict="hit">Yes, I'll reach Mars</button>
+                <button class="ctrl mw-opt" type="button" data-predict="early">No. I'll arrive early and Mars won't be there yet</button>
+                <button class="ctrl mw-opt" type="button" data-predict="late">No. I'll arrive late and Mars will have gone by</button>
+              </div>
+            </div>
+
+            <div class="mw-step" data-step="aim" hidden>
+              <h2 class="mw-q" tabindex="-1" data-aim-title>Your prediction is locked in.</h2>
+              <p class="panel-note" data-aim-note></p>
+              <p class="panel-note mw-hint" data-aim-hint hidden></p>
+              <lab-control name="day" label="Launch day" min="0" max="800" step="1" value="0"></lab-control>
+              <div class="ctrl-row ctrl-row-tight mw-nudge" role="group" aria-label="Step the launch day">
+                <button class="ctrl" type="button" data-nudge="-100" aria-label="Back 100 days">&minus;100</button>
+                <button class="ctrl" type="button" data-nudge="-10" aria-label="Back 10 days">&minus;10</button>
+                <button class="ctrl" type="button" data-nudge="-1" aria-label="Back 1 day">&minus;1</button>
+                <button class="ctrl" type="button" data-nudge="1" aria-label="Forward 1 day">+1</button>
+                <button class="ctrl" type="button" data-nudge="10" aria-label="Forward 10 days">+10</button>
+                <button class="ctrl" type="button" data-nudge="100" aria-label="Forward 100 days">+100</button>
+              </div>
+              <div class="readout-row mw-readouts">
+                <lab-readout data-out="lead" label="Mars ahead of Earth" unit="°" decimals="1"></lab-readout>
+                <lab-readout data-out="need" label="Lead needed" unit="°" decimals="1" value="0"></lab-readout>
+              </div>
+              <button class="ctrl ctrl-primary mw-go" type="button" data-launch>Launch today</button>
+            </div>
+
+            <div class="mw-step" data-step="fly" hidden>
+              <h2 class="mw-q" tabindex="-1">In flight</h2>
+              <p class="panel-note" data-fly-note></p>
+              <button class="ctrl" type="button" data-skip>Skip to arrival</button>
+            </div>
+
+            <div class="mw-step" data-step="result" hidden>
+              <h2 class="result-verdict mw-verdict" tabindex="-1" data-verdict></h2>
+              <p class="mw-text" data-result-detail></p>
+              <p class="mw-text mw-why" data-result-why></p>
+              <div class="mw-pred" data-prediction hidden>
+                <span class="mw-pred-label">Your prediction</span>
+                <p class="mw-text" data-prediction-text></p>
+              </div>
+              <button class="ctrl ctrl-primary mw-go" type="button" data-again>Try another day</button>
+              <button class="ctrl ctrl-primary mw-go" type="button" data-next hidden>Next: when is the next window?</button>
+            </div>
+
+            <div class="mw-step" data-step="guess" hidden>
+              <h2 class="mw-q" tabindex="-1">When is the next window?</h2>
+              <p class="panel-note">
+                Earth and Mars are lined up as they were when you launched. How many months
+                until they line up like this again?
+              </p>
+              <lab-control name="months" label="Guess" unit="months" min="1" max="40" step="1" value="12"></lab-control>
+              <button class="ctrl ctrl-primary mw-go" type="button" data-fast>Fast-forward the clock</button>
+            </div>
+
+            <div class="mw-step" data-step="ff" hidden>
+              <h2 class="mw-q" tabindex="-1">Running the clock</h2>
+              <p class="panel-note" data-ff-note></p>
+              <button class="ctrl" type="button" data-skip>Skip ahead</button>
+            </div>
+
+            <div class="mw-step" data-step="done" hidden>
+              <h2 class="result-verdict mw-verdict" tabindex="-1" data-done-verdict></h2>
+              <p class="mw-text" data-done-detail></p>
+              <div class="ctrl-row">
+                <a class="ctrl ctrl-primary" href="#numbers" data-to-numbers>See the numbers</a>
+                <button class="ctrl" type="button" data-restart>Fly again</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-caption">
+        <span><strong>Model</strong> circular, flat orbits at mean distance. Mars's real orbit is slightly squashed (eccentricity 0.0935) and tilted 1.85&deg;</span>
+        <span><strong>Scale</strong> orbit sizes to scale; the Sun and planets are not</span>
+        <span><strong>Hit</strong> arriving within 2.5 million km of Mars</span>
+        <span><a href="/references/index.html#mars-window">Sources and constants</a></span>
+      </div>
+
+      <p class="mw-skip"><a href="#numbers" data-show-numbers>Skip the game and read the numbers</a></p>
+
+      <div class="visually-hidden" role="status" aria-live="polite" data-live></div>
+    </section>
+
+    <!-- ================= EXHIBIT 02: THE NUMBERS ================= -->
+    <section class="exhibit frame mw-numbers" id="numbers" hidden>
+      <div class="exhibit-head">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title">Why a window, and why eight months</h2>
+        </div>
+      </div>
+
+      <div class="exhibit-body">
+        <p class="note" data-copy="transfer">
+        </p>
+        <p class="note" data-copy="synodic">
+        </p>
+        <p class="note" data-copy="real">
+        </p>
+
+        <div class="data-table-wrap">
+          <table class="data-table mw-table">
+            <thead>
+              <tr><th>Trip</th><th class="num">Days, launch to landing or arrival</th><th class="num">Path, million km</th></tr>
+            </thead>
+            <tbody data-compare></tbody>
+          </table>
+        </div>
+
+        <p class="note" data-copy="why">
+        </p>
+
+        <p class="finding">
+          The trip time barely depends on when you leave. The launch day matters only because
+          it decides where Mars will be <span data-n="days"></span> days later.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>
