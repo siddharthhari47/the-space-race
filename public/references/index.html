@@ -707,6 +707,32 @@
       </info-card>
     </feature-grid>
 
+    <section-header id="solar-system-scale" eyebrow="Checked 12 November 2026" title="Space Lab: The Solar System to scale"></section-header>
+    <p class="lab-intro">Sources for the <a href="../space-lab/solar-system-scale.html">Solar System to scale exhibit</a>. Every constant was opened on the date above and is stored, with the row it came from, in <code>systems/solar-scale.js</code>; the light times, AU values, pixel sizes and bead-scale figures on that page are computed from them and tested in <code>tools/solar-scale-check.mjs</code>. What the exhibit chooses itself is set out in the last card.</p>
+    <feature-grid columns="3">
+      <info-card title="NASA NSSDCA: Planetary Fact Sheet, metric" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/">
+        Last updated 18 March 2025. The row &ldquo;Distance from Sun (10<sup>6</sup> km)&rdquo;: Mercury 57.9, Venus 108.2, Earth 149.6, Mars 228.0, Jupiter 778.5, Saturn 1432.0, Uranus 2867.0, Neptune 4515.0. The row &ldquo;Diameter (km)&rdquo;: 4879, 12,104, 12,756, 6792, 142,984, 120,536, 51,118, 49,528. Earth&rsquo;s perihelion and aphelion, 147.1 and 152.1 million km, are from the same table. The <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/planetfact_notes.html">fact sheet notes</a> (updated 20 December 2021) define the distance as the average distance, also known as the semi-major axis, and the diameter as the equatorial diameter.
+      </info-card>
+      <info-card title="NASA NSSDCA: Sun Fact Sheet" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html">
+        Last updated 9 May 2024. Volumetric mean radius 695,700 km. The exhibit doubles it to 1,391,400 km for the Sun&rsquo;s diameter, which is a mean diameter, where the planets&rsquo; figures are equatorial, and sets that to 40 pixels, which fixes the scale at 34,785 km per pixel.
+      </info-card>
+      <info-card title="NASA NSSDCA: Mars Fact Sheet" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html">
+        Last updated 19 May 2025. Distance from Earth: minimum 54.6, maximum 401.4 million km. Used only for the one-way radio time to Mars, 3 min 2 s at the closest and 22 min 19 s at the farthest, which are computed.
+      </info-card>
+      <info-card title="NIST CODATA: speed of light in vacuum" href="https://physics.nist.gov/cgi-bin/cuu/Value?c">
+        2022 CODATA recommended values: c = 299 792 458 m s<sup>&minus;1</sup>, exact. Every light time on the exhibit is a distance divided by this, and the photon at 1&times; moves at it.
+      </info-card>
+      <info-card title="IAU 2012 Resolution B2: the astronomical unit" href="https://syrte.obspm.fr/IAU_resolutions/Res_IAU2012_B2.pdf">
+        The text of the resolution as hosted by the Paris Observatory (SYRTE); the copy at iau.org/static/resolutions/IAU2012_English.pdf returned &ldquo;not found&rdquo; on the date above. It recommends that the astronomical unit be a conventional unit of length equal to 149 597 870 700 m exactly, with the symbol &ldquo;au&rdquo;. The AU column and the AU marks on the strip use this value.
+      </info-card>
+      <info-card title="NASA Science: the electromagnetic spectrum" href="https://science.nasa.gov/ems/05_radiowaves/">
+        Two pages of NASA&rsquo;s tour of the electromagnetic spectrum. <a href="https://science.nasa.gov/ems/05_radiowaves/">Radio Waves</a> (modified 3 August 2023) places radio waves at the long-wavelength end of the electromagnetic spectrum, and <a href="https://science.nasa.gov/ems/02_anatomy/">Anatomy of an Electromagnetic Wave</a> (modified 3 August 2023) says photons travel at the speed of light. Behind the one line that a radio message to Mars is no faster than sunlight.
+      </info-card>
+      <info-card title="What the exhibit chooses or leaves out">
+        The Sun and the eight planets only, on one straight line in planet order, as if they were all lined up on one side of the Sun. Distances are mean distances from the Sun&rsquo;s centre, and real ones change over each orbit. The 40-pixel Sun, the 40&times; inset, the 1 cm bead, the answer choices and the light-minute marks are this site&rsquo;s own teaching settings. Light times, AU values, pixel sizes, the 0.04% filled fraction and the bead distances are computed, not quoted.
+      </info-card>
+    </feature-grid>
+
     <section-header eyebrow="Print &amp; Papers" title="Books"></section-header>
     <feature-grid columns="3">
       <info-card title="Book citations" status="coming-soon">

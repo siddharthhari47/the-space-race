@@ -1,0 +1,633 @@
+/* The Solar System to scale.
+
+   Shared pieces (panel, buttons, exhibit headings, tables) come from
+   museum.css. This file adds the two guesses, the readout above the strip,
+   and the strip itself: one tall scrolling box with the Sun at the top and
+   Neptune at the bottom, everything on it placed by pages/solar-system-scale.js
+   at its true distance. */
+
+.ss-head {
+  padding-top: clamp(1rem, 2.5vh, 1.75rem);
+  padding-bottom: 0;
+}
+
+.ss-head .world-title {
+  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+  margin: 0.2rem 0 0.4rem;
+}
+
+.ss-head .world-lede {
+  max-width: 100ch;
+}
+
+@media (min-width: 881px) {
+  .ss-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1.2rem;
+  }
+
+  .ss-head .back-link,
+  .ss-head .tag {
+    margin: 0;
+  }
+
+  .ss-head .world-title,
+  .ss-head .world-lede {
+    flex: 1 1 100%;
+  }
+}
+
+.ss-exhibit {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: clamp(1.5rem, 4vw, 3rem);
+  border-top: 0;
+}
+
+.ss-panel {
+  border: 0;
+  background: var(--ink-panel);
+  max-width: 52rem;
+}
+
+/* ---------- The guesses ---------- */
+
+.ss-predict {
+  gap: 1.6rem;
+}
+
+.ss-q {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.ss-qtitle {
+  margin: 0;
+  display: flex;
+  gap: 0.7rem;
+  align-items: baseline;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--type-hi);
+}
+
+.ss-qtitle:focus-visible,
+.exhibit-title:focus-visible {
+  outline: 2px solid var(--w-accent);
+  outline-offset: 4px;
+}
+
+.ss-qnum {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--w-accent);
+  border: 1px solid var(--w-accent-line);
+  padding: 0.1rem 0.45rem;
+  transform: translateY(-0.1rem);
+}
+
+.ss-bead-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--type-faint);
+}
+
+/* A CSS centimetre is a nominal one (37.8 px), not a ruler-true one, which
+   is fine for a picture of a bead. */
+.ss-bead {
+  width: 1cm;
+  height: 1cm;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #fff4c8, #ffd27a 55%, #e79a3a);
+  box-shadow: 0 0 14px rgba(255, 210, 122, 0.45);
+}
+
+.ss-options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.ss-opt {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  min-height: 3rem;
+  padding: 0.6rem 0.7rem;
+}
+
+.ss-opt[aria-pressed="true"] {
+  border-color: var(--w-accent);
+  color: var(--type-hi);
+  background: var(--w-accent-soft);
+}
+
+.ss-opt[aria-pressed="true"]:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.ss-predict-note {
+  margin: 0;
+}
+
+.ss-skip {
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* A text link, but a 44 px tall target on a phone. */
+.ss-skip a {
+  display: inline-block;
+  padding: 0.8rem 0;
+}
+
+/* ---------- The walk ---------- */
+
+.ss-walk-sec[hidden],
+.ss-results[hidden],
+.ss-score[hidden],
+.ss-pred-race[hidden] {
+  display: none;
+}
+
+.ss-walk-sec {
+  padding-top: clamp(2rem, 4vw, 3rem);
+}
+
+.ss-walk-head {
+  margin-bottom: 1.25rem;
+}
+
+.ss-hud {
+  border: 1px solid var(--rule);
+  border-bottom: 0;
+  background: var(--ink-panel);
+  padding: 0.8rem 0.9rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.ss-hud-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.ss-read {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.ss-read-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.ss-read-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.05rem, 2.4vw, 1.45rem);
+  color: var(--type-hi);
+}
+
+.ss-read-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--type-dim);
+}
+
+.ss-race {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.ss-speeds {
+  display: flex;
+}
+
+.ss-speed {
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  text-transform: none;
+}
+
+.ss-speed + .ss-speed {
+  border-left: 0;
+}
+
+.ss-speed[aria-pressed="true"] {
+  border-color: var(--w-accent);
+  color: var(--type-hi);
+  background: var(--w-accent-soft);
+}
+
+.ss-gap {
+  margin: 0;
+  min-height: 1.2em;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--type-faint);
+}
+
+.ss-race-note {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--type-dim);
+}
+
+.ss-window {
+  position: relative;
+  border: 1px solid var(--rule);
+}
+
+.ss-scroller {
+  height: min(62vh, 620px);
+  min-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 34% 0, rgba(255, 210, 122, 0.06), transparent 50%),
+    var(--ink-void);
+}
+
+.ss-scroller:focus-visible {
+  outline: 2px solid var(--w-accent);
+  outline-offset: -2px;
+}
+
+.ss-track {
+  --axis: 34%;
+  --pad: 200px;
+  position: relative;
+}
+
+/* The path light takes. */
+.ss-line {
+  position: absolute;
+  left: var(--axis);
+  top: var(--pad);
+  width: 1px;
+  background: rgba(255, 230, 170, 0.14);
+}
+
+.ss-mark {
+  position: absolute;
+  left: 0;
+  /* Stops short of the axis by more than a planet ring's 14 px radius, so a
+     tick or label beside a planet never runs into its ring. */
+  width: calc(var(--axis) - 18px);
+  height: 16px;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--type-faint);
+  white-space: nowrap;
+}
+
+.ss-mark::after {
+  content: "";
+  width: 8px;
+  border-top: 1px solid rgba(150, 168, 196, 0.35);
+}
+
+.ss-mark-au {
+  color: var(--w-accent);
+}
+
+.ss-mark-au::after {
+  width: 14px;
+  border-top-color: var(--w-accent-line);
+}
+
+.ss-body {
+  position: absolute;
+  left: var(--axis);
+  right: 0;
+  height: 0;
+}
+
+.ss-sun,
+.ss-dot,
+.ss-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ss-sun {
+  background: radial-gradient(circle at 42% 40%, #fff6d2, #ffd27a 55%, #e9963a);
+  box-shadow: 0 0 22px rgba(255, 210, 122, 0.5);
+}
+
+.ss-ring {
+  width: 28px;
+  height: 28px;
+  border: 1px dashed rgba(205, 214, 230, 0.55);
+}
+
+.ss-dot {
+  background: var(--planet, #d8dee9);
+}
+
+.ss-label {
+  position: absolute;
+  left: 22px;
+  right: 8px;
+  top: -0.6rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.1rem;
+}
+
+.ss-body-sun .ss-label {
+  left: 30px;
+}
+
+.ss-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.02rem;
+  color: var(--type-hi);
+  line-height: 1.2;
+}
+
+.ss-size {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  color: var(--type-dim);
+}
+
+/* The magnified copy sits under the label with its caption beneath it, so
+   Jupiter's (164 px at 40x) still fits the label column on a phone. */
+.ss-inset {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.ss-inset-dot {
+  flex: none;
+  border-radius: 50%;
+  background: var(--planet, #d8dee9);
+}
+
+.ss-inset-cap {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.ss-body-mercury { --planet: #b9b2a8; }
+.ss-body-venus   { --planet: #f0d8a0; }
+.ss-body-earth   { --planet: #6ea8ff; }
+.ss-body-mars    { --planet: #ff9a62; }
+.ss-body-jupiter { --planet: #e2b98a; }
+.ss-body-saturn  { --planet: #ead39a; }
+.ss-body-uranus  { --planet: #9fe3e6; }
+.ss-body-neptune { --planet: #7a9cff; }
+
+.ss-photon {
+  position: absolute;
+  left: var(--axis);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: #fffbe8;
+  box-shadow: 0 0 10px 3px rgba(255, 246, 200, 0.75);
+}
+
+.ss-photon[hidden] {
+  display: none;
+}
+
+.ss-probe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 35%;
+  border-top: 1px solid var(--w-accent-line);
+  pointer-events: none;
+}
+
+.ss-probe span {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+}
+
+.ss-jumps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.8rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--rule);
+  border-top: 0;
+}
+
+.ss-jumps-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.ss-jumps-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ss-jump {
+  padding: 0.45rem 0.65rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Results ---------- */
+
+.ss-score {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 2rem;
+  max-width: var(--measure);
+}
+
+.ss-score .result-verdict {
+  margin: 0;
+}
+
+.ss-pred {
+  border-left: 2px solid var(--rule-bright);
+  padding: 0.1rem 0 0.1rem 0.8rem;
+}
+
+.ss-pred[data-state="good"] { border-left-color: #7cf0be; }
+.ss-pred[data-state="bad"]  { border-left-color: #ff8f8f; }
+
+.ss-pred-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.ss-pred-text,
+.ss-pred-race {
+  margin: 0;
+  color: var(--type);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.ss-table th.num,
+.ss-table td.num {
+  text-align: right;
+}
+
+.ss-table tbody th {
+  font-weight: 500;
+  color: var(--type-hi);
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.ss-table td.num {
+  white-space: nowrap;
+}
+
+.ss-table th:last-child,
+.ss-table td:last-child {
+  padding-right: 1.1rem;
+}
+
+/* ---------- Phone ---------- */
+
+@media (max-width: 880px) {
+  .ss-qtitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .ss-options {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ss-head {
+    padding-top: 1.75rem;
+  }
+
+  .ss-head .world-title {
+    font-size: 2.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .ss-head .world-lede {
+    font-size: 1rem;
+  }
+
+  .ss-track {
+    --axis: 28%;
+  }
+
+  /* On a phone the two readouts stack, each a label and a value on one
+     line, so the readout costs four short lines instead of half a screen. */
+  .ss-hud {
+    gap: 0.6rem;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .ss-hud-row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .ss-read {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: 0.6rem;
+  }
+
+  .ss-read-value {
+    font-size: 1rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .ss-read-sub {
+    grid-column: 1 / -1;
+    text-align: right;
+  }
+
+  .ss-race-note {
+    font-size: 0.8rem;
+  }
+
+  .ss-scroller {
+    height: 58vh;
+  }
+
+  .ss-race .ss-race-go {
+    flex: 1 1 100%;
+  }
+
+  .ss-speeds {
+    flex: 1 1 auto;
+  }
+
+  .ss-speed {
+    flex: 1 1 0;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+  }
+
+  .ss-mark {
+    font-size: 0.6rem;
+  }
+
+  .stage-caption {
+    font-size: 0.68rem;
+  }
+}

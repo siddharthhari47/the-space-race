@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Solar System to scale — The Space Race</title>
+  <meta name="description" content="Walk from the Sun to Neptune with distances and sizes on one true scale, and race a photon at the real speed of light. Sunlight takes 8 min 19 s to reach Earth and over four hours to reach Neptune." />
+  <link rel="icon" href="../assets/images/logo-header.webp" type="image/webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
+  <link rel="stylesheet" href="../assets/css/solar-scale.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/pages/solar-system-scale.js" defer></script>
+</head>
+<body data-world="space">
+  <site-header current="space-lab"></site-header>
+
+  <main>
+    <section class="world-head frame ss-head">
+      <a class="back-link" href="index.html">&larr; Space</a>
+      <p class="tag tag-accent">S·08</p>
+      <h1 class="world-title">The Solar System to scale</h1>
+      <p class="world-lede">
+        The Sun and the eight planets on one line, with the distances and the sizes drawn
+        to the same scale. Most of it is empty, and light takes hours to cross it.
+      </p>
+    </section>
+
+    <!-- ================= STEP 1: PREDICT ================= -->
+    <section class="exhibit frame ss-exhibit" id="predict">
+      <div class="panel ss-panel">
+        <div class="panel-head">
+          <span>Before you go</span>
+          <span data-predict-status>Two guesses</span>
+        </div>
+        <div class="panel-body ss-predict">
+          <div class="ss-q" data-question="bead">
+            <h2 class="ss-qtitle" tabindex="-1">
+              <span class="ss-qnum">1</span>
+              If the Sun were a bead 1 cm across, how far away would Earth be?
+            </h2>
+            <div class="ss-bead-row" aria-hidden="true">
+              <span class="ss-bead"></span><span class="ss-bead-label">the Sun, 1 cm</span>
+            </div>
+            <div class="ss-options" role="group" aria-label="Your guess for question 1" data-options="bead"></div>
+          </div>
+
+          <div class="ss-q" data-question="neptune">
+            <h2 class="ss-qtitle" tabindex="-1">
+              <span class="ss-qnum">2</span>
+              How long does sunlight take to reach Neptune, the farthest of the eight planets?
+            </h2>
+            <div class="ss-options" role="group" aria-label="Your guess for question 2" data-options="neptune"></div>
+          </div>
+
+          <p class="panel-note ss-predict-note" data-predict-note>Pick one answer for each. They are scored at the end.</p>
+        </div>
+      </div>
+      <p class="ss-skip"><a href="#results" data-skip-all>Skip the guesses and read the numbers</a></p>
+    </section>
+
+    <!-- ================= STEP 2: THE WALK ================= -->
+    <section class="exhibit frame ss-walk-sec" id="walk" hidden>
+      <div class="exhibit-head ss-walk-head">
+        <span class="exhibit-index">01</span>
+        <div>
+          <h2 class="exhibit-title" tabindex="-1" data-walk-title>Walk to Neptune</h2>
+          <p class="exhibit-sub">
+            Scroll down the strip. One pixel is <span data-n="kmpx"></span> km, for the
+            distances and for the sizes. The Sun is <span data-n="sunpx"></span> pixels
+            across, so Earth is about a third of a pixel.
+          </p>
+        </div>
+      </div>
+
+      <div class="ss-hud panel" data-hud>
+        <div class="ss-hud-row">
+          <div class="ss-read">
+            <span class="ss-read-label" data-out="km-label">From the Sun</span>
+            <span class="ss-read-value" data-out="km">0 km</span>
+            <span class="ss-read-sub" data-out="au">0.000 AU</span>
+          </div>
+          <div class="ss-read">
+            <span class="ss-read-label" data-out="light-label">Light has been travelling</span>
+            <span class="ss-read-value" data-out="light">0 s</span>
+            <span class="ss-read-sub" data-out="next">At the Sun. Mercury in 57.9 million km</span>
+          </div>
+        </div>
+        <p class="ss-gap" data-out="gap" aria-hidden="true"></p>
+        <div class="ss-race" role="group" aria-label="Race a photon">
+          <button class="ctrl ctrl-primary ss-race-go" type="button" data-race>Race a photon</button>
+          <div class="ss-speeds" role="group" aria-label="Photon speed">
+            <button class="ctrl ss-speed" type="button" aria-pressed="true" data-speed="1">1&times;</button>
+            <button class="ctrl ss-speed" type="button" aria-pressed="false" data-speed="10">10&times;</button>
+            <button class="ctrl ss-speed" type="button" aria-pressed="false" data-speed="100">100&times;</button>
+            <button class="ctrl ss-speed" type="button" aria-pressed="false" data-speed="1000">1000&times;</button>
+          </div>
+          <button class="ctrl ss-stop" type="button" data-stop disabled>Stop</button>
+        </div>
+        <p class="ss-race-note" data-race-note>
+          At 1&times; the photon moves at the real speed of light, which at this scale is
+          <span data-n="lightpx"></span> pixels a second. Scroll or press a key to take over.
+        </p>
+      </div>
+
+      <div class="ss-window">
+        <div class="ss-scroller" tabindex="0" role="region" aria-label="The Solar System to scale, Sun at the top. Scroll to move away from the Sun." aria-describedby="ss-walk-help" data-scroller>
+          <div class="ss-track" data-track></div>
+        </div>
+        <div class="ss-probe" aria-hidden="true"><span>you are here</span></div>
+      </div>
+      <p class="visually-hidden" id="ss-walk-help">Arrow keys, Page Down and End scroll the strip. The buttons below jump to each planet.</p>
+
+      <div class="ss-jumps" role="group" aria-label="Jump to">
+        <span class="ss-jumps-label">Jump to</span>
+        <div class="ss-jumps-row" data-jumps></div>
+      </div>
+
+      <div class="stage-caption">
+        <span><strong>Scale</strong> 1 px = <span data-n="kmpx2"></span> km, for distance and size alike</span>
+        <span><strong>Distances</strong> mean distance from the Sun's centre (semi-major axis). Real distances change over each orbit</span>
+        <span><strong>Rings</strong> mark where each planet is and are not to scale. The dot inside each ring is the planet at true size, and the dot under the label is the same planet 40 times larger</span>
+        <span><a href="/references/index.html#solar-system-scale">Sources and constants</a></span>
+      </div>
+
+      <p class="ss-skip"><button class="ctrl" type="button" data-to-results>Skip to the results</button></p>
+      <div class="visually-hidden" role="status" aria-live="polite" data-live></div>
+    </section>
+
+    <!-- ================= STEP 3: RESULTS ================= -->
+    <section class="exhibit frame ss-results" id="results" hidden>
+      <div class="exhibit-head">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title" tabindex="-1" data-results-title>How far, and how long</h2>
+        </div>
+      </div>
+
+      <div class="exhibit-body">
+        <div class="ss-score" data-score hidden>
+          <p class="result-verdict" data-score-verdict></p>
+          <div class="ss-pred" data-pred="bead"></div>
+          <div class="ss-pred" data-pred="neptune"></div>
+          <p class="ss-pred-race" data-race-result hidden></p>
+        </div>
+
+        <p class="note" data-copy="empty"></p>
+        <p class="note" data-copy="light"></p>
+        <p class="note" data-copy="radio"></p>
+        <p class="note" data-copy="mean"></p>
+
+        <div class="data-table-wrap">
+          <table class="data-table ss-table">
+            <caption class="visually-hidden">One-way light time, mean distance from the Sun and diameter for the Sun and each planet</caption>
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col" class="num">Light time from the Sun</th>
+                <th scope="col" class="num">Mean distance, million km</th>
+                <th scope="col" class="num">AU</th>
+                <th scope="col" class="num">Diameter, km</th>
+                <th scope="col" class="num">Size here, px</th>
+              </tr>
+            </thead>
+            <tbody data-table></tbody>
+          </table>
+        </div>
+
+        <p class="finding" data-copy="finding"></p>
+
+        <div class="ctrl-row">
+          <button class="ctrl ctrl-primary" type="button" data-again>Walk it again</button>
+          <a class="ctrl" href="/references/index.html#solar-system-scale">Sources</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>
