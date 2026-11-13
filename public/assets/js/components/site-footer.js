@@ -5,6 +5,7 @@ class SiteFooter extends HTMLElement {
         <div class="footer-links">
           <a href="/about/index.html">About</a>
           <a href="/references/index.html">References</a>
+          <a href="https://github.com/siddharthhari47/the-space-race" target="_blank" rel="noopener">Source code on GitHub</a>
         </div>
         <div class="footer-contact">
           <h3>Contact Me</h3>
