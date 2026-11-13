@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bring it home — The Space Race</title>
+  <meta name="description" content="Bring an Apollo capsule home from the Moon. Set the angle it meets the atmosphere at: too shallow and it skips back out, too steep and the slowing goes over the 12 g line this exhibit uses. Fire as many times as you like and the safe window appears one try at a time." />
+  <link rel="icon" href="../assets/images/logo-header.webp" type="image/webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
+  <link rel="stylesheet" href="../assets/css/reentry.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/systems/instruments.js"></script>
+  <script type="module" src="/assets/js/pages/reentry.js" defer></script>
+</head>
+<body data-world="space">
+  <site-header current="space-lab"></site-header>
+
+  <main>
+    <section class="world-head frame re-head">
+      <a class="back-link" href="index.html">&larr; Space</a>
+      <p class="tag tag-accent">S·10</p>
+      <h1 class="world-title">Bring it home</h1>
+      <p class="world-lede">
+        A capsule coming back from the Moon meets the air at about 11 kilometres a second.
+        It has one narrow range of angles to get through: too shallow and it bounces
+        back out, too steep and the slowing goes over the 12 g line this exhibit uses
+        for &ldquo;too much&rdquo;.
+      </p>
+    </section>
+
+    <!-- ================= EXHIBIT 01: THE CORRIDOR ================= -->
+    <section class="exhibit frame re-exhibit" id="corridor">
+      <div class="orbit-lab re-lab">
+        <div class="stage re-stage">
+          <canvas id="reentry-canvas" role="img" aria-label="Side view of the Earth's curve with one model entry from the Moon."></canvas>
+        </div>
+
+        <div class="panel re-panel">
+          <div class="panel-head">
+            <span>Re-entry corridor</span>
+            <span data-status>Predict</span>
+          </div>
+          <div class="panel-body">
+
+            <div class="re-step" data-step="predict">
+              <h2 class="re-q" tabindex="-1">How narrow is the way home?</h2>
+              <p class="panel-note">
+                This is a <strong>simplified model</strong> of an Apollo capsule, so every
+                number on this page that comes from the exhibit is a model value, marked as
+                one. Guess first. Your answers are kept until the end.
+              </p>
+              <div class="re-ask">
+                <p class="re-ask-q" id="q-width">Coming back from the Moon, the range of entry angles that ends well, with no steering, is about</p>
+                <div class="re-options re-options-4" role="group" aria-labelledby="q-width">
+                  <button class="ctrl re-opt" type="button" data-q="width" data-v="0.2" aria-pressed="false">0.2&deg;</button>
+                  <button class="ctrl re-opt" type="button" data-q="width" data-v="2" aria-pressed="false">2&deg;</button>
+                  <button class="ctrl re-opt" type="button" data-q="width" data-v="20" aria-pressed="false">20&deg;</button>
+                  <button class="ctrl re-opt" type="button" data-q="width" data-v="45" aria-pressed="false">45&deg;</button>
+                </div>
+              </div>
+              <div class="re-ask">
+                <p class="re-ask-q" id="q-worse">Rolling the capsule's lift to suit the angle widens that range mostly at the</p>
+                <div class="re-options re-options-3" role="group" aria-labelledby="q-worse">
+                  <button class="ctrl re-opt" type="button" data-q="worse" data-v="steep" aria-pressed="false">steep end</button>
+                  <button class="ctrl re-opt" type="button" data-q="worse" data-v="shallow" aria-pressed="false">shallow end</button>
+                  <button class="ctrl re-opt" type="button" data-q="worse" data-v="same" aria-pressed="false">both about equally</button>
+                </div>
+              </div>
+              <button class="ctrl ctrl-primary re-go" type="button" data-start disabled>Start level 1</button>
+            </div>
+
+            <div class="re-step" data-step="l1-aim" hidden>
+              <h2 class="re-q" tabindex="-1">Level 1: pick the angle</h2>
+              <p class="panel-note">
+                The capsule has no steering: a ballistic Apollo command module, as it was
+                when it reached the air at 400,000 feet. Set the angle below the horizon
+                and fire. Each try leaves a mark on the strip under the picture, and the
+                edges of the safe range show up as the marks change shape.
+              </p>
+              <lab-control name="angle" label="Angle" unit="&deg; below horizon" min="4" max="9" step="0.05" value="6.5"></lab-control>
+              <button class="ctrl ctrl-primary re-go" type="button" data-fire>Fire</button>
+              <p class="re-text re-shot" data-shot role="status" aria-live="polite"></p>
+              <p class="panel-note re-hint" data-hint hidden></p>
+              <p class="re-legend" aria-hidden="true"><span class="re-k re-k-skip">&#9650; skipped out</span> <span class="re-k re-k-safe">&#9679; splashdown</span> <span class="re-k re-k-over">&#10005; over 12 g</span></p>
+              <button class="ctrl re-go" type="button" data-to-l2 disabled>Next: add lift</button>
+            </div>
+
+            <div class="re-step" data-step="l2-lift" hidden>
+              <h2 class="re-q" tabindex="-1">Level 2: roll the lift</h2>
+              <p class="panel-note">
+                The real capsule made a little lift as well as drag (a lift-to-drag ratio of
+                about 0.3), and the crew could point that lift up, down or sideways by rolling
+                the capsule. Up holds it out of the thick air longer and cuts the load; down
+                pulls it into the air sooner. Pick one roll for the
+                whole entry. In this model a little lift down rescues only a slightly
+                shallower entry, and full lift down crushes it, so the big gain is on the
+                steep side.
+              </p>
+              <p class="re-text re-challenge" data-challenge></p>
+              <lab-control name="angle2" label="Angle" unit="&deg; below horizon" min="4" max="9" step="0.05" value="7"></lab-control>
+              <lab-control name="roll" label="Roll" unit="up (+) / down (&minus;)" min="-1" max="1" step="0.25" value="0"></lab-control>
+              <div class="re-presets" role="group" aria-label="Roll presets">
+                <button class="ctrl" type="button" data-roll="-0.25">Down a little</button>
+                <button class="ctrl" type="button" data-roll="0">None</button>
+                <button class="ctrl" type="button" data-roll="0.5">Up half</button>
+                <button class="ctrl" type="button" data-roll="1">Up full</button>
+              </div>
+              <button class="ctrl ctrl-primary re-go" type="button" data-fire2>Fire</button>
+              <p class="re-text re-shot" data-shot2 role="status" aria-live="polite"></p>
+              <p class="panel-note re-hint" data-hint2 hidden></p>
+              <p class="re-legend" aria-hidden="true"><span class="re-k re-k-skip">&#9650; skipped out</span> <span class="re-k re-k-safe">&#9679; splashdown</span> <span class="re-k re-k-over">&#10005; over 12 g</span></p>
+              <button class="ctrl re-go" type="button" data-to-compare disabled>Next: the two windows</button>
+            </div>
+
+            <div class="re-step" data-step="compare" hidden>
+              <h2 class="re-q" tabindex="-1">The two windows</h2>
+              <p class="panel-note">
+                The bars show every entry angle that ends in a splashdown, found by the
+                model searching all the angles for you (not only the ones you fired).
+              </p>
+              <p class="re-text" data-compare-text></p>
+              <button class="ctrl re-leo" type="button" data-leo aria-pressed="false">Also show a return from low Earth orbit</button>
+              <p class="re-text re-leo-text" data-leo-text hidden></p>
+              <button class="ctrl ctrl-primary re-go" type="button" data-finish>See how you did</button>
+            </div>
+
+            <div class="re-step" data-step="done" hidden>
+              <h2 class="result-verdict re-q" data-state="good" tabindex="-1">Home</h2>
+              <p class="re-text" data-done-text></p>
+              <div class="ctrl-row">
+                <a class="ctrl ctrl-primary" href="#results">See the results</a>
+                <button class="ctrl" type="button" data-restart>Play again</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-caption">
+        <span><strong>Simplified model</strong> a point mass in one plane over a non-rotating Earth, constant drag and lift, a standard atmosphere</span>
+        <span><strong>Drawn to fit</strong> heights are stretched on the picture; the Earth's curve and the distances are to scale for the radius the standard atmosphere uses</span>
+        <span><a href="/references/index.html#reentry">Sources and constants</a></span>
+      </div>
+
+      <p class="re-skip"><a href="#results" data-show-results>Skip the game and read the results</a></p>
+
+      <div class="visually-hidden" role="status" aria-live="polite" data-live></div>
+    </section>
+
+    <!-- ================= EXHIBIT 02: RESULTS ================= -->
+    <section class="exhibit frame re-results" id="results" hidden>
+      <div class="exhibit-head">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title" tabindex="-1">What you found</h2>
+        </div>
+      </div>
+
+      <div class="exhibit-body">
+        <p class="re-score-line" data-score-line></p>
+        <div class="re-scores">
+          <div class="re-pred" data-score="width">
+            <span class="re-pred-label">The width of the safe window</span>
+            <p class="re-text" data-score-text></p>
+          </div>
+          <div class="re-pred" data-score="worse">
+            <span class="re-pred-label">Where lift helps most</span>
+            <p class="re-text" data-score-text></p>
+          </div>
+        </div>
+
+        <p class="note" data-copy="why"></p>
+
+        <p class="note">
+          The slowing a capsule feels is the drag of the air divided by its weight, counted
+          in g. A steep entry reaches thick air while it is still very fast, so the drag
+          builds up quickly and peaks high. A shallow one skims thin air for a long time.
+          Too shallow and the capsule never gets deep enough into the air to shed its speed
+          before it climbs out again. In the model a no-lift capsule that only just stays in does not settle
+          at once: it dips, climbs
+          part way out, and comes down again in a second and harder dip, so just steeper
+          than the skip edge the peak load is a little higher than a few tenths of a degree
+          further in.
+        </p>
+
+        <p class="note">
+          Lift widens the window, but mostly at one end. Rolled up, the lift pushes the
+          capsule away from the Earth, so a steeper entry no longer piles on the load; in
+          the model that gains well over a degree. Rolled down a little, it pulls the
+          capsule into the air, so a slightly shallower entry no longer skips, but the gain
+          is only a fraction of a degree and a full roll down piles on the load instead.
+          No single roll does both, so the wide window needs the roll chosen to suit the
+          angle. The
+          real Apollo guidance changed the roll during the entry; this exhibit holds one roll
+          for the whole entry, which is a simplification of its own.
+        </p>
+
+        <div class="data-table-wrap">
+          <table class="data-table re-table">
+            <caption class="visually-hidden">Numbers from this page's model next to numbers from the Apollo reports</caption>
+            <thead>
+              <tr>
+                <th scope="col">Quantity</th>
+                <th scope="col" class="num">Model value</th>
+                <th scope="col" class="num">Real mission number</th>
+                <th scope="col">Source</th>
+              </tr>
+            </thead>
+            <tbody data-table></tbody>
+          </table>
+        </div>
+        <p class="re-table-note">
+          Model values are worked out on this page by the simplified model and are not
+          measurements. The real numbers are from the NASA reports listed under Sources and
+          constants. A dash means no real number was found for that row. The real corridor is
+          bounded by landing-range limits as well as by the load, and it is drawn for a
+          range of capsule and atmosphere conditions, so it is not the same thing as the model's
+          window and the two should not be expected to match.
+        </p>
+
+        <p class="note">
+          What the model leaves out: the Earth turns, and the capsule's sideways lift goes
+          to steering it across the ground, not just up and down. The air is a standard
+          day's, the same every time. The capsule is a point with a fixed drag and a fixed
+          lift. Heating is a standard formula for the convective heating of the hottest spot on
+          the heat shield, not a heat-shield model, and it leaves out the radiative heating
+          that adds to it at lunar-return speed. The 12 g limit is the exhibit's own rule for "over": it is
+          the load the Apollo entry planners drew their steep boundary at, and it is not a
+          limit on what a person can survive.
+        </p>
+
+        <p class="finding">
+          The way home from the Moon is a degree or two wide, and lift is what lets a
+          capsule use more of it.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>

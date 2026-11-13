@@ -182,6 +182,71 @@ export function installDom({ width = 1280, height = 820, dpr = 2, reducedMotion 
 
 /* ---------- Runner ---------- */
 
+/* ---------- Bring it home canvas states ----------
+
+   The shapes pages/reentry.js hands its canvas, built here from
+   systems/reentry.js, so a change to the module that broke a view (a path
+   with a NaN in it, an empty corridor) fails here without a browser. The
+   flights are real model runs; the strip marks are made from a handful of
+   angles the same way the page makes them. */
+const RE_STATES = [
+  "predict", "level 1 aiming", "level 1 safe", "level 1 over", "level 1 skip",
+  "level 1 strip", "level 2 aiming", "level 2 strip", "compare", "compare with orbit",
+];
+
+async function reState(label) {
+  const R = await import("../public/assets/js/systems/reentry.js");
+  const shot = (level, angle, roll = 0) => {
+    const r = R.fly({ fpa: -angle, mode: roll, sampleEvery: 1 });
+    return { level, angle, roll, outcome: r.outcome, peakG: r.peakG, path: r.path };
+  };
+  const flight = (level, sh, rest = {}) => {
+    let m = 0;
+    const peaks = sh.path.map((p) => (m = Math.max(m, p.g)));
+    const last = sh.path[sh.path.length - 1];
+    return {
+      mode: "flight", level, angle: sh.angle, startLabel: "entry",
+      run: { path: sh.path, at: sh.path.length - 1, done: true, outcome: sh.outcome },
+      g: last.g, q: last.q, peak: peaks[peaks.length - 1], ...rest,
+    };
+  };
+  const strip1 = [4.5, 5.0, 5.4, 5.6, 5.9, 6.2, 6.4, 7.0, 8.0].map((a) => shot(1, a));
+  const strip2 = [[5.2, -0.25], [6.5, 0], [6.5, 1], [7.0, 1], [7.4, 1], [5.0, -0.25]].map(([a, f]) => shot(2, a, f));
+  const rows = (leo) => {
+    const none = R.corridor({ mode: 0 });
+    const any = R.corridorAnyRoll({});
+    const out = [
+      { label: "Moon, no lift", note: "5.48 to 6.25: 0.77 wide", shallow: none.shallow, steep: none.steep, open: false, color: "#6ea8ff" },
+      { label: "Moon, roll chosen", note: "5.32 to 7.60: 2.28 wide", shallow: any.shallow, steep: any.steep, open: false, color: "#7cf0be" },
+    ];
+    if (leo) {
+      const ln = R.corridor({ mode: 0, speed: R.V_LEO });
+      const la = R.corridorAnyRoll({ speed: R.V_LEO });
+      out.push(
+        { label: "Low orbit, no lift", note: "no skip edge; steepest 3.65", shallow: ln.shallow, steep: ln.steep, open: ln.open, color: "#6ea8ff" },
+        { label: "Low orbit, roll chosen", note: "no skip edge; steepest 7.26", shallow: la.shallow, steep: la.steep, open: la.open, color: "#7cf0be" },
+      );
+    }
+    return out;
+  };
+  switch (label) {
+    case "predict": {
+      const r = R.fly({ fpa: -4.0, mode: 0, sampleEvery: 2 });
+      return { mode: "intro", paths: [{ path: r.path, outcome: r.outcome, label: "4.0°: skipped out" }] };
+    }
+    case "level 1 aiming": return { mode: "flight", level: 1, angle: 6.5, run: null, g: 0, q: 0, peak: 0, marks: [], ghosts: [], startLabel: "entry" };
+    case "level 1 safe": { const s = shot(1, 5.9); return flight(1, s, { marks: [s] }); }
+    case "level 1 over": { const s = shot(1, 7.0); return flight(1, s, { marks: [s], ghosts: [shot(1, 5.9)] }); }
+    case "level 1 skip": { const s = shot(1, 5.0); return flight(1, s, { marks: [s] }); }
+    case "level 1 strip": { const s = strip1[4]; return flight(1, s, { marks: strip1, ghosts: [strip1[0], strip1[8]] }); }
+    case "level 2 aiming": return { mode: "flight", level: 2, angle: 7.0, run: null, g: 0, q: 0, peak: 0, marks: [...strip1.slice(2, 8), ...strip2.slice(0, 2)], ghosts: [], startLabel: "entry" };
+    case "level 2 strip": { const s = strip2[2]; return flight(2, s, { marks: [...strip1, ...strip2], ghosts: [strip2[1]] }); }
+    case "compare": return { mode: "compare", rows: rows(false) };
+    case "compare with orbit": return { mode: "compare", rows: rows(true) };
+    default: throw new Error("unknown reentry state " + label);
+  }
+}
+
 /* ---------- Find a planet canvas states ----------
 
    The same shapes pages/find-a-planet.js hands its canvas, built here from
@@ -389,6 +454,15 @@ async function run() {
       mount: async (m, canvas) => {
         const st = await fpState(label);
         return m.mountFindPlanet(canvas, { getState: () => st }).stage;
+      },
+    })),
+    // Bring it home, in each view the page can show.
+    ...RE_STATES.map((label) => ({
+      name: `reentry (${label})`,
+      module: "../public/assets/js/experiences/reentry.js",
+      mount: async (m, canvas) => {
+        const st = await reState(label);
+        return m.mountReentry(canvas, { getState: () => st }).stage;
       },
     })),
     {
@@ -620,6 +694,62 @@ ok    Stage clamps a backwards frame timestamp (dt = ${seen.map((d) => d.toFixed
     }
     if (bad) failures += bad;
     else console.log(`ok    find-a-planet labels: no overlaps, clipping or missing SIMULATED tag across ${runs} layouts`);
+  }
+
+  /* ---------- Bring it home: labels must not overprint or clip ----------
+
+     The side view carries the interface and sea-level labels, the g-meter and
+     heating readouts, the MODEL OUTPUT tag, and under it the angle strip's
+     ticks, row names and direction labels. On a phone the plot is stuck at
+     the top of the screen at 42% of its height, so the strip is squeezed;
+     this draws every page state at the resting phone size, the stuck phone
+     size and the size a 1280 px window gives, and fails on any overlap, any
+     label box outside the canvas, or a flight view without its MODEL OUTPUT
+     tag. */
+  {
+    const boxOf = (t) => {
+      const left = t.align === "center" ? t.x - t.width / 2 : t.align === "right" ? t.x - t.width : t.x;
+      const top = t.base === "middle" ? t.y - t.size / 2 : t.base === "top" ? t.y : t.y - t.size;
+      return { left, right: left + t.width, top, bottom: top + t.size, str: t.str };
+    };
+    let bad = 0;
+    let runs = 0;
+    for (const [w, h, label] of [[343, 360, "375 resting"], [343, 304, "375 stuck"], [848, 576, "1280"]]) {
+      for (const state of RE_STATES) {
+        const dom = installDom({ width: w, height: h, dpr: 1 });
+        const canvas = dom.makeCanvas(w, h);
+        const mod = await import("../public/assets/js/experiences/reentry.js?lbl=" + Math.random());
+        const st = await reState(state);
+        const stage = mod.mountReentry(canvas, { getState: () => st }).stage;
+        for (let i = 0; i < 3; i++) dom.step(16.7);
+        const before = canvas._rec.texts.length;
+        dom.step(16.7);
+        const frame = canvas._rec.texts.slice(before).map(boxOf);
+        runs++;
+        if (frame.length === 0) { console.log(`FAIL  reentry labels: no text drawn, ${state} @ ${label}`); bad++; }
+        if (st.mode === "flight" && !frame.some((b) => b.str === "MODEL OUTPUT")) {
+          console.log(`FAIL  reentry ${state} @ ${label}: no MODEL OUTPUT label`);
+          bad++;
+        }
+        for (let i = 0; i < frame.length; i++) {
+          const a = frame[i];
+          if (a.left < 0 || a.top < 0 || a.right > w || a.bottom > h) {
+            console.log(`FAIL  reentry labels, ${state} @ ${label}: "${a.str}" leaves the canvas`);
+            bad++;
+          }
+          for (let j = i + 1; j < frame.length; j++) {
+            const b = frame[j];
+            if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) {
+              console.log(`FAIL  reentry labels, ${state} @ ${label}: "${a.str}" overlaps "${b.str}"`);
+              bad++;
+            }
+          }
+        }
+        stage?.destroy?.();
+      }
+    }
+    if (bad) failures += bad;
+    else console.log(`ok    reentry labels: no overlaps, clipping or missing MODEL OUTPUT tag across ${runs} layouts`);
   }
 
   console.log(failures === 0 ? "\nAll scenes clean." : `\n${failures} failing scene/size combinations.`);

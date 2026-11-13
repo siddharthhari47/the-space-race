@@ -1,0 +1,481 @@
+/* Bring it home.
+
+   The stage, panel, instruments and exhibit headings come from museum.css.
+   This file adds what this page needs: a stage tall enough to hold a curved
+   Earth and the angle strip under it; the prediction buttons; the step
+   swapping in the panel; the roll presets; and the results table. Class
+   names start re-. */
+
+
+.re-head {
+  padding-top: clamp(1rem, 2.5vh, 1.75rem);
+  padding-bottom: 0;
+}
+
+.re-head .world-title {
+  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+  margin: 0.2rem 0 0.4rem;
+}
+
+.re-head .world-lede {
+  max-width: 100ch;
+}
+
+@media (min-width: 881px) {
+  .re-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1.2rem;
+  }
+
+  .re-head .back-link,
+  .re-head .tag {
+    margin: 0;
+  }
+
+  .re-head .world-title,
+  .re-head .world-lede {
+    flex: 1 1 100%;
+  }
+}
+
+.re-exhibit {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  border-top: 0;
+}
+
+/* Wider than tall on a desktop: the arc of the Earth wants the width, and
+   the strip of tries needs a band along the bottom. */
+.re-stage {
+  aspect-ratio: 4 / 3;
+  max-height: min(80vh, calc(100vh - 12rem));
+  min-height: 22rem;
+  border: 0;
+}
+
+/* museum.css turns off touch scrolling on every stage canvas. Here a finger
+   on the picture should still scroll the page, except while it is on the
+   angle strip, when a sideways drag moves the aim instead. */
+/* Side by side, the panel grows taller than the plot on the stacking step,
+   and the grid's rule colour, which draws the 1 px divider, would show as a
+   grey slab under the canvas. The lab takes the stage's darkest colour
+   instead and the stage draws its own divider. */
+@media (min-width: 881px) {
+  .re-lab {
+    background: var(--w-bg);
+    align-items: start;
+  }
+
+  .re-stage {
+    box-shadow: 1px 0 0 var(--rule);
+  }
+
+  .re-panel {
+    align-self: stretch;
+  }
+}
+
+.re-stage canvas {
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.re-stage[data-drag] canvas {
+  touch-action: none;
+  cursor: ew-resize;
+}
+
+.re-panel {
+  border: 0;
+  background: var(--ink-panel);
+}
+
+.re-step[hidden],
+.re-found[hidden],
+.re-leo-text[hidden],
+.re-hint[hidden],
+.re-results[hidden],
+.re-step [hidden] {
+  display: none;
+}
+
+.re-step {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.re-q {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--type-hi);
+}
+
+.re-q:focus-visible {
+  outline: 2px solid var(--w-accent);
+  outline-offset: 4px;
+}
+
+.re-ask {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.re-ask-q {
+  margin: 0;
+  color: var(--type);
+  font-size: 0.95rem;
+}
+
+.re-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.re-options-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.re-options-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.re-opt {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.3rem;
+  text-align: center;
+}
+
+.re-opt[aria-pressed="true"] {
+  border-color: var(--w-accent);
+  color: var(--type-hi);
+  background: var(--w-accent-soft);
+}
+
+.re-opt[aria-pressed="true"]:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.re-step .ctrl {
+  min-height: 2.75rem;
+}
+
+.re-go {
+  min-height: 3rem;
+  width: 100%;
+}
+
+.re-found {
+  display: grid;
+  gap: 0.8rem;
+  border-left: 2px solid var(--w-accent);
+  padding: 0.1rem 0 0.1rem 0.8rem;
+}
+
+.re-found .result-verdict {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.re-period[data-state="good"],
+.re-verdict[data-state="good"] {
+  border-left-color: #7cf0be;
+}
+
+.re-period[data-state="bad"] {
+  border-left-color: #ff8f8f;
+}
+
+.re-verdict {
+  border-left: 2px solid var(--rule-bright);
+  padding-left: 0.7rem;
+}
+
+.re-verdict[data-state="warn"] {
+  border-left-color: #ffd27a;
+}
+
+.re-text {
+  margin: 0;
+  color: var(--type);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.re-formula {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--type-dim);
+  overflow-wrap: anywhere;
+}
+
+.re-presets {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.re-presets .ctrl[aria-pressed="true"] {
+  border-color: var(--w-accent);
+  color: var(--type-hi);
+  background: var(--w-accent-soft);
+}
+
+/* Nothing to say before the first try, so no coloured bar either. The page's
+   own live region still announces each result. */
+.re-shot:empty {
+  display: none;
+}
+
+.re-challenge {
+  margin: 0;
+  color: var(--type-hi);
+}
+
+.re-shot {
+  min-height: 2.9em;
+  border-left: 2px solid var(--rule-bright);
+  padding-left: 0.7rem;
+}
+
+.re-shot[data-state="safe"] { border-left-color: #7cf0be; }
+.re-shot[data-state="over"] { border-left-color: #ff8f8f; }
+.re-shot[data-state="skip"] { border-left-color: #ffd27a; }
+
+.re-legend {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--type-dim);
+}
+
+.re-k-safe { color: #7cf0be; }
+.re-k-over { color: #ff8f8f; }
+.re-k-skip { color: #ffd27a; }
+
+.re-leo {
+  min-height: 2.75rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+}
+
+.re-leo[aria-pressed="true"] {
+  border-color: var(--w-accent);
+  background: var(--w-accent-soft);
+  color: var(--type-hi);
+}
+
+.re-hint {
+  border-left: 2px solid #ffd27a;
+  padding-left: 0.8rem;
+  color: var(--type);
+}
+
+.re-skip {
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* A text link, but a 44 px tall target on a phone. */
+.re-skip a {
+  display: inline-block;
+  padding: 0.8rem 0;
+}
+
+/* ---------- Results ---------- */
+
+.re-score-line {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--type-hi);
+}
+
+.re-scores {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.re-pred {
+  border-left: 2px solid var(--rule-bright);
+  padding: 0.1rem 0 0.1rem 0.8rem;
+}
+
+.re-pred[data-state="good"] { border-left-color: #7cf0be; }
+.re-pred[data-state="bad"]  { border-left-color: #ff8f8f; }
+
+.re-pred-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.re-table th.num,
+.re-table td.num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.re-table th:last-child,
+.re-table td:last-child {
+  padding-right: 1.1rem;
+}
+
+.re-table tbody th {
+  font-weight: 500;
+  text-align: left;
+}
+
+.re-table .re-sep th {
+  padding-top: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.re-table-note {
+  margin: 0.6rem 0 1.5rem;
+  color: var(--type-faint);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 880px) {
+  .re-stage {
+    max-height: none;
+    min-height: 0;
+  }
+
+  /* On steps with a slider the plot stays at the top of the screen, so the
+     dip can be watched while the slider is moved. Shorter than the resting
+     plot, to leave room for the controls under it. */
+  .re-stage[data-sticky] {
+    position: sticky;
+    top: 3.6rem;
+    z-index: 5;
+    aspect-ratio: auto;
+    height: min(42vh, 20rem);
+  }
+
+  .re-step .re-q,
+  .re-step button,
+  .re-step lab-control,
+  .re-step .re-go,
+  .re-presets button {
+    scroll-margin-top: calc(3.6rem + min(42vh, 20rem) + 0.75rem);
+  }
+
+  /* Keyboard focus and "scroll into view" both stop under the pinned plot
+     unless the page itself keeps that band clear. */
+  html:has(.re-stage[data-sticky]) {
+    scroll-padding-top: calc(3.6rem + min(42vh, 20rem) + 0.75rem);
+  }
+
+  .re-exhibit {
+    padding-top: 1rem;
+  }
+
+  .re-q {
+    font-size: 1.1rem;
+  }
+}
+
+/* A four-column table does not fit a phone: each row becomes a small card
+   with the column name beside each value. */
+@media (max-width: 600px) {
+  .re-presets {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .re-table,
+  .re-table tbody,
+  .re-table tr,
+  .re-table th,
+  .re-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .re-table thead {
+    display: none;
+  }
+
+  .re-table tr {
+    padding: 0.8rem 0;
+    border-top: 1px solid var(--rule-bright);
+  }
+
+  .re-table tbody th {
+    padding: 0 0 0.4rem;
+    border: 0;
+  }
+
+  .re-table td,
+  .re-table td.num {
+    padding: 0.15rem 0;
+    border: 0;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .re-table td::before {
+    content: attr(data-label) ": ";
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--type-faint);
+  }
+}
+
+@media (max-width: 480px) {
+  .re-head {
+    padding-top: 1.75rem;
+  }
+
+  .re-head .world-title {
+    font-size: 2.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .re-head .world-lede {
+    font-size: 1rem;
+  }
+
+  /* Taller on a phone: the stacking view stacks two plots, and a 4:3 box
+     375 px wide leaves each of them too short to read. */
+  .re-stage {
+    aspect-ratio: 1 / 1.05;
+  }
+
+  .re-stage[data-sticky] {
+    aspect-ratio: auto;
+  }
+
+  .re-scores {
+    grid-template-columns: 1fr;
+  }
+
+  .stage-caption {
+    font-size: 0.68rem;
+  }
+}
