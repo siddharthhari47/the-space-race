@@ -788,6 +788,53 @@
       </info-card>
     </feature-grid>
 
+    <section-header id="iss-day" eyebrow="Checked 13 November 2026" title="Space Lab: A day on the ISS"></section-header>
+    <p class="lab-intro">Sources for the <a href="../space-lab/iss-day.html">A day on the ISS exhibit</a>. Every constant is stored in <code>systems/iss-day.js</code> with where it came from, and the page marks each number as a model value (worked out by the exhibit) or a real number (quoted below). The model is tested in <code>tools/iss-day-check.mjs</code>. It is a simplified model, and what it chooses and leaves out is set out in the last card.</p>
+    <feature-grid columns="3">
+      <info-card title="NASA: International Space Station" href="https://www.nasa.gov/reference/international-space-station/">
+        The station flies between 370 and 460 kilometres up, at an inclination of 51.6&deg; to the equator, which NASA says puts it over more than 90% of the inhabited Earth; a crew of seven. The exhibit uses 400 km and 51.6&deg;.
+      </info-card>
+      <info-card title="NASA Glenn: What is microgravity?" href="https://www.nasa.gov/centers-and-facilities/glenn/what-is-microgravity/">
+        The astronaut, the station and anything let go inside it fall together, which is why nothing seems to weigh anything; at the station&rsquo;s height gravity is 88.8% of its value at the surface (the page&rsquo;s figure, for about 250 miles). The model, at 400 km from the equatorial radius, gets 88.5%, so the exhibit says &ldquo;about 90%&rdquo; for the prediction and shows both.
+      </info-card>
+      <info-card title="NASA: Space Station facts and figures" href="https://www.nasa.gov/international-space-station/space-station-facts-and-figures/">
+        Sixteen orbits, so sixteen sunrises and sunsets, in 24 hours; about one every 90 minutes; a speed of five miles a second. The model gets 15.56 orbits a day and 92.6 minutes, and counts 15 or 16 sunrises in a day depending on where the day starts.
+      </info-card>
+      <info-card title="NASA: Spot the Station" href="https://www.nasa.gov/spot-the-station/">
+        17,500 mph (28,000 km/h, 7.78 km/s) and 16 orbits a day; sightings come within a few hours of sunrise or sunset. The exhibit compares this speed with its own circular speed, 7.67 km/s, a difference of 1.4%. That is NASA&rsquo;s rounding, not altitude: a circle anywhere in NASA&rsquo;s 370 to 460 km range goes at 7.64 to 7.69 km/s, no faster than the exhibit&rsquo;s figure.
+      </info-card>
+      <info-card title="NASA: Spot the Station, frequently asked questions" href="https://www.nasa.gov/missions/station/spot-the-station-frequently-asked-questions/">
+        The station is seen by reflected sunlight, so it is best seen at twilight or at night, and a pass can end when the station enters the Earth&rsquo;s shadow. How often it can be seen from one place is given as &ldquo;one a month to several a week&rdquo;, and that is the only figure the exhibit quotes for it; it does not claim any particular run of weeks. The page gives no minimum height above the horizon, so the 10&deg; used is the exhibit&rsquo;s own rule.
+      </info-card>
+      <info-card title="NASA Earth Observations: Orbit tutorial" href="https://eol.jsc.nasa.gov/Tools/orbitTutorial.htm">
+        An orbit of 90 to 93 minutes and about 16 orbits a day (15.5 to 15.9), at 51.6&deg; inclination. It agrees with the model&rsquo;s period.
+      </info-card>
+      <info-card title="NASA: Living and working in space (fact sheet)" href="https://www.nasa.gov/wp-content/uploads/2015/05/167746main_fs_livingandworkinginspace508c.pdf">
+        A sunrise every 90 minutes and about two hours of exercise a day. The sheet mixes shuttle and station text, so the exhibit takes only those two figures from it.
+      </info-card>
+      <info-card title="NASA: ISS crew timeline, Form 24 (25 October 2013)" href="https://www.nasa.gov/sites/default/files/files/102513_tl.pdf">
+        A real day&rsquo;s timeline in Greenwich Mean Time. The ring&rsquo;s blocks (sleep 21:30 to 06:00, wake-up, work, a meal, work, evening) are rounded from it and are one example day, not a fixed schedule.
+      </info-card>
+      <info-card title="NASA NTRS 20240002094" href="https://ntrs.nasa.gov/citations/20240002094">
+        Crew bedtime at 21:30 and wake-up at 06:00 GMT, which the ring uses for sleep.
+      </info-card>
+      <info-card title="NASA Planetary Fact Sheet: Earth" href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html">
+        Equatorial radius 6378.137 km, mean radius 6371.000 km, GM of 0.39860&times;10<sup>6</sup> km&sup3;/s&sup2; (four figures), escape speed 11.186 km/s from the surface. The exhibit uses the equatorial radius for everything and the GM already in <code>groundtrack.js</code> (398600.4418), which agrees with the sheet to its four figures. Its escape speed at 400 km, 10.84 km/s, is worked out, not quoted.
+      </info-card>
+      <info-card title="US Naval Observatory: Rise, set and twilight definitions" href="https://aa.usno.navy.mil/faq/RST_defs">
+        Civil twilight ends when the Sun is 6&deg; below the horizon. The exhibit&rsquo;s &ldquo;dark enough&rdquo; limit is that depression: a pass counts as visible only if the Sun is that far down at the viewer&rsquo;s spot while the station is still in sunlight.
+      </info-card>
+      <info-card title="NASA NTRS 20150014503: ISS payload thermal environments (TFAWS 2015)" href="https://ntrs.nasa.gov/citations/20150014503">
+        The beta angle (the angle between the orbit plane and the Sun direction) swings between &minus;75&deg; and +75&deg;; in its plot for 2014, |beta| is 50&deg; or less on 292 days, 50 to 60&deg; for 37 days and over 60&deg; for 36. Behind the level 2 slider&rsquo;s range.
+      </info-card>
+      <info-card title="NASA NTRS 20150001912: Thermally-Constrained Fuel-Optimal ISS Maneuvers (preprint)" href="https://ntrs.nasa.gov/citations/20150001912">
+        By Bhatt, Svecz, Alaniz, Jang, Nguyen and Spanos. The eclipse fraction for a circular orbit, and a critical beta angle of 69.9&deg; at 415 km, above which the station is never in shadow. The model gets 70.2&deg; at 400 km, so the two agree to what the different altitude allows. It also says the longest eclipse, nearly two-fifths of an orbit, happens only at zero beta; the model&rsquo;s 36.1 of 92.6 minutes is 0.39 of an orbit, and the results table quotes the paper&rsquo;s words.
+      </info-card>
+      <info-card title="What the exhibit chooses or leaves out">
+        The station is a point on a circular orbit at 400 km and 51.6&deg;, with Earth as a sphere of the equatorial radius, the Sun a direction a long way off, and no air bending its light. The orbit turns slowly in space at about &minus;5&deg; a day, a model value from the standard J2 formula that is not quoted from a source; the exhibit&rsquo;s Sun starts at the equinox. Shadow is a sharp-edged cylinder, so it has no part-shadow. The real station&rsquo;s height and orbit change from week to week and a real prediction uses its current orbit; the exhibit&rsquo;s passes are a model of the kind of thing that happens, not a forecast for your town, and the page points to NASA&rsquo;s Spot the Station for real times. The map picture is NASA Blue Marble, cited under NASA Earth Imagery on this page. The 120 km line that ends a fall, the 10&deg; minimum height above the horizon, the 25% catch window in the sunrise tap game, the preset crew day, and the default spot at 40&deg;N 75&deg;W are the exhibit&rsquo;s own settings.
+      </info-card>
+    </feature-grid>
+
     <section-header eyebrow="Print &amp; Papers" title="Books"></section-header>
     <feature-grid columns="3">
       <info-card title="Book citations" status="coming-soon">

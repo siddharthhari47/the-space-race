@@ -1,0 +1,482 @@
+/* A day on the ISS.
+
+   The stage, panel, instruments and exhibit headings come from museum.css.
+   This file adds what this page needs: a stage tall enough for the three
+   pictures, the prediction buttons, the step swapping in the panel, the
+   crew-day key, the pass chips and the results table. Class names start id-. */
+
+
+.id-head {
+  padding-top: clamp(1rem, 2.5vh, 1.75rem);
+  padding-bottom: 0;
+}
+
+.id-head .world-title {
+  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+  margin: 0.2rem 0 0.4rem;
+}
+
+.id-head .world-lede {
+  max-width: 100ch;
+}
+
+@media (min-width: 881px) {
+  .id-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1.2rem;
+  }
+
+  .id-head .back-link,
+  .id-head .tag {
+    margin: 0;
+  }
+
+  .id-head .world-title,
+  .id-head .world-lede {
+    flex: 1 1 100%;
+  }
+}
+
+.id-exhibit {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  border-top: 0;
+}
+
+/* Wide enough for a world map with a sky view and a day strip under it. */
+.id-stage {
+  aspect-ratio: 4 / 3;
+  max-height: min(80vh, calc(100vh - 12rem));
+  min-height: 22rem;
+  border: 0;
+}
+
+@media (min-width: 881px) {
+  .id-lab {
+    background: var(--w-bg);
+    align-items: start;
+  }
+
+  .id-stage {
+    box-shadow: 1px 0 0 var(--rule);
+  }
+
+  .id-panel {
+    align-self: stretch;
+  }
+}
+
+/* museum.css turns off touch scrolling on every stage canvas. Here a finger
+   on the picture still scrolls the page, except on the steps where a drag on
+   the picture moves something (the speed strip, the map pin, the day strip). */
+.id-stage canvas {
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.id-stage[data-drag] canvas {
+  touch-action: none;
+}
+
+.id-panel {
+  border: 0;
+  background: var(--ink-panel);
+}
+
+.id-step[hidden],
+.id-results[hidden],
+.id-hint[hidden],
+.id-circ[hidden],
+.id-chips[hidden],
+.id-step [hidden] {
+  display: none;
+}
+
+.id-step {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.id-q {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--type-hi);
+}
+
+.id-q:focus-visible {
+  outline: 2px solid var(--w-accent);
+  outline-offset: 4px;
+}
+
+.id-ask {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.id-ask-q,
+.id-ask-hint {
+  margin: 0;
+  color: var(--type);
+  font-size: 0.95rem;
+}
+
+.id-ask-hint {
+  color: var(--type-dim);
+  font-size: 0.85rem;
+}
+
+.id-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.id-options-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.id-options-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.id-opt {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.4rem;
+  text-align: center;
+}
+
+.id-opt[aria-pressed="true"] {
+  border-color: var(--w-accent);
+  color: var(--type-hi);
+  background: var(--w-accent-soft);
+}
+
+.id-opt[aria-pressed="true"]:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.id-step .ctrl {
+  min-height: 2.75rem;
+}
+
+.id-go {
+  min-height: 3rem;
+  width: 100%;
+}
+
+.id-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.id-sunrise {
+  min-height: 3.4rem;
+  font-size: 1.1rem;
+  border-color: #ffd27a;
+  color: #ffd27a;
+}
+
+.id-text {
+  margin: 0;
+  color: var(--type);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.id-shot:empty,
+.id-score:empty {
+  display: none;
+}
+
+.id-shot,
+.id-score,
+.id-l3 {
+  border-left: 2px solid var(--rule-bright);
+  padding-left: 0.7rem;
+}
+
+.id-shot[data-state="falls"] { border-left-color: #ff8f8f; }
+.id-shot[data-state="orbits"] { border-left-color: #7cf0be; }
+.id-shot[data-state="escapes"] { border-left-color: #6ea8ff; }
+.id-l3[data-state="good"] { border-left-color: #7cf0be; }
+.id-l3[data-state="none"] { border-left-color: #ffd27a; }
+
+.id-circ {
+  border-left: 2px solid #ffd27a;
+  padding-left: 0.8rem;
+}
+
+.id-hint {
+  border-left: 2px solid #ffd27a;
+  padding-left: 0.8rem;
+  color: var(--type);
+}
+
+.id-legend {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--type-dim);
+}
+
+.id-k-falls { color: #ff8f8f; }
+.id-k-orbits { color: #7cf0be; }
+.id-k-escapes { color: #6ea8ff; }
+
+.id-leo {
+  min-height: 2.75rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+}
+
+.id-leo[aria-pressed="true"] {
+  border-color: var(--w-accent);
+  background: var(--w-accent-soft);
+  color: var(--type-hi);
+}
+
+.id-key {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--type);
+}
+
+.id-key li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.id-swatch {
+  flex: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 2px;
+  transform: translateY(0.1rem);
+}
+
+.id-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.id-chip {
+  flex: 1 1 8.5rem;
+  min-height: 2.75rem;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.id-chip[data-visible="true"] {
+  border-color: #7cf0be;
+}
+
+.id-chip[aria-pressed="true"] {
+  background: var(--w-accent-soft);
+  color: var(--type-hi);
+}
+
+.id-skip {
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* A text link, but a 44 px tall target on a phone. */
+.id-skip a {
+  display: inline-block;
+  padding: 0.8rem 0;
+}
+
+.id-link {
+  display: inline-block;
+  min-height: 2.75rem;
+  padding: 0.7rem 0;
+  box-sizing: border-box;
+}
+
+/* ---------- Results ---------- */
+
+.id-score-line {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--type-hi);
+}
+
+.id-scores {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.id-pred {
+  border-left: 2px solid var(--rule-bright);
+  padding: 0.1rem 0 0.1rem 0.8rem;
+}
+
+.id-pred[data-state="good"] { border-left-color: #7cf0be; }
+.id-pred[data-state="bad"]  { border-left-color: #ff8f8f; }
+
+.id-pred-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--type-faint);
+}
+
+.id-table th.num,
+.id-table td.num {
+  text-align: right;
+}
+
+.id-table th:last-child,
+.id-table td:last-child {
+  padding-right: 1.1rem;
+}
+
+.id-table tbody th {
+  font-weight: 500;
+  text-align: left;
+}
+
+.id-table-note {
+  margin: 0.6rem 0 1.5rem;
+  color: var(--type-faint);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 880px) {
+  .id-stage {
+    max-height: none;
+    min-height: 0;
+  }
+
+  /* On the three working steps the picture stays at the top of the screen,
+     so a slider can be moved with the result in view. */
+  .id-stage[data-sticky] {
+    position: sticky;
+    top: 3.6rem;
+    z-index: 5;
+    aspect-ratio: auto;
+    height: min(46vh, 21rem);
+  }
+
+  .id-step .id-q,
+  .id-step button,
+  .id-step lab-control,
+  .id-step .id-go {
+    scroll-margin-top: calc(3.6rem + min(46vh, 21rem) + 0.75rem);
+  }
+
+  html:has(.id-stage[data-sticky]) {
+    scroll-padding-top: calc(3.6rem + min(46vh, 21rem) + 0.75rem);
+  }
+
+  .id-exhibit {
+    padding-top: 1rem;
+  }
+
+  .id-q {
+    font-size: 1.1rem;
+  }
+
+  .id-scores {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .id-options-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .id-table,
+  .id-table tbody,
+  .id-table tr,
+  .id-table th,
+  .id-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .id-table thead {
+    display: none;
+  }
+
+  .id-table tr {
+    padding: 0.8rem 0;
+    border-top: 1px solid var(--rule-bright);
+  }
+
+  .id-table tbody th {
+    padding: 0 0 0.4rem;
+    border: 0;
+  }
+
+  .id-table td,
+  .id-table td.num {
+    padding: 0.15rem 0;
+    border: 0;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .id-table td::before {
+    content: attr(data-label) ": ";
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--type-faint);
+  }
+}
+
+@media (max-width: 480px) {
+  .id-head {
+    padding-top: 1.75rem;
+  }
+
+  .id-head .world-title {
+    font-size: 2.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .id-head .world-lede {
+    font-size: 1rem;
+  }
+
+  .id-stage {
+    aspect-ratio: 1 / 1.05;
+  }
+
+  .id-stage[data-sticky] {
+    aspect-ratio: auto;
+  }
+
+  .stage-caption {
+    font-size: 0.68rem;
+  }
+}

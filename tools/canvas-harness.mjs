@@ -247,6 +247,70 @@ async function reState(label) {
   }
 }
 
+/* ---------- A day on the ISS canvas states ----------
+
+   The shapes pages/iss-day.js hands its canvas, built here from
+   systems/iss-day.js, so a change to the model that broke a view (a path
+   with a NaN in it, an empty track) fails here without a browser. The
+   throws, the shadow and the passes are real model runs. */
+const ISS_STATES = [
+  "predict", "level 1 falls in", "level 1 orbit", "level 1 escape", "level 1 strip",
+  "level 2 start", "level 2 midday", "level 2 high beta", "level 3 visible pass", "level 3 none",
+];
+
+async function issState(label) {
+  const M = await import("../public/assets/js/systems/iss-day.js");
+  const vc = M.circularSpeed();
+  const th = (v) => { const sim = M.simulateThrow(v); return { v, outcome: sim.outcome, path: sim.path }; };
+  const l1 = (rest = {}) => ({
+    mode: "l1", R: M.R_EARTH, altKm: M.ALT_KM, stopKm: M.STOP_ALT_KM, gFrac: M.gravityFraction(),
+    vMax: M.SPEED_MAX_KMS, v: 5, run: null, ghosts: [], marks: [], circ: false, vc, vReal: 28000 / 3600,
+    circLabel: `model ${vc.toFixed(2)}, NASA 7.78 km/s`, ...rest,
+  });
+  const done = (t) => ({ path: t.path, at: t.path.length - 1, done: true, outcome: t.outcome });
+  const l2 = (t, beta = 0, rest = {}) => {
+    const phi = 0.6 + M.meanMotion() * t;
+    const rises = M.sunEvents(M.DAY_S, { betaDeg: beta, phi0: 0.6 }).sunrises;
+    return {
+      mode: "l2", R: M.R_EARTH, rOrbit: M.R_EARTH + M.ALT_KM, t, phi, betaDeg: beta, blocks: M.CREW_BLOCKS,
+      sunrises: rises, riseCount: rises.filter((r) => r <= t).length,
+      nightHalf: M.eclipseFraction(beta) * Math.PI, inShadow: M.inShadowPlane(phi, beta), glow: 0, ...rest,
+    };
+  };
+  const l3 = (lat, lon, day, t, selVisible) => {
+    const sc = M.makeScenario(day);
+    const passes = M.scanDay(lat, lon, sc, { stepS: 20 });
+    const sel = (selVisible ? passes.find((p) => p.visible) : null) || passes[0] || null;
+    const sky = [];
+    if (sel) for (let u = sel.start; u <= sel.end; u += 10) { const l = M.look(u, lat, lon, sc); if (l.above) sky.push({ az: l.azDeg, el: l.elevDeg, vis: l.visible }); }
+    const tt = t ?? (sel ? sel.tMax : 0);
+    const look = M.look(tt, lat, lon, sc);
+    return {
+      mode: "l3", spot: { lat, lon }, prompt: false, t: tt, day, sub: M.subPoint(tt, sc),
+      footRad: M.horizonAngle(M.ALT_KM) * Math.PI / 180,
+      sunElev: (la, lo) => M.sunElevation(la, lo, tt, sc), spotSunElev: (u) => M.sunElevation(lat, lon, u, sc),
+      track: M.dayTrack(sc, 60), visRanges: passes.flatMap((p) => p.visibleRanges),
+      passes, sel, sky, look, compass: "SW", minElev: M.MIN_ELEV_DEG, twilight: M.TWILIGHT_DEG,
+    };
+  };
+  switch (label) {
+    case "predict": return l1();
+    case "level 1 falls in": { const t = th(5); return l1({ v: 5, run: done(t), marks: [t] }); }
+    case "level 1 orbit": { const t = th(vc); return l1({ v: vc, run: done(t), marks: [t] }); }
+    case "level 1 escape": { const t = th(11.5); return l1({ v: 11.5, run: done(t), marks: [t], ghosts: [th(5)] }); }
+    case "level 1 strip": {
+      const ts = [2, 4, 6, 7, 7.4, 7.67, 8.5, 9.5, 10.8, 11.5].map(th);
+      return l1({ v: 7.67, run: done(ts[5]), marks: ts, ghosts: [ts[0], ts[8], ts[3]], circ: true });
+    }
+    case "level 2 start": return l2(0);
+    case "level 2 midday": return l2(12 * 3600 + 700, 0, { glow: 0.6 });
+    case "level 2 high beta": return l2(9 * 3600, 72);
+    case "level 3 visible pass": return l3(40, -75, 0, null, true);
+    case "level 3 none": return l3(51.5, 0, 1, 7 * 3600, false);
+    default: throw new Error("unknown ISS day state " + label);
+  }
+}
+
 /* ---------- Find a planet canvas states ----------
 
    The same shapes pages/find-a-planet.js hands its canvas, built here from
@@ -463,6 +527,15 @@ async function run() {
       mount: async (m, canvas) => {
         const st = await reState(label);
         return m.mountReentry(canvas, { getState: () => st }).stage;
+      },
+    })),
+    // A day on the ISS, in each view the page can show.
+    ...ISS_STATES.map((label) => ({
+      name: `iss-day (${label})`,
+      module: "../public/assets/js/experiences/iss-day.js",
+      mount: async (m, canvas) => {
+        const st = await issState(label);
+        return m.mountIssDay(canvas, { getState: () => st }).stage;
       },
     })),
     {
@@ -752,7 +825,61 @@ ok    Stage clamps a backwards frame timestamp (dt = ${seen.map((d) => d.toFixed
     else console.log(`ok    reentry labels: no overlaps, clipping or missing MODEL OUTPUT tag across ${runs} layouts`);
   }
 
-  console.log(failures === 0 ? "\nAll scenes clean." : `\n${failures} failing scene/size combinations.`);
+  /* ---------- A day on the ISS: label overlap and clipping ----------
+
+     The same test as for Bring it home. The three views carry the readouts,
+     the hour labels, the speed strip's ticks and the day strip's ticks, and
+     on a phone the picture is stuck at the top of the screen at under half
+     its height. Every page state at the resting phone size, the stuck phone
+     size and the 1280 px size: fail on any overlap, any label box outside
+     the canvas, or a view without its MODEL OUTPUT tag. */
+  {
+    const boxOf = (t) => {
+      const left = t.align === "center" ? t.x - t.width / 2 : t.align === "right" ? t.x - t.width : t.x;
+      const top = t.base === "middle" ? t.y - t.size / 2 : t.base === "top" ? t.y : t.y - t.size;
+      return { left, right: left + t.width, top, bottom: top + t.size, str: t.str };
+    };
+    let bad = 0;
+    let runs = 0;
+    for (const [w, h, label] of [[343, 360, "375 resting"], [343, 336, "375 stuck"], [848, 576, "1280"]]) {
+      for (const state of ISS_STATES) {
+        const dom = installDom({ width: w, height: h, dpr: 1 });
+        const canvas = dom.makeCanvas(w, h);
+        const mod = await import("../public/assets/js/experiences/iss-day.js?lbl=" + Math.random());
+        const st = await issState(state);
+        const stage = mod.mountIssDay(canvas, { getState: () => st }).stage;
+        for (let i = 0; i < 3; i++) dom.step(16.7);
+        const before = canvas._rec.texts.length;
+        dom.step(16.7);
+        const frame = canvas._rec.texts.slice(before).map(boxOf).filter((b) => b.str !== "");
+        runs++;
+        if (frame.length === 0) { console.log(`FAIL  iss-day labels: no text drawn, ${state} @ ${label}`); bad++; }
+        if (!frame.some((b) => b.str === "MODEL OUTPUT")) {
+          console.log(`FAIL  iss-day ${state} @ ${label}: no MODEL OUTPUT label`);
+          bad++;
+        }
+        for (let i = 0; i < frame.length; i++) {
+          const a = frame[i];
+          if (a.left < 0 || a.top < 0 || a.right > w || a.bottom > h) {
+            console.log(`FAIL  iss-day labels, ${state} @ ${label}: "${a.str}" leaves the canvas`);
+            bad++;
+          }
+          for (let j = i + 1; j < frame.length; j++) {
+            const b = frame[j];
+            if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) {
+              console.log(`FAIL  iss-day labels, ${state} @ ${label}: "${a.str}" overlaps "${b.str}"`);
+              bad++;
+            }
+          }
+        }
+        stage?.destroy?.();
+      }
+    }
+    if (bad) failures += bad;
+    else console.log(`ok    iss-day labels: no overlaps, clipping or missing MODEL OUTPUT tag across ${runs} layouts`);
+  }
+
+  console.log(failures === 0 ? "\nAll scenes clean." :`\n${failures} failing scene/size combinations.`);
   process.exit(failures === 0 ? 0 : 1);
 }
 

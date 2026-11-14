@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A day on the ISS — The Space Race</title>
+  <meta name="description" content="Three things about a day on the International Space Station that surprise people: the crew float because they are falling, they see about sixteen sunrises, and you can only see the station from the ground in the dark a while after sunset or before sunrise. Guess first, throw something sideways, watch a day go round, then pick a spot on a map." />
+  <link rel="icon" href="../assets/images/logo-header.webp" type="image/webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/museum.css" />
+  <link rel="stylesheet" href="../assets/css/iss-day.css" />
+  <script type="module" src="/assets/js/components/index.js"></script>
+  <script type="module" src="/assets/js/systems/instruments.js"></script>
+  <script type="module" src="/assets/js/pages/iss-day.js" defer></script>
+</head>
+<body data-world="space">
+  <site-header current="space-lab"></site-header>
+
+  <main>
+    <section class="world-head frame id-head">
+      <a class="back-link" href="index.html">&larr; Space</a>
+      <p class="tag tag-accent">S·11</p>
+      <h1 class="world-title">A day on the ISS</h1>
+      <p class="world-lede">
+        Three things about a day on the International Space Station surprise people. The
+        crew float, but gravity is still pulling on them. They see about sixteen sunrises
+        before bedtime. And you can look up and see the station from your garden, but only
+        at certain times of night. Guess each one, then find out why.
+      </p>
+    </section>
+
+    <!-- ================= EXHIBIT 01: THE DAY ================= -->
+    <section class="exhibit frame id-exhibit" id="day">
+      <div class="orbit-lab id-lab">
+        <div class="stage id-stage" data-level="predict">
+          <canvas id="iss-canvas" role="img" aria-label="True-scale view of the Earth with the station 400 kilometres up and a box showing an astronaut and an apple floating together."></canvas>
+        </div>
+
+        <div class="panel id-panel">
+          <div class="panel-head">
+            <span>A day on the ISS</span>
+            <span data-status>Predict</span>
+          </div>
+          <div class="panel-body">
+
+            <div class="id-step" data-step="predict">
+              <h2 class="id-q" tabindex="-1">Three guesses before you start</h2>
+              <p class="panel-note">
+                This is a <strong>simplified model</strong>: the Earth is a ball, the station
+                is a point, and nothing else pulls on it. Every number from the exhibit is a
+                model value and is marked as one. Your answers are kept until the end.
+              </p>
+              <div class="id-ask">
+                <p class="id-ask-q" id="q-grav">Up where the station is, about 400 km above the ground, gravity is</p>
+                <div class="id-options id-options-4" role="group" aria-labelledby="q-grav">
+                  <button class="ctrl id-opt" type="button" data-q="grav" data-v="0" aria-pressed="false">about 0%</button>
+                  <button class="ctrl id-opt" type="button" data-q="grav" data-v="10" aria-pressed="false">about 10%</button>
+                  <button class="ctrl id-opt" type="button" data-q="grav" data-v="50" aria-pressed="false">about 50%</button>
+                  <button class="ctrl id-opt" type="button" data-q="grav" data-v="90" aria-pressed="false">about 90%</button>
+                </div>
+                <p class="id-ask-hint">of its strength at the ground.</p>
+              </div>
+              <div class="id-ask">
+                <p class="id-ask-q" id="q-sun">The number of sunrises the crew see in one 24 hour day is about</p>
+                <div class="id-options id-options-4" role="group" aria-labelledby="q-sun">
+                  <button class="ctrl id-opt" type="button" data-q="sun" data-v="1" aria-pressed="false">1</button>
+                  <button class="ctrl id-opt" type="button" data-q="sun" data-v="4" aria-pressed="false">4</button>
+                  <button class="ctrl id-opt" type="button" data-q="sun" data-v="16" aria-pressed="false">16</button>
+                  <button class="ctrl id-opt" type="button" data-q="sun" data-v="60" aria-pressed="false">60</button>
+                </div>
+              </div>
+              <div class="id-ask">
+                <p class="id-ask-q" id="q-vis">From the ground, with your own eyes, you can see the station</p>
+                <div class="id-options id-options-2" role="group" aria-labelledby="q-vis">
+                  <button class="ctrl id-opt" type="button" data-q="vis" data-v="midday" aria-pressed="false">at midday</button>
+                  <button class="ctrl id-opt" type="button" data-q="vis" data-v="dusk" aria-pressed="false">in the dark, a while after sunset or before sunrise</button>
+                  <button class="ctrl id-opt" type="button" data-q="vis" data-v="midnight" aria-pressed="false">only around midnight</button>
+                  <button class="ctrl id-opt" type="button" data-q="vis" data-v="never" aria-pressed="false">never</button>
+                </div>
+              </div>
+              <button class="ctrl ctrl-primary id-go" type="button" data-start disabled>Start level 1</button>
+            </div>
+
+            <div class="id-step" data-step="l1" hidden>
+              <h2 class="id-q" tabindex="-1">Level 1: why they float</h2>
+              <p class="panel-note">
+                Throw something sideways from the station's height and see where it goes. The
+                speed you set is the craft's speed round the Earth's centre, not a speed
+                relative to the station. The
+                Earth is drawn to true scale, so the thin dashed ring just above the ground is
+                this exhibit's own line for &ldquo;the air gets thick here&rdquo; (120 km): a throw that
+                gets that low stops. In the box, an astronaut and an apple float. Watch what
+                the two do on every throw, including the ones that fall in.
+              </p>
+              <lab-control name="speed" label="Sideways speed" unit="km/s" min="0" max="12" step="0.05" value="5"></lab-control>
+              <button class="ctrl ctrl-primary id-go" type="button" data-throw>Throw</button>
+              <p class="id-text id-shot" data-shot role="status" aria-live="polite"></p>
+              <p class="panel-note id-hint" data-hint hidden></p>
+              <p class="id-legend" aria-hidden="true"><span class="id-k id-k-falls">&#10005; falls in</span> <span class="id-k id-k-orbits">&#9679; orbits</span> <span class="id-k id-k-escapes">&#9650; escapes</span></p>
+              <button class="ctrl id-leo" type="button" data-circ aria-pressed="false" disabled>Show the circular speed</button>
+              <p class="id-text id-circ" data-circ-text hidden></p>
+              <button class="ctrl id-go" type="button" data-to-l2 disabled>Next: sixteen sunrises (locked)</button>
+            </div>
+
+            <div class="id-step" data-step="l2" hidden>
+              <h2 class="id-q" tabindex="-1">Level 2: sixteen sunrises</h2>
+              <p class="panel-note">
+                You are looking down on the orbit from above. The Sun is on the left and the
+                Earth throws a shadow to the right. The ring around it is a 24 hour clock on
+                GMT, which is the time the crew keep, with the crew's day marked on it. <span data-play-hint>Press
+                Play or drag the Time slider, and tap</span> <strong>Sunrise!</strong> each time the station comes out of the
+                shadow.
+              </p>
+              <div class="id-row">
+                <button class="ctrl ctrl-primary" type="button" data-play aria-pressed="false">Play</button>
+                <button class="ctrl" type="button" data-next-rise>Next sunrise (practice)</button>
+              </div>
+              <button class="ctrl id-sunrise" type="button" data-sunrise>Sunrise!</button>
+              <p class="id-text id-score" data-l2-score role="status" aria-live="polite"></p>
+              <lab-control name="clock" label="Time" unit="min after 00:00 GMT" min="0" max="1440" step="5" value="0"></lab-control>
+              <lab-control name="beta" label="Season: the Sun's angle to the orbit plane" unit="&deg;" min="0" max="75" step="1" value="0"></lab-control>
+              <p class="id-text" data-l2-text></p>
+              <p class="panel-note">
+                The real angle swings between &minus;75&deg; and +75&deg; over the year; for about
+                36 days of the year 2014 it was over 60&deg; (NASA thermal analysis course). Changing it
+                restarts the count.
+              </p>
+              <ul class="id-key" data-crew-key aria-label="The crew's day on the ring"></ul>
+              <p class="panel-note">
+                The ring shows one day from a NASA crew timeline and the 2130 to 0600 GMT sleep
+                window NASA gives; exercise is two hours a day but is spread through the working
+                day on each person's own schedule, so it is not a block. Times change day to day.
+              </p>
+              <button class="ctrl id-go" type="button" data-to-l3 disabled>Next: spot it from home (watch at least six hours of the day)</button>
+            </div>
+
+            <div class="id-step" data-step="l3" hidden>
+              <h2 class="id-q" tabindex="-1">Level 3: spot it from home</h2>
+              <p class="panel-note">
+                Tap the map to stand somewhere, or use the two sliders. A pass counts as
+                <strong>visible</strong> when all three hold: the station is at least
+                10&deg; above the horizon (the exhibit's own rule), it is in sunlight, and the Sun is at
+                least 6&deg; below your horizon. Find a visible pass and watch it cross the sky.
+              </p>
+              <lab-control name="lat" label="Latitude" unit="&deg; (north +, south &minus;)" min="-80" max="80" step="1" value="40"></lab-control>
+              <lab-control name="lon" label="Longitude" unit="&deg; (east +, west &minus;)" min="-180" max="180" step="1" value="-75"></lab-control>
+              <p class="id-text id-l3" data-l3-text role="status" aria-live="polite"></p>
+              <div class="id-chips" data-chips role="group" aria-label="Passes today above 10 degrees"></div>
+              <lab-control name="clock3" label="Time" unit="min after 00:00 GMT" min="0" max="1440" step="1" value="0"></lab-control>
+              <div class="id-row">
+                <button class="ctrl ctrl-primary" type="button" data-play aria-pressed="false">Play</button>
+                <button class="ctrl" type="button" data-next-day>Next day <span data-day-label>(day +1)</span></button>
+              </div>
+              <p class="panel-note">
+                To see it for real, <a class="id-link" href="https://spotthestation.nasa.gov/" target="_blank" rel="noopener">NASA's Spot the Station</a>
+                lists the passes over your town.
+              </p>
+              <button class="ctrl ctrl-primary id-go" type="button" data-finish>See how you did</button>
+            </div>
+
+            <div class="id-step" data-step="done" hidden>
+              <h2 class="result-verdict id-q" data-state="good" tabindex="-1">That was a day</h2>
+              <p class="id-text" data-done-text></p>
+              <div class="ctrl-row">
+                <a class="ctrl ctrl-primary" href="#results">See the results</a>
+                <button class="ctrl" type="button" data-restart>Play again</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="stage-caption">
+        <span><strong>Simplified model</strong> a point mass round a spherical Earth, circular for levels 2 and 3, a cylinder of shadow with no soft edge, the Sun held still for the day</span>
+        <span><strong>Earth radius</strong> 6,378.137 km, the equatorial radius, for every number here</span>
+        <span><a href="/references/index.html#iss-day">Sources and constants</a></span>
+      </div>
+
+      <p class="id-skip"><a href="#results" data-show-results>Skip the game and read the results</a></p>
+
+      <div class="visually-hidden" role="status" aria-live="polite" data-live></div>
+    </section>
+
+    <!-- ================= EXHIBIT 02: RESULTS ================= -->
+    <section class="exhibit frame id-results" id="results" hidden>
+      <div class="exhibit-head">
+        <span class="exhibit-index">02</span>
+        <div>
+          <h2 class="exhibit-title" tabindex="-1">What you found</h2>
+        </div>
+      </div>
+
+      <div class="exhibit-body">
+        <p class="id-score-line" data-score-line></p>
+        <div class="id-scores">
+          <div class="id-pred" data-score="grav">
+            <span class="id-pred-label">Gravity up there</span>
+            <p class="id-text" data-score-text></p>
+          </div>
+          <div class="id-pred" data-score="sun">
+            <span class="id-pred-label">Sunrises in a day</span>
+            <p class="id-text" data-score-text></p>
+          </div>
+          <div class="id-pred" data-score="vis">
+            <span class="id-pred-label">When you can see it</span>
+            <p class="id-text" data-score-text></p>
+          </div>
+        </div>
+
+        <p class="note">
+          Falling and floating are the same thing here. A thrown ball falls toward the ground
+          and, if it is thrown fast enough sideways, the ground curves away under it as fast
+          as it falls. At the station's height that speed is about 7.7 km/s in the model, and
+          the station, the crew and the apple all do it together, so none of them presses on
+          any of the others. That is why the apple in the box never moves away from the
+          astronaut, even on the throws that fall into the thick air.
+        </p>
+
+        <p class="note">
+          Sixteen sunrises are just sixteen laps. One lap takes about 92 minutes in the model,
+          and each lap goes once through the Earth's shadow and once out of it. The shadow's
+          length depends on the angle between the Sun and the orbit's plane, which changes
+          through the year; at a large enough angle the station never enters it.
+        </p>
+
+        <p class="note">
+          The station is only a point of reflected sunlight. In the middle of the day the sky
+          is too bright to see it; later in the night it passes into the Earth's shadow and nothing is
+          lighting it (in the model, once the Sun is about 20&deg; below the horizon of a spot
+          the station is overhead). In between, a while after sunset or before sunrise, the sky at your
+          spot is dark while the station, 400 km up, is still in the Sun. That narrow window
+          is the only one, and which days have a pass in it depends on where the orbit's plane
+          sits against the Sun.
+        </p>
+
+        <div class="data-table-wrap">
+          <table class="data-table id-table">
+            <caption class="visually-hidden">Numbers from this page's model next to numbers NASA gives</caption>
+            <thead>
+              <tr>
+                <th scope="col">Quantity</th>
+                <th scope="col" class="num">Model value</th>
+                <th scope="col" class="num">Real number</th>
+                <th scope="col">Source</th>
+              </tr>
+            </thead>
+            <tbody data-table></tbody>
+          </table>
+        </div>
+        <p class="id-table-note">
+          Model values are worked out on this page and are not measurements of any day's
+          orbit. The model's height is the exhibit's choice inside NASA's range of 370 to 460 km.
+        </p>
+
+        <p class="note">
+          What the model leaves out: the Earth's bulge (except for the slow turning of the orbit
+          used on &ldquo;next day&rdquo;), the air, the Moon and Sun's pull, and the station's
+          real shape and attitude. Light is treated as parallel rays, so the shadow has a sharp
+          edge, with no soft edge and no bending by the air. The Sun is held still for the
+          day and, on level 3, placed on the celestial equator, as on an equinox. The 120 km
+          stop line, the 10&deg; minimum height and the catch window in the tap game are this
+          exhibit's own rules, not NASA's. Sightings in the real world also depend on cloud,
+          haze, the station's changing brightness and the local horizon.
+        </p>
+
+        <p class="finding">
+          The crew float because they are falling, they see a sunrise every orbit, and you
+          see the station only when your sky is dark and it is still in the Sun.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+</html>
